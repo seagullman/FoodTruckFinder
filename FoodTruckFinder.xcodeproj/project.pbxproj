@@ -8,12 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
-		C72678F72B97C6C5009D48DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* ContentView.swift */; };
+		C72678F72B97C6C5009D48DE /* FTFListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FTFListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
 		C72678FC2B97C6C6009D48DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678FB2B97C6C6009D48DE /* Preview Assets.xcassets */; };
 		C72679062B97C6C6009D48DE /* FoodTruckFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679052B97C6C6009D48DE /* FoodTruckFinderTests.swift */; };
 		C72679102B97C6C6009D48DE /* FoodTruckFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726790F2B97C6C6009D48DE /* FoodTruckFinderUITests.swift */; };
 		C72679122B97C6C6009D48DE /* FoodTruckFinderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679112B97C6C6009D48DE /* FoodTruckFinderUITestsLaunchTests.swift */; };
+		C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726791F2B97C6F3009D48DE /* FoodTruck.swift */; };
+		C72679222B97C74B009D48DE /* CuisineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679212B97C74B009D48DE /* CuisineType.swift */; };
+		C72679242B97C7A9009D48DE /* FTFLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679232B97C7A9009D48DE /* FTFLocation.swift */; };
+		C72679272B97CB91009D48DE /* FTFMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679262B97CB91009D48DE /* FTFMockData.swift */; };
+		C726792B2B97D200009D48DE /* FoodTruckListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726792A2B97D200009D48DE /* FoodTruckListCell.swift */; };
+		C726792D2B97D245009D48DE /* FTFListView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726792C2B97D245009D48DE /* FTFListView+ViewModel.swift */; };
+		C726792F2B97D3AA009D48DE /* FTFTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726792E2B97D3AA009D48DE /* FTFTabView.swift */; };
+		C72679322B97D3EE009D48DE /* FTFMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679312B97D3EE009D48DE /* FTFMapView.swift */; };
+		C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679332B97D90F009D48DE /* FTF+Double.swift */; };
+		C72679362B980568009D48DE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72679352B980568009D48DE /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +46,7 @@
 /* Begin PBXFileReference section */
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
-		C72678F62B97C6C5009D48DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C72678F62B97C6C5009D48DE /* FTFListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFListView.swift; sourceTree = "<group>"; };
 		C72678F82B97C6C6009D48DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C72678FB2B97C6C6009D48DE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C72679012B97C6C6009D48DE /* FoodTruckFinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodTruckFinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +54,17 @@
 		C726790B2B97C6C6009D48DE /* FoodTruckFinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodTruckFinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C726790F2B97C6C6009D48DE /* FoodTruckFinderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderUITests.swift; sourceTree = "<group>"; };
 		C72679112B97C6C6009D48DE /* FoodTruckFinderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C726791F2B97C6F3009D48DE /* FoodTruck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruck.swift; sourceTree = "<group>"; };
+		C72679212B97C74B009D48DE /* CuisineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineType.swift; sourceTree = "<group>"; };
+		C72679232B97C7A9009D48DE /* FTFLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFLocation.swift; sourceTree = "<group>"; };
+		C72679262B97CB91009D48DE /* FTFMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFMockData.swift; sourceTree = "<group>"; };
+		C726792A2B97D200009D48DE /* FoodTruckListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckListCell.swift; sourceTree = "<group>"; };
+		C726792C2B97D245009D48DE /* FTFListView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FTFListView+ViewModel.swift"; sourceTree = "<group>"; };
+		C726792E2B97D3AA009D48DE /* FTFTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFTabView.swift; sourceTree = "<group>"; };
+		C72679312B97D3EE009D48DE /* FTFMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFMapView.swift; sourceTree = "<group>"; };
+		C72679332B97D90F009D48DE /* FTF+Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FTF+Double.swift"; sourceTree = "<group>"; };
+		C72679352B980568009D48DE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		C72679372B980A52009D48DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +115,15 @@
 		C72678F32B97C6C5009D48DE /* FoodTruckFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C72679372B980A52009D48DE /* Info.plist */,
+				C72679302B97D3CC009D48DE /* Screens */,
+				C72679292B97D1E3009D48DE /* Custom Views */,
 				C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */,
-				C72678F62B97C6C5009D48DE /* ContentView.swift */,
 				C72678F82B97C6C6009D48DE /* Assets.xcassets */,
+				C726791E2B97C6E7009D48DE /* Model */,
 				C72678FA2B97C6C6009D48DE /* Preview Content */,
+				C72679252B97CB7D009D48DE /* Utility */,
+				C72679282B97CBC1009D48DE /* ViewModel */,
 			);
 			path = FoodTruckFinder;
 			sourceTree = "<group>";
@@ -125,6 +151,52 @@
 				C72679112B97C6C6009D48DE /* FoodTruckFinderUITestsLaunchTests.swift */,
 			);
 			path = FoodTruckFinderUITests;
+			sourceTree = "<group>";
+		};
+		C726791E2B97C6E7009D48DE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C72679212B97C74B009D48DE /* CuisineType.swift */,
+				C726791F2B97C6F3009D48DE /* FoodTruck.swift */,
+				C72679232B97C7A9009D48DE /* FTFLocation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C72679252B97CB7D009D48DE /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				C72679262B97CB91009D48DE /* FTFMockData.swift */,
+				C72679332B97D90F009D48DE /* FTF+Double.swift */,
+				C72679352B980568009D48DE /* LocationManager.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		C72679282B97CBC1009D48DE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C726792C2B97D245009D48DE /* FTFListView+ViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C72679292B97D1E3009D48DE /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				C726792A2B97D200009D48DE /* FoodTruckListCell.swift */,
+				C726792E2B97D3AA009D48DE /* FTFTabView.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		C72679302B97D3CC009D48DE /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				C72678F62B97C6C5009D48DE /* FTFListView.swift */,
+				C72679312B97D3EE009D48DE /* FTFMapView.swift */,
+			);
+			path = Screens;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +329,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C72678F72B97C6C5009D48DE /* ContentView.swift in Sources */,
+				C72679242B97C7A9009D48DE /* FTFLocation.swift in Sources */,
+				C726792D2B97D245009D48DE /* FTFListView+ViewModel.swift in Sources */,
+				C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */,
+				C726792B2B97D200009D48DE /* FoodTruckListCell.swift in Sources */,
+				C726792F2B97D3AA009D48DE /* FTFTabView.swift in Sources */,
+				C72678F72B97C6C5009D48DE /* FTFListView.swift in Sources */,
 				C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */,
+				C72679322B97D3EE009D48DE /* FTFMapView.swift in Sources */,
+				C72679362B980568009D48DE /* LocationManager.swift in Sources */,
+				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
+				C72679272B97CB91009D48DE /* FTFMockData.swift in Sources */,
+				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +507,7 @@
 				DEVELOPMENT_TEAM = GREW8M86PK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodTruckFinder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -454,6 +537,7 @@
 				DEVELOPMENT_TEAM = GREW8M86PK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodTruckFinder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
