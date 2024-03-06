@@ -19,6 +19,9 @@ struct FoodTruckListCell: View {
                 Text(foodTruck.description)
                     .font(.caption)
                     .foregroundColor(.secondary)
+                Text(foodTruck.location.name)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
             
             Spacer()

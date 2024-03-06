@@ -12,7 +12,8 @@ struct FTFListView: View {
     
     @Bindable var viewModel = ViewModel()
     @StateObject var locationManager = LocationManager() // TODO: move this to .app file? or somewhere else and store
-    @State private var distance: Double = 2.0
+    
+    @State private var distance: Double = 5.0 // TODO: extract this to constant file
     
     var body: some View {
         NavigationStack {
@@ -37,9 +38,6 @@ struct FTFListView: View {
                         Text("1 mile")
                             .tag(1.0)
                         
-                        Text("2 miles")
-                            .tag(2.0)
-                        
                         Text("5 miles")
                             .tag(5.0)
                         
@@ -53,16 +51,20 @@ struct FTFListView: View {
             }
         }
         .onChange(of: locationManager.lastLocation) {
-            fetchFoodTrucks()
+            Task {
+                await fetchFoodTrucks()
+            }
         }
         .onChange(of: distance) {
-            fetchFoodTrucks()
+            Task {
+                await fetchFoodTrucks()
+            }
         }
     }
     
-    func fetchFoodTrucks() {
+    func fetchFoodTrucks() async {
         if let location = locationManager.lastLocation {
-            _ = viewModel.fetchFoodTrucks(distance, of: location)
+            await viewModel.fetchFoodTrucks(distance, of: location)
         }
     }
 }
