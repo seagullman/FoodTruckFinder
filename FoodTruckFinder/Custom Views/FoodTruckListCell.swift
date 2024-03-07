@@ -16,12 +16,12 @@ struct FoodTruckListCell: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(foodTruck.name)
-                Text(foodTruck.description)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text(foodTruck.location.name)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                Group {
+                    Text(foodTruck.description)
+                    Text(foodTruck.location.name)
+                }
+                .font(.caption)
+                .foregroundColor(.secondary)
             }
             
             Spacer()

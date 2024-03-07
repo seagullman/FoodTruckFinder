@@ -15,12 +15,14 @@ extension FTFListView {
     internal class ViewModel {
         
         var foodTrucks: [FoodTruck] = []
+        var isLoading: Bool = false
 
         
         func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { // MARK: don't throw here. handle error in view model and make a property to show an error.
             
             // TODO: uncomment this to clear the list view when fetching updated food truck data
-            //foodTrucks = []
+            foodTrucks = []
+            isLoading.toggle()
             
             let foodTrucks = FTFMockData.foodTrucks.filter { foodTruck in
                 let clLocation = CLLocation(
@@ -41,6 +43,7 @@ extension FTFListView {
             }
             
             self.foodTrucks = foodTrucks
+            isLoading.toggle()
         }
         
         /**
