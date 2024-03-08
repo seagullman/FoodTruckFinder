@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C71BDB522B9AC96B00854478 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C71BDB512B9AC96B00854478 /* FirebaseFirestoreSwift */; };
+		C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB532B9AC98800854478 /* NetworkManager.swift */; };
+		C71BDB562B9AD2F500854478 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */; };
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
 		C72678F72B97C6C5009D48DE /* FTFListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FTFListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
@@ -45,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C71BDB532B9AC98800854478 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
 		C72678F62B97C6C5009D48DE /* FTFListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFListView.swift; sourceTree = "<group>"; };
@@ -74,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C71BDB522B9AC96B00854478 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +103,7 @@
 		C72678E82B97C6C4009D48DE = {
 			isa = PBXGroup;
 			children = (
+				C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */,
 				C72678F32B97C6C5009D48DE /* FoodTruckFinder */,
 				C72679042B97C6C6009D48DE /* FoodTruckFinderTests */,
 				C726790E2B97C6C6009D48DE /* FoodTruckFinderUITests */,
@@ -171,6 +178,7 @@
 				C72679262B97CB91009D48DE /* FTFMockData.swift */,
 				C72679332B97D90F009D48DE /* FTF+Double.swift */,
 				C72679352B980568009D48DE /* LocationManager.swift */,
+				C71BDB532B9AC98800854478 /* NetworkManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -218,6 +226,9 @@
 			dependencies = (
 			);
 			name = FoodTruckFinder;
+			packageProductDependencies = (
+				C71BDB512B9AC96B00854478 /* FirebaseFirestoreSwift */,
+			);
 			productName = FoodTruckFinder;
 			productReference = C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */;
 			productType = "com.apple.product-type.application";
@@ -290,6 +301,9 @@
 				Base,
 			);
 			mainGroup = C72678E82B97C6C4009D48DE;
+			packageReferences = (
+				C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = C72678F22B97C6C5009D48DE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -308,6 +322,7 @@
 			files = (
 				C72678FC2B97C6C6009D48DE /* Preview Assets.xcassets in Resources */,
 				C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */,
+				C71BDB562B9AD2F500854478 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +357,7 @@
 				C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */,
 				C72679322B97D3EE009D48DE /* FTFMapView.swift in Sources */,
 				C72679362B980568009D48DE /* LocationManager.swift in Sources */,
+				C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */,
 				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
 				C72679272B97CB91009D48DE /* FTFMockData.swift in Sources */,
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
@@ -676,6 +692,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.22.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C71BDB512B9AC96B00854478 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C72678E92B97C6C4009D48DE /* Project object */;
 }

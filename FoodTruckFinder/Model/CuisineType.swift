@@ -7,9 +7,11 @@
 
 import Foundation
 
-public enum CuisineType: Codable {
-    case american
-    case mexican
-    case asian
-    case japanese
+public enum CuisineType: String, Codable {
+    case american = "american"
+    case coffee = "coffee"
+    case mexican = "mexican"
+    case asian = "asian"
+    case japanese = "japanese"
+    case italian = "italian"
 }

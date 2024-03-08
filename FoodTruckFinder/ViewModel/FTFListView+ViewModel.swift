@@ -20,29 +20,28 @@ extension FTFListView {
         
         func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { // MARK: don't throw here. handle error in view model and make a property to show an error.
             
-            // TODO: uncomment this to clear the list view when fetching updated food truck data
             foodTrucks = []
             isLoading.toggle()
             
-            let foodTrucks = FTFMockData.foodTrucks.filter { foodTruck in
-                let clLocation = CLLocation(
-                    latitude: foodTruck.location.latitude,
-                    longitude: foodTruck.location.longitude
-                )
-                
-                let distanceInMiles = clLocation.distance(from: location).convert(from: .meters, to: .miles)
-                
-                return distanceInMiles < withinMiles
-            }
-            
-            #warning("Remove this when api is working. This is used for mock data perposes.")
             do {
-                try await Task.sleep(for: .seconds(2)) // This will be a call to the NetworkManager eventually
+                let foodTrucks = try await NetworkManager.shared.getAllFoodTrucks()
+                self.foodTrucks = foodTrucks.filter { foodTruck in
+                    let clLocation = CLLocation(
+                        latitude: foodTruck.location.latitude,
+                        longitude: foodTruck.location.longitude
+                    )
+                    
+                    let distanceInMiles = clLocation.distance(from: location).convert(from: .meters, to: .miles)
+                    
+                    return distanceInMiles < withinMiles
+                }
+                
             } catch {
-                print("***** Error")
+                print("***** Error fetching food trucks: \(error)")
             }
             
             self.foodTrucks = foodTrucks
+            
             isLoading.toggle()
         }
         

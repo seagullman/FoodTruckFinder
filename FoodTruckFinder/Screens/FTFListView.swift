@@ -47,6 +47,34 @@ struct FTFListView: View {
                     await fetchFoodTrucks()
                 }
             }
+//            .onAppear {
+//                Task {
+//                    await NetworkManager.shared.save(
+//                        foodTruck: FoodTruck(
+//                            name: "Papa Joe's",
+//                            description: "Italian Restaurant",
+//                            websiteUrl: "papajoes.com",
+//                            hoursOfOperation: "M-SUN: 10-10",
+//                            cuisineType: .italian,
+//                            location: FTFLocation(
+//                                name: "14459 S. La Grange Rd",
+//                                latitude: 123123,
+//                                longitude: 123123
+//                            )
+//                        )
+//                    )
+//                    
+////                    do {
+////                        let trucks = try await NetworkManager.shared.getAllFoodTrucks()
+////                        for truck in trucks {
+////                            print(truck.name)
+////                        }
+////                    } catch {
+////                        print("***** ERROR")
+////                    }
+//                    
+//                }
+//            }
             
             if viewModel.isLoading {
                 ProgressView {
