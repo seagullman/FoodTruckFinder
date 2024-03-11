@@ -11,59 +11,45 @@ import CoreLocation
 struct FTFListView: View {
     
     @Bindable var viewModel = ViewModel()
-    @StateObject var locationManager = LocationManager() // TODO: move this to .app file? or somewhere else and store
+    @State private var path: [FoodTruck] = []
     @State var distance: Double = 5.0 // TODO: extract this to constant file
+    @StateObject var locationManager = LocationManager() // TODO: move this to .app file? or somewhere else and store
     
     var body: some View {
         ZStack {
-            NavigationStack {
+            NavigationStack(path: $path) {
                 List {
                     ForEach(viewModel.foodTrucks, id: \.id) { foodTruck in
-                        FoodTruckListCell(
-                            foodTruck: foodTruck,
-                            distanceFromUserLocation: viewModel.currentDistance(
-                                from: foodTruck,
-                                currentUserLocation: locationManager.lastLocation
+                        NavigationLink(destination: FoodTruckDetailView(foodTruck: foodTruck)) {
+                            FoodTruckListCell(
+                                foodTruck: foodTruck,
+                                distanceFromUserLocation: viewModel.currentDistance(
+                                    from: foodTruck,
+                                    currentUserLocation: locationManager.lastLocation
+                                )
                             )
-                        )
+                        }
                     }
                 }
                 .disabled(viewModel.isLoading)
-                .refreshable {
-                    locationManager.refreshLocation()
-                }
+                .refreshable { locationManager.refreshLocation() }
                 .navigationTitle("Food Trucks")
-                .toolbar {
-                    ListViewToolbarView(distance: $distance, isLoading: false)
-                }
+                .toolbar { ListViewToolbarView(distance: $distance, isLoading: false) }
             }
             .onChange(of: locationManager.lastLocation) {
-                Task {
-                    await fetchFoodTrucks()
-                }
+                Task { await fetchFoodTrucks() }
             }
             .onChange(of: distance) {
-                Task {
-                    await fetchFoodTrucks()
-                }
+                Task { await fetchFoodTrucks() }
             }
 //            .onAppear {
 //                Task {
-//                    await NetworkManager.shared.save(
-//                        foodTruck: FoodTruck(
-//                            name: "Papa Joe's",
-//                            description: "Italian Restaurant",
-//                            websiteUrl: "papajoes.com",
-//                            hoursOfOperation: "M-SUN: 10-10",
-//                            cuisineType: .italian,
-//                            location: FTFLocation(
-//                                name: "14459 S. La Grange Rd",
-//                                latitude: 123123,
-//                                longitude: 123123
-//                            )
-//                        )
-//                    )
-//                    
+//                    for truck in FTFMockData.foodTrucks {
+//                        await NetworkManager.shared.save(foodTruck: truck)
+//                    }
+//                }
+//            }
+//
 ////                    do {
 ////                        let trucks = try await NetworkManager.shared.getAllFoodTrucks()
 ////                        for truck in trucks {

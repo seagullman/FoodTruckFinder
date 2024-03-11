@@ -26,12 +26,7 @@ extension FTFListView {
             do {
                 let foodTrucks = try await NetworkManager.shared.getAllFoodTrucks()
                 self.foodTrucks = foodTrucks.filter { foodTruck in
-                    let clLocation = CLLocation(
-                        latitude: foodTruck.location.latitude,
-                        longitude: foodTruck.location.longitude
-                    )
-                    
-                    let distanceInMiles = clLocation.distance(from: location).convert(from: .meters, to: .miles)
+                    let distanceInMiles = currentDistance(from: foodTruck, currentUserLocation: location)
                     
                     return distanceInMiles < withinMiles
                 }
@@ -40,6 +35,11 @@ extension FTFListView {
                 print("***** Error fetching food trucks: \(error)")
             }
             
+            foodTrucks.sort { truck1, truck2 in
+                let distanceInMiles1 = currentDistance(from: truck1, currentUserLocation: location)
+                let distanceInMiles2 = currentDistance(from: truck2, currentUserLocation: location)
+                return distanceInMiles1 < distanceInMiles2
+            }
             self.foodTrucks = foodTrucks
             
             isLoading.toggle()

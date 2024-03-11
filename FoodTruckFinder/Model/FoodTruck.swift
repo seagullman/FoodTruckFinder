@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FoodTruck: Codable {
+struct FoodTruck: Codable, Hashable {
     let id = UUID()
     let name: String
     let description: String
@@ -23,5 +23,13 @@ struct FoodTruck: Codable {
              hoursOfOperation,
              cuisineType,
              location
+    }
+    
+    static func == (lhs: FoodTruck, rhs: FoodTruck) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

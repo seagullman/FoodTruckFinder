@@ -8,6 +8,9 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseAuth
+
+
 
 @main
 struct FoodTruckFinderApp: App {
@@ -18,7 +21,16 @@ struct FoodTruckFinderApp: App {
     
     var body: some Scene {
         WindowGroup {
-            FTFTabView()
+//            switch ViewRouter.shared.currentScreen {
+//            case .login:
+//                LoginView()
+//            case .home:
+//                FTFListView()
+//            case .ownerDashboard:
+//                FTOwnerDashboardView()
+//            }
+//            FTFListView()
+            FTOwnerDashboardView()
         }
     }
 }
