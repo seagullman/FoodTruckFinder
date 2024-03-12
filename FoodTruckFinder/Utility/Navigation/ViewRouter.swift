@@ -12,24 +12,21 @@ enum Screen {
     case login
     case home
     case ownerDashboard
+    case loading
 }
 
 @Observable
-class ViewRouter {
-    static let shared = ViewRouter()
+class ViewRouter: FTFAuthManagerDelegate {
     
-    var currentScreen: Screen = .login
-    
-    private var authState: FTFAuthManager.AuthState
-    
-    private init() {
-        authState = FTFAuthManager.shared.authState
-        determineCurrentScreen()
+    var currentScreen: Screen = .loading
+
+    init() {
+        FTFAuthManager.shared.delegate = self
     }
     
-    // MARK: Private functions
+    // MARK: FTFAuthManagerDelegate
     
-    private func determineCurrentScreen() {
+    func authStateChanged(to authState: FTFAuthManager.AuthState) {
         switch authState {
         case .authenticated:
             // TODO: check to see if user is a customer or food truck owner

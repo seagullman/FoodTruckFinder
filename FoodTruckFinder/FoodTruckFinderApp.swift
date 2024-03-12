@@ -10,27 +10,40 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
 
-
-
 @main
 struct FoodTruckFinderApp: App {
     
+    var viewRouter: ViewRouter
+    
     init() {
         FirebaseApp.configure()
+        viewRouter = ViewRouter()
     }
     
     var body: some Scene {
         WindowGroup {
-//            switch ViewRouter.shared.currentScreen {
+            switch viewRouter.currentScreen {
+            case .login:
+                LoginView()
+            case .home:
+                FTFListView()
+            case .ownerDashboard:
+                FTOwnerDashboardView()
+            case .loading:
+                // Displayed before/while the auth state is being determined
+                FullScreenLoadingView()
+            }
+        }
+//            switch viewRouter.currentScreen {
 //            case .login:
-//                LoginView()
+//                FTFListView()
 //            case .home:
 //                FTFListView()
 //            case .ownerDashboard:
 //                FTOwnerDashboardView()
 //            }
-//            FTFListView()
-            FTOwnerDashboardView()
-        }
+////            FTOwnerDashboardView()
+//        }
+//        .environment(viewRouter)
     }
 }

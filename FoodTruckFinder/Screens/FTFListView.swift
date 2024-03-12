@@ -34,7 +34,21 @@ struct FTFListView: View {
                 .disabled(viewModel.isLoading)
                 .refreshable { locationManager.refreshLocation() }
                 .navigationTitle("Food Trucks")
-                .toolbar { ListViewToolbarView(distance: $distance, isLoading: false) }
+                .toolbar {
+//                    ListViewToolbarView(distance: $distance, isLoading: false)
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            do {
+                                try FTFAuthManager.shared.signOut()
+                            } catch {
+                                print(#line, "Error: Unable to logout")
+                            }
+                        } label: {
+                            Text("Logout")
+                        }
+
+                    }
+                }
             }
             .onChange(of: locationManager.lastLocation) {
                 Task { await fetchFoodTrucks() }

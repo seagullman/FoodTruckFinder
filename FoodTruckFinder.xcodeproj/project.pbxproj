@@ -19,6 +19,8 @@
 		C71BDB652B9E56CC00854478 /* FoodTruckDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB642B9E56CC00854478 /* FoodTruckDetailView.swift */; };
 		C71BDB672B9EA4D600854478 /* FileUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB662B9EA4D600854478 /* FileUploadManager.swift */; };
 		C71BDB692B9EA56B00854478 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = C71BDB682B9EA56B00854478 /* FirebaseStorage */; };
+		C71BDB6B2B9F86EC00854478 /* FTOwnerDashboardView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB6A2B9F86EC00854478 /* FTOwnerDashboardView+ViewModel.swift */; };
+		C71BDB6D2B9FF22700854478 /* FullScreenLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */; };
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
 		C72678F72B97C6C5009D48DE /* FTFListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FTFListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
@@ -66,6 +68,8 @@
 		C71BDB622B9E1AFC00854478 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C71BDB642B9E56CC00854478 /* FoodTruckDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckDetailView.swift; sourceTree = "<group>"; };
 		C71BDB662B9EA4D600854478 /* FileUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadManager.swift; sourceTree = "<group>"; };
+		C71BDB6A2B9F86EC00854478 /* FTOwnerDashboardView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FTOwnerDashboardView+ViewModel.swift"; sourceTree = "<group>"; };
+		C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenLoadingView.swift; sourceTree = "<group>"; };
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
 		C72678F62B97C6C5009D48DE /* FTFListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFListView.swift; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				C726792C2B97D245009D48DE /* FTFListView+ViewModel.swift */,
+				C71BDB6A2B9F86EC00854478 /* FTOwnerDashboardView+ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -227,6 +232,7 @@
 				C726792A2B97D200009D48DE /* FoodTruckListCell.swift */,
 				C726792E2B97D3AA009D48DE /* FTFTabView.swift */,
 				C77985022B98FFAD00184FED /* ListViewToolbarView.swift */,
+				C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -384,6 +390,7 @@
 			files = (
 				C72679242B97C7A9009D48DE /* FTFLocation.swift in Sources */,
 				C71BDB672B9EA4D600854478 /* FileUploadManager.swift in Sources */,
+				C71BDB6B2B9F86EC00854478 /* FTOwnerDashboardView+ViewModel.swift in Sources */,
 				C726792D2B97D245009D48DE /* FTFListView+ViewModel.swift in Sources */,
 				C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */,
 				C71BDB652B9E56CC00854478 /* FoodTruckDetailView.swift in Sources */,
@@ -400,6 +407,7 @@
 				C71BDB5F2B9E147D00854478 /* ViewRouter.swift in Sources */,
 				C71BDB612B9E173800854478 /* User.swift in Sources */,
 				C72679272B97CB91009D48DE /* FTFMockData.swift in Sources */,
+				C71BDB6D2B9FF22700854478 /* FullScreenLoadingView.swift in Sources */,
 				C71BDB632B9E1AFC00854478 /* LoginView.swift in Sources */,
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
 				C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */,

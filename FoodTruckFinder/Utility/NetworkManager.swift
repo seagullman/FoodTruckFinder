@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 
 class NetworkManager {
@@ -14,6 +15,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     
     private let db = Firestore.firestore()
+    private let foodTrucksCollectionId = "food-trucks"
     
     private init() {}
     
@@ -21,7 +23,7 @@ class NetworkManager {
         var foodTrucks: [FoodTruck] = []
         
         do {
-          let snapshot = try await db.collection("food-trucks").getDocuments()
+          let snapshot = try await db.collection(foodTrucksCollectionId).getDocuments()
           for document in snapshot.documents {
               do {
                   let foodTruck = try document.data(as: FoodTruck.self)
@@ -35,11 +37,26 @@ class NetworkManager {
         return foodTrucks
     }
     
+    func getFoodTruck(by documentId: String) async -> FoodTruck? {
+        let docRef = db.collection(foodTrucksCollectionId).document(documentId)
+        var foodTruck: FoodTruck?
+        
+        do {
+            let document = try await docRef.getDocument()
+            if document.exists {
+                foodTruck = try document.data(as: FoodTruck.self)
+            }
+        } catch {
+            print("Error fetching food truck by documentId")
+        }
+        return foodTruck
+    }
+    
     func save(foodTruck: FoodTruck) async {
         // TODO: If no document exists, it is created. If a document already exists, it is overwritten.
         // need to fix this so it is an update if it exists
         do {
-            try db.collection("food-trucks").document(String(describing: foodTruck.id)).setData(from: foodTruck)
+            try db.collection("food-trucks").document(Auth.auth().currentUser?.uid ?? String(describing: foodTruck.id)).setData(from: foodTruck)
         } catch let error {
           print("Error writing foodTruck to Firestore: \(error)")
         }

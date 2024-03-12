@@ -16,7 +16,7 @@ enum UserType {
 struct User {
     let id = UUID()
     let type: UserType
-    let foodTruck: FoodTruck?
     let email: String
     let phoneNumber: String
+    let foodTruck: FoodTruck?
 }
