@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 protocol FTFAuthManagerDelegate: AnyObject {
     func authStateChanged(to authState: FTFAuthManager.AuthState)
@@ -21,6 +22,8 @@ class FTFAuthManager {
     
     static let shared = FTFAuthManager()
     
+    private let db = Firestore.firestore()
+    
     weak var delegate: FTFAuthManagerDelegate?
     
     private init() {
@@ -31,16 +34,27 @@ class FTFAuthManager {
         return (Auth.auth().currentUser != nil) ? .authenticated : .unauthenticated
     }
     
-    func loginUser(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { [ weak self ] authResult, error in
-            guard let strongSelf = self else { return }
-          
-            if let authResult {
-                print("***** user")
-                print(authResult.user.email ?? "no email on file")
-                let user = User(type: .customer, foodTruck: nil, email: authResult.user.email ?? "", phoneNumber: "7084445566")
-            }
+    func loginUser(email: String, password: String) async throws {
+        do {
+            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+            let user = try await getUser(for: authResult.user.uid)
+        } catch {
+            throw FTFError.invalidCredentials
         }
+    }
+    
+    func getUser(for id: String) async throws -> User? {
+        let docRef = db.collection("users").document(id)
+        let document = try await docRef.getDocument()
+        
+        var fetchedUser: User?
+        
+        if document.exists {
+            let user = try document.data(as: User.self)
+            fetchedUser = user
+        }
+        
+        return fetchedUser
     }
     
     func addAuthStateListener() {

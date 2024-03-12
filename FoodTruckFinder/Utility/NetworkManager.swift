@@ -19,15 +19,15 @@ class NetworkManager {
     
     private init() {}
     
-    func getAllFoodTrucks() async throws -> [FoodTruck] {
-        var foodTrucks: [FoodTruck] = []
+    func getAllFoodTrucks() async throws -> Set<FoodTruck> {
+        var foodTrucks: Set<FoodTruck> = Set()
         
         do {
           let snapshot = try await db.collection(foodTrucksCollectionId).getDocuments()
           for document in snapshot.documents {
               do {
                   let foodTruck = try document.data(as: FoodTruck.self)
-                  foodTrucks.append(foodTruck)
+                  foodTrucks.insert(foodTruck)
               }
           }
         } catch {

@@ -10,14 +10,11 @@ import CoreLocation
 
 struct FTFListView: View {
     
-    @Bindable var viewModel = ViewModel()
-    @State private var path: [FoodTruck] = []
-    @State var distance: Double = 5.0 // TODO: extract this to constant file
-    @StateObject var locationManager = LocationManager() // TODO: move this to .app file? or somewhere else and store
+    @State var viewModel = ViewModel()
     
     var body: some View {
         ZStack {
-            NavigationStack(path: $path) {
+            NavigationStack(path: $viewModel.navigationPath) {
                 List {
                     ForEach(viewModel.foodTrucks, id: \.id) { foodTruck in
                         NavigationLink(destination: FoodTruckDetailView(foodTruck: foodTruck)) {
@@ -25,56 +22,38 @@ struct FTFListView: View {
                                 foodTruck: foodTruck,
                                 distanceFromUserLocation: viewModel.currentDistance(
                                     from: foodTruck,
-                                    currentUserLocation: locationManager.lastLocation
+                                    currentUserLocation: viewModel.locationManager.lastLocation
                                 )
                             )
                         }
                     }
                 }
                 .disabled(viewModel.isLoading)
-                .refreshable { locationManager.refreshLocation() }
+                .refreshable { viewModel.locationManager.refreshLocation() }
                 .navigationTitle("Food Trucks")
                 .toolbar {
-//                    ListViewToolbarView(distance: $distance, isLoading: false)
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            do {
-                                try FTFAuthManager.shared.signOut()
-                            } catch {
-                                print(#line, "Error: Unable to logout")
-                            }
-                        } label: {
-                            Text("Logout")
-                        }
-
+                    Group {
+//                        ToolbarItem(placement: .navigationBarTrailing) {
+//                            Button {
+//                                do {
+//                                    try FTFAuthManager.shared.signOut()
+//                                } catch {
+//                                    print(#line, "Error: Unable to logout")
+//                                }
+//                            } label: {
+//                                Text("Logout")
+//                            }
+//                        }
+                        ListViewToolbarView(distance: $viewModel.distance, isLoading: false)
                     }
                 }
             }
-            .onChange(of: locationManager.lastLocation) {
+            .onChange(of: viewModel.locationManager.lastLocation) {
                 Task { await fetchFoodTrucks() }
             }
-            .onChange(of: distance) {
+            .onChange(of: viewModel.distance) {
                 Task { await fetchFoodTrucks() }
             }
-//            .onAppear {
-//                Task {
-//                    for truck in FTFMockData.foodTrucks {
-//                        await NetworkManager.shared.save(foodTruck: truck)
-//                    }
-//                }
-//            }
-//
-////                    do {
-////                        let trucks = try await NetworkManager.shared.getAllFoodTrucks()
-////                        for truck in trucks {
-////                            print(truck.name)
-////                        }
-////                    } catch {
-////                        print("***** ERROR")
-////                    }
-//                    
-//                }
-//            }
             
             if viewModel.isLoading {
                 ProgressView {
@@ -87,8 +66,8 @@ struct FTFListView: View {
     }
     
     func fetchFoodTrucks() async {
-        if let location = locationManager.lastLocation {
-            await viewModel.fetchFoodTrucks(distance, of: location)
+        if let location = viewModel.locationManager.lastLocation {
+            await viewModel.fetchFoodTrucks(viewModel.distance, of: location)
         }
     }
 }

@@ -6,32 +6,31 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LoginView: View {
     
-    @State var email: String = ""
-    @State var password: String = ""
+    @State var viewModel = ViewModel()
     
     var body: some View {
         Form {
-            TextField("Email", text: $email)
-            TextField("Password", text: $password)
+            TextField("Email", text: $viewModel.email)
+            TextField("Password", text: $viewModel.password)
                 .textContentType(.password)
+                .autocorrectionDisabled()
+                .autocapitalization(.none)
             Button {
-                Task {
-                    let user = await FTFAuthManager.shared.loginUser(email: email, password: password)
-//                    if let user {
-//                        print("***** USER LOGGED IN")
-//                    }
-                }
+                Task { await viewModel.login(username: viewModel.email, password: viewModel.password) }
             } label: {
                 Text("Login")
             }
-
+        }
+        .alert(item: $viewModel.alertItem) { alertItem in
+            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
         }
     }
 }
 
 #Preview {
-    LoginView(email: "test@email.com", password: "12345")
+    LoginView()
 }

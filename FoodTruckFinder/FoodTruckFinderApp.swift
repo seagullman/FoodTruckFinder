@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
@@ -34,16 +35,5 @@ struct FoodTruckFinderApp: App {
                 FullScreenLoadingView()
             }
         }
-//            switch viewRouter.currentScreen {
-//            case .login:
-//                FTFListView()
-//            case .home:
-//                FTFListView()
-//            case .ownerDashboard:
-//                FTOwnerDashboardView()
-//            }
-////            FTOwnerDashboardView()
-//        }
-//        .environment(viewRouter)
     }
 }

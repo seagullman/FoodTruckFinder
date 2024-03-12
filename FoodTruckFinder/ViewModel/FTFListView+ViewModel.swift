@@ -11,36 +11,39 @@ import CoreLocation
 extension FTFListView {
     
     @Observable
-    @MainActor
     internal class ViewModel {
         
+        var navigationPath: [FoodTruck] = []
+        
+        var distance: Double = 5.0
         var foodTrucks: [FoodTruck] = []
+        var locationManager = LocationManager()
         var isLoading: Bool = false
 
         
-        func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { // MARK: don't throw here. handle error in view model and make a property to show an error.
+        func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { 
             
             foodTrucks = []
             isLoading.toggle()
             
             do {
                 let foodTrucks = try await NetworkManager.shared.getAllFoodTrucks()
-                self.foodTrucks = foodTrucks.filter { foodTruck in
+
+                let filteredFoodTrucks = foodTrucks.filter { foodTruck in
                     let distanceInMiles = currentDistance(from: foodTruck, currentUserLocation: location)
                     
                     return distanceInMiles < withinMiles
                 }
-                
+
+                self.foodTrucks = filteredFoodTrucks.sorted(by: { truck1, truck2 in
+                    let distanceInMiles1 = currentDistance(from: truck1, currentUserLocation: location)
+                    let distanceInMiles2 = currentDistance(from: truck2, currentUserLocation: location)
+                    return distanceInMiles1 < distanceInMiles2
+                })
             } catch {
+                // TODO: handle error
                 print("***** Error fetching food trucks: \(error)")
             }
-            
-            foodTrucks.sort { truck1, truck2 in
-                let distanceInMiles1 = currentDistance(from: truck1, currentUserLocation: location)
-                let distanceInMiles2 = currentDistance(from: truck2, currentUserLocation: location)
-                return distanceInMiles1 < distanceInMiles2
-            }
-            self.foodTrucks = foodTrucks
             
             isLoading.toggle()
         }

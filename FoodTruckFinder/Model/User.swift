@@ -7,16 +7,23 @@
 
 import Foundation
 
-
-enum UserType {
+enum UserType: Codable {
     case foodTruck
     case customer
 }
 
-struct User {
-    let id = UUID()
+struct User: Codable {
+    let id: String
     let type: UserType
     let email: String
     let phoneNumber: String
-    let foodTruck: FoodTruck?
+    let foodTruckId: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case id,
+             type,
+             email,
+             phoneNumber,
+             foodTruckId
+    }
 }
