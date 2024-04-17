@@ -19,7 +19,6 @@ struct FoodTruckDetailView: View {
             Text(foodTruck.websiteUrl)
             Text(foodTruck.cuisineType.rawValue)
         }
-
     }
 }
 

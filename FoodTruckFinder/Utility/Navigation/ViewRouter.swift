@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 enum Screen {
     case login
-    case home
-    case ownerDashboard
+    case foodTruckList
+    case createFoodTruck
     case loading
 }
 
@@ -29,10 +28,19 @@ class ViewRouter: FTFAuthManagerDelegate {
     func authStateChanged(to authState: FTFAuthManager.AuthState) {
         switch authState {
         case .authenticated:
-            // TODO: check to see if user is a customer or food truck owner
-            currentScreen = .ownerDashboard
+            // Upon authenticating, check to see if this is the user's (food truck owner) first
+            // time signing in. If so, they need to enter food truck information.
+            Task {
+                let foodTruckRegistered = try await FTFAuthManager.shared.userHasRegisteredFoodTruck()
+                
+                if foodTruckRegistered {
+                    currentScreen = .foodTruckList
+                } else {
+                    currentScreen = .createFoodTruck
+                }
+            }
         case .unauthenticated:
-            currentScreen = .login
+            currentScreen = .foodTruckList
         }
     }
 }

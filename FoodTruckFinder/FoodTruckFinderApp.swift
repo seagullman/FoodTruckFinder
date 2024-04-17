@@ -26,10 +26,10 @@ struct FoodTruckFinderApp: App {
             switch viewRouter.currentScreen {
             case .login:
                 LoginView()
-            case .home:
-                FTFListView()
-            case .ownerDashboard:
-                FTOwnerDashboardView()
+            case .foodTruckList:
+                FTFTabView()
+            case .createFoodTruck:
+                FTFTabView()
             case .loading:
                 // Displayed before/while the auth state is being determined
                 FullScreenLoadingView()

@@ -10,10 +10,11 @@ import SwiftUI
 struct ListViewToolbarView: View {
     
     @Binding var distance: Double
+    
     let isLoading: Bool
     
     var body: some View {
-        Menu("Distance", systemImage: "line.3.horizontal.decrease.circle") {
+        Menu("Filter", systemImage: "slider.vertical.3") {
             Picker("Distance", selection: $distance) {
                 Text("1 mile")
                     .tag(1.0)
@@ -28,6 +29,10 @@ struct ListViewToolbarView: View {
                     .tag(200.0)
             }
         }
+        .font(.title2)
+        .frame(maxWidth: .infinity)
+        .foregroundColor(.white)
+        .background(.gray)
         .disabled(isLoading)
     }
 }
