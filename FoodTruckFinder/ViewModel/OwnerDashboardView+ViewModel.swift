@@ -13,20 +13,31 @@ extension OwnerDashboardView {
     @Observable
     internal class ViewModel {
         
+        var pushCreateFoodTruckView = false
         var isFoodTruckRegistered: Bool = false
         var foodTruck: FoodTruck?
-        
-        init() {
-            Task {
-                let foodTruckRegistered = try await FTFAuthManager.shared.userHasRegisteredFoodTruck()
-                isFoodTruckRegistered = foodTruckRegistered
+
+        func foodTruckRegistered() async -> Bool {
+            do {
+                let isRegistered = try await FTFAuthManager.shared.userHasRegisteredFoodTruck()
+                isFoodTruckRegistered = isRegistered
+                return isRegistered
+            } catch {
+                print("***** ERROR checking food truck registration")
+                // TODO: fix
             }
+            return false
         }
         
         func loadFoodTruck() async {
             guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-            
-            foodTruck = await NetworkManager.shared.getFoodTruck(by: currentUserId)
+             
+            do {
+                foodTruck = try await NetworkManager.shared.getFoodTruck(by: currentUserId)
+            } catch {
+                // TODO: handle this
+                print("***** Error fetching food truck by ID")
+            }
         }
     }
 }

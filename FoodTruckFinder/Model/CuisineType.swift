@@ -14,4 +14,16 @@ public enum CuisineType: String, Codable {
     case asian = "asian"
     case japanese = "japanese"
     case italian = "italian"
+    
+            return "American"
+        case .mexican:
+            return "Mexican"
+        case .asian:
+            return "Asian"
+        case .japanese:
+            return "Japanese"
+        case .italian:
+            return "Italian"
+        }
+    }
 }

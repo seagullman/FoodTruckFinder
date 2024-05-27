@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
+import CoreLocation
 
 
 class NetworkManager {
@@ -37,7 +38,12 @@ class NetworkManager {
         return foodTrucks
     }
     
-    func getFoodTruck(by documentId: String) async -> FoodTruck? {
+    func getFoodTrucks(within miles: Double, of location: CLLocation) async throws -> [FoodTruckListItem] {
+        let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&distance=\(miles)"
+        return try await makeRequest(urlString: urlString)
+    }
+    
+    func getFoodTruck(by documentId: String) async throws -> FoodTruck? {
         let docRef = db.collection(foodTrucksCollectionId).document(documentId)
         var foodTruck: FoodTruck?
         
@@ -48,8 +54,34 @@ class NetworkManager {
             }
         } catch {
             print("Error fetching food truck by documentId")
+            throw FTFError.invalidData
         }
         return foodTruck
+    }
+    
+    // MARK: Private functions
+    
+    private func makeRequest<T: Decodable>(urlString: String) async throws -> T {
+        guard let url = URL(string: urlString) else {
+            throw FTFError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse,
+              response.statusCode == 200
+        else {
+            throw FTFError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            throw FTFError.invalidData
+        }
     }
     
     func save(foodTruck: FoodTruck) async {

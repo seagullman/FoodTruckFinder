@@ -12,33 +12,20 @@ extension FoodTruckListView {
     
     @Observable
     internal class ViewModel {
-        
-        var navigationPath: [FoodTruck] = []
-        
         var distance: Double = 5.0
-        var foodTrucks: [FoodTruck] = []
+        var foodTruckListItems: [FoodTruckListItem] = []
         var locationManager = LocationManager()
         var isLoading: Bool = false
 
         func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { 
             
-            foodTrucks = []
+            foodTruckListItems = []
             isLoading.toggle()
             
             do {
-                let foodTrucks = try await NetworkManager.shared.getAllFoodTrucks()
-
-                let filteredFoodTrucks = foodTrucks.filter { foodTruck in
-                    let distanceInMiles = currentDistance(from: foodTruck, currentUserLocation: location)
-                    
-                    return distanceInMiles < withinMiles
-                }
-
-                self.foodTrucks = filteredFoodTrucks.sorted(by: { truck1, truck2 in
-                    let distanceInMiles1 = currentDistance(from: truck1, currentUserLocation: location)
-                    let distanceInMiles2 = currentDistance(from: truck2, currentUserLocation: location)
-                    return distanceInMiles1 < distanceInMiles2
-                })
+                let foodTruckListItems = try await NetworkManager.shared.getFoodTrucks(within: withinMiles, of: location)
+                self.foodTruckListItems = foodTruckListItems
+                
             } catch {
                 // TODO: handle error
                 print("***** Error fetching food trucks: \(error)")

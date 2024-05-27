@@ -10,13 +10,16 @@ import FirebaseAuth
 
 struct OwnerDashboardView: View {
     
-    let viewModel = ViewModel()
+    @State var viewModel = ViewModel()
+    @State var showCreateView = false
     
     //    @State private var presentImporter = false
     
     var body: some View {
-        NavigationStack {
-            if !viewModel.isFoodTruckRegistered {
+        @State var path = NavigationPath()
+        
+        NavigationStack() {
+            if showCreateView {
                 CreateFoodTruckView()
             } else {
                 VStack {
@@ -28,6 +31,9 @@ struct OwnerDashboardView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            Task { self.showCreateView = await !viewModel.foodTruckRegistered() }
         }
     }
 }

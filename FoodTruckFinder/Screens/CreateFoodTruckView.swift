@@ -27,7 +27,7 @@ struct CreateFoodTruckView: View {
             }
             Button {
                 Task {
-                    await NetworkManager.shared.save(foodTruck: FoodTruck(name: "Brad's Grub", description: "Home cooking by Brad", websiteUrl: "bradsiegel.com", hoursOfOperation: "M-SUN: 8-10", cuisineType: .american, location: FTFLocation(name: "Outside the Embassy Suites", latitude: 35.9648496, longitude: -83.9184627)))
+                    await NetworkManager.shared.save(foodTruck: FoodTruck(name: "Southern Craft", description: "Southern BBQ", websiteUrl: "southerncraft.com", hoursOfOperation: "M-SUN: 12-7", cuisineType: .american, location: FTFLocation(name: "Downtown Greenville", latitude: 36.178210, longitude: -82.776820)))
                 }
             } label: {
                 Text("Register Food Truck")

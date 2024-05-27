@@ -14,17 +14,11 @@ struct FoodTruckListView: View {
     
     var body: some View {
         ZStack {
-            NavigationStack(path: $viewModel.navigationPath) {
+            NavigationStack {
                 List {
-                    ForEach(viewModel.foodTrucks, id: \.id) { foodTruck in
-                        NavigationLink(destination: FoodTruckDetailView(foodTruck: foodTruck)) {
-                            FoodTruckListCell(
-                                foodTruck: foodTruck,
-                                distanceFromUserLocation: viewModel.currentDistance(
-                                    from: foodTruck,
-                                    currentUserLocation: viewModel.locationManager.lastLocation
-                                )
-                            )
+                    ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
+                        NavigationLink(destination: FoodTruckDetailView(foodTruckId: listItem.id)) {
+                            FoodTruckListCell(listItem: listItem)
                         }
                     }
                 }

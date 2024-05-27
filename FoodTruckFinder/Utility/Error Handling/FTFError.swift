@@ -9,4 +9,8 @@ import Foundation
 
 enum FTFError: Error {
     case invalidCredentials
+    case invalidUrl
+    case invalidData
+    case invalidResponse
+    case documentNotFound
 }

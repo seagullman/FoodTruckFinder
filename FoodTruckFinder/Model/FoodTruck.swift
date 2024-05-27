@@ -6,9 +6,17 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
-struct FoodTruck: Codable, Hashable {
-    let id = UUID()
+struct FoodTruckListItem: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let distanceInMiles: Double
+}
+
+struct FoodTruck: Codable, Hashable, Identifiable {
+    @DocumentID var id: String?
     let name: String
     let description: String
     let websiteUrl: String

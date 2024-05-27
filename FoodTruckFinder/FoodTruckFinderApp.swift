@@ -23,17 +23,7 @@ struct FoodTruckFinderApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch viewRouter.currentScreen {
-            case .login:
-                LoginView()
-            case .foodTruckList:
-                FTFTabView()
-            case .createFoodTruck:
-                FTFTabView()
-            case .loading:
-                // Displayed before/while the auth state is being determined
-                FullScreenLoadingView()
-            }
+            FTFTabView()
         }
     }
 }

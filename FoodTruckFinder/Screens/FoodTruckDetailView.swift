@@ -7,21 +7,36 @@
 
 import SwiftUI
 
+// TODO: add loading state
+// TODO: layout UI
+// TODO: display menu
+// TODO: design UI
 struct FoodTruckDetailView: View {
     
-    let foodTruck: FoodTruck
+    private let viewModel = ViewModel()
+    
+    let foodTruckId: String
     
     var body: some View {
-        VStack {
-            Text(foodTruck.name)
-            Text(foodTruck.description)
-            Text(foodTruck.hoursOfOperation)
-            Text(foodTruck.websiteUrl)
-            Text(foodTruck.cuisineType.rawValue)
+        Group {
+            if let foodTruck = viewModel.foodTruck {
+                VStack {
+                    Text(foodTruck.name)
+                    Text(foodTruck.description)
+                    Text(foodTruck.hoursOfOperation)
+                    Text(foodTruck.websiteUrl)
+                    Text(foodTruck.cuisineType.description)
+                }
+            } else {
+                FullScreenLoadingView()
+            }
+        }
+        .onAppear {
+            Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) }
         }
     }
 }
 
 #Preview {
-    FoodTruckDetailView(foodTruck: FTFMockData.foodTruck)
+    FoodTruckDetailView(foodTruckId: "1234")
 }
