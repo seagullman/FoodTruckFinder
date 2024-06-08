@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ListViewToolbarView: View {
     
+    @EnvironmentObject var sharedDataModel: SharedDataModel
     @Binding var distance: Double
     
     let isLoading: Bool
     
     var body: some View {
         Menu("Filter", systemImage: "slider.vertical.3") {
-            Picker("Distance", selection: $distance) {
+            Picker("Distance", selection: $sharedDataModel.distance) {
                 Text("1 mile")
                     .tag(1.0)
                 

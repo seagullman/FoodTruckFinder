@@ -8,15 +8,18 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct FoodTruckListItem: Codable {
+struct FoodTruckListItem: Codable, Identifiable {
     let id: String
     let name: String
     let description: String
     let distanceInMiles: Double
+    let latitude: Double
+    let longitude: Double
+    let imageUrl: String?
 }
 
 struct FoodTruck: Codable, Hashable, Identifiable {
-    @DocumentID var id: String?
+    let id = UUID()
     let name: String
     let description: String
     let websiteUrl: String

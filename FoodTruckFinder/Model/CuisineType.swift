@@ -15,7 +15,12 @@ public enum CuisineType: String, Codable {
     case japanese = "japanese"
     case italian = "italian"
     
+    var description: String {
+        switch self {
+        case .american:
             return "American"
+        case .coffee:
+            return "Coffee"
         case .mexican:
             return "Mexican"
         case .asian:

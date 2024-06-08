@@ -17,16 +17,26 @@ struct FoodTruckDetailView: View {
     
     let foodTruckId: String
     
+//    var body: some View {
+//        NavigationStack {
+//            ZStack {
+//                Color.secondary
+//                    .ignoresSafeArea()
+//                
+//                .navigationTitle("Nav Bar Background")
+//                .font(.title2)
+//            }
+//            .frame(height: 250)
+//            
+//            Spacer()
+//        }
+//    }
+    
     var body: some View {
-        Group {
+        ScrollView {
             if let foodTruck = viewModel.foodTruck {
-                VStack {
-                    Text(foodTruck.name)
-                    Text(foodTruck.description)
-                    Text(foodTruck.hoursOfOperation)
-                    Text(foodTruck.websiteUrl)
-                    Text(foodTruck.cuisineType.description)
-                }
+                
+            
             } else {
                 FullScreenLoadingView()
             }

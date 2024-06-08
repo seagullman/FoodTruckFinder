@@ -38,16 +38,16 @@ extension FoodTruckListView {
          *  Calculates and returns the distance in miles from the user's last known
          *  location and the FoodTruck's location.
          */
-        func currentDistance(from foodTruck: FoodTruck, currentUserLocation: CLLocation?) -> Double {
-            guard let currentUserLocation else { return 0 }
-            
-            let foodTruckLocation = CLLocation(
-                latitude: foodTruck.location.latitude,
-                longitude: foodTruck.location.longitude
-            )
-            let distance = foodTruckLocation.distance(from: currentUserLocation).convert(from: .meters, to: .miles)
-            
-            return distance
-        }
+//        func currentDistance(from foodTruck: FoodTruck, currentUserLocation: CLLocation?) -> Double {
+//            guard let currentUserLocation else { return 0 }
+//            
+//            let foodTruckLocation = CLLocation(
+//                latitude: foodTruck.location.latitude,
+//                longitude: foodTruck.location.longitude
+//            )
+//            let distance = foodTruckLocation.distance(from: currentUserLocation).convert(from: .meters, to: .miles)
+//            
+//            return distance
+//        }
      }
 }

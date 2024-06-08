@@ -11,6 +11,7 @@ import CoreLocation
 struct FoodTruckListView: View {
     
     @State var viewModel = ViewModel()
+    @EnvironmentObject var sharedDataModel: SharedDataModel
     
     var body: some View {
         ZStack {
@@ -34,7 +35,7 @@ struct FoodTruckListView: View {
             .onChange(of: viewModel.locationManager.lastLocation) {
                 Task { await fetchFoodTrucks() }
             }
-            .onChange(of: viewModel.distance) {
+            .onChange(of: sharedDataModel.distance) {
                 Task { await fetchFoodTrucks() }
             }
             
@@ -50,7 +51,7 @@ struct FoodTruckListView: View {
     
     func fetchFoodTrucks() async {
         if let location = viewModel.locationManager.lastLocation {
-            await viewModel.fetchFoodTrucks(viewModel.distance, of: location)
+            await viewModel.fetchFoodTrucks(sharedDataModel.distance, of: location)
         }
     }
 }

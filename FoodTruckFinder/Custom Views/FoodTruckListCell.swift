@@ -13,9 +13,25 @@ struct FoodTruckListCell: View {
     
     var body: some View {
         HStack {
-            RoundedRectangle(cornerRadius: 12)
-                .foregroundColor(.secondary)
-                .frame(width: 75, height: 75)
+            if let imageUrlString = listItem.imageUrl,
+               let url = URL(string: imageUrlString) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 75, height: 75)
+                        .cornerRadius(12)
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 75, height: 75)
+                }
+
+            } else {
+                RoundedRectangle(cornerRadius: 12)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 75, height: 75)
+            }
+
 //                .padding(.leading, 20)
             VStack(alignment: .leading) {
                 Text(listItem.name)
@@ -34,5 +50,5 @@ struct FoodTruckListCell: View {
 }
 
 #Preview {
-    FoodTruckListCell(listItem: FoodTruckListItem(id: "1234", name: "Brad's Food Truck", description: "Best food south of the river!", distanceInMiles: 6.5))
+    FoodTruckListCell(listItem: FoodTruckListItem(id: "1234", name: "Brad's Food Truck", description: "Best food south of the river!", distanceInMiles: 6.5, latitude: 123, longitude: 456, imageUrl: ""))
 }

@@ -24,6 +24,7 @@
 		C71BDB6F2BA0ADA300854478 /* LoginView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB6E2BA0ADA300854478 /* LoginView+ViewModel.swift */; };
 		C71BDB722BA0B0AC00854478 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB712BA0B0AC00854478 /* Alert.swift */; };
 		C71BDB742BA0B22400854478 /* FTFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB732BA0B22400854478 /* FTFError.swift */; };
+		C72407F92C12A42000BC9B65 /* StoreHoursEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */; };
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
 		C72678F72B97C6C5009D48DE /* FoodTruckListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
@@ -45,6 +46,8 @@
 		C7957A5A2BA1400F0015DE0E /* CreateFoodTruckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7957A592BA1400F0015DE0E /* CreateFoodTruckView.swift */; };
 		C7957A5C2BA150110015DE0E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7957A5B2BA150110015DE0E /* SettingsView.swift */; };
 		C7EF91492C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF91482C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift */; };
+		C7EF914B2C0531AE0034AB8B /* MapView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF914A2C0531AE0034AB8B /* MapView+ViewModel.swift */; };
+		C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +82,7 @@
 		C71BDB6E2BA0ADA300854478 /* LoginView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginView+ViewModel.swift"; sourceTree = "<group>"; };
 		C71BDB712BA0B0AC00854478 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		C71BDB732BA0B22400854478 /* FTFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFError.swift; sourceTree = "<group>"; };
+		C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHoursEntryView.swift; sourceTree = "<group>"; };
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
 		C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckListView.swift; sourceTree = "<group>"; };
@@ -104,6 +108,8 @@
 		C7957A592BA1400F0015DE0E /* CreateFoodTruckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFoodTruckView.swift; sourceTree = "<group>"; };
 		C7957A5B2BA150110015DE0E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C7EF91482C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoodTruckDetailView+ViewModel.swift"; sourceTree = "<group>"; };
+		C7EF914A2C0531AE0034AB8B /* MapView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapView+ViewModel.swift"; sourceTree = "<group>"; };
+		C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +241,7 @@
 				C71BDB532B9AC98800854478 /* NetworkManager.swift */,
 				C71BDB702BA0B09B00854478 /* Error Handling */,
 				C71BDB5D2B9E146500854478 /* Navigation */,
+				C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -246,6 +253,7 @@
 				C71BDB6A2B9F86EC00854478 /* OwnerDashboardView+ViewModel.swift */,
 				C71BDB6E2BA0ADA300854478 /* LoginView+ViewModel.swift */,
 				C7EF91482C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift */,
+				C7EF914A2C0531AE0034AB8B /* MapView+ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -257,6 +265,7 @@
 				C726792E2B97D3AA009D48DE /* FTFTabView.swift */,
 				C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */,
 				C77985022B98FFAD00184FED /* ListViewToolbarView.swift */,
+				C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -416,6 +425,7 @@
 			files = (
 				C72679242B97C7A9009D48DE /* FTFLocation.swift in Sources */,
 				C71BDB672B9EA4D600854478 /* FileUploadManager.swift in Sources */,
+				C7EF914B2C0531AE0034AB8B /* MapView+ViewModel.swift in Sources */,
 				C71BDB6B2B9F86EC00854478 /* OwnerDashboardView+ViewModel.swift in Sources */,
 				C71BDB722BA0B0AC00854478 /* Alert.swift in Sources */,
 				C726792D2B97D245009D48DE /* FoodTruckListView+ViewModel.swift in Sources */,
@@ -442,7 +452,9 @@
 				C71BDB6D2B9FF22700854478 /* FullScreenLoadingView.swift in Sources */,
 				C71BDB632B9E1AFC00854478 /* LoginView.swift in Sources */,
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
+				C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */,
 				C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */,
+				C72407F92C12A42000BC9B65 /* StoreHoursEntryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
