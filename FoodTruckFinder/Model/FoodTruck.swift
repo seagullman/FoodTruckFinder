@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseFirestoreSwift
 
 struct FoodTruckListItem: Codable, Identifiable {
     let id: String
@@ -26,20 +25,22 @@ struct FoodTruck: Codable, Hashable, Identifiable {
     let cuisineType: CuisineType
     let location: FTFLocation
     let imageFileName: String?
-    
+    let regularHours: RegularHours?
+
     private enum CodingKeys: String, CodingKey {
-        case name, 
+        case name,
              description,
              websiteUrl,
              cuisineType,
              location,
-             imageFileName
+             imageFileName,
+             regularHours
     }
-    
+
     static func == (lhs: FoodTruck, rhs: FoodTruck) -> Bool {
         lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

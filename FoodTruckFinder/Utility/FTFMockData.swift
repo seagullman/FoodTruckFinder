@@ -19,7 +19,8 @@ public struct FTFMockData {
                                     latitude: 35.940406,
                                     longitude: -83.894841
                                 ),
-                                imageFileName: nil
+                                imageFileName: nil, 
+                                regularHours: nil
                             )
     
 //    static let foodTrucks: [FoodTruck] = [

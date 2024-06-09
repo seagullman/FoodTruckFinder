@@ -43,20 +43,51 @@ struct FoodTruckDetailView: View {
                     Text(foodTruck.cuisineType.description)
                     Text(foodTruck.imageFileName ?? "nada")
                     
-//                    Text("Monday")
-//                    Text(foodTruck.regularHours?.monday.open ?? "empty")
-//                    Text("Tuesday")
-//                    Text(foodTruck.regularHours?.tuesday.open ?? "empty")
-//                    Text("Wednesday")
-//                    Text(foodTruck.regularHours?.wednesday.open ?? "empty")
-//                    Text("Thursday")
-//                    Text(foodTruck.regularHours?.thursday.open ?? "empty")
-//                    Text("Friday")
-//                    Text(foodTruck.regularHours?.friday.open ?? "empty")
-//                    Text("Saturday")
-//                    Text(foodTruck.regularHours?.saturday.open ?? "empty")
-//                    Text("Sunday")
-//                    Text(foodTruck.regularHours?.sunday.open ?? "empty")
+                    if foodTruck.regularHours == nil {
+                        Text("REG HOURS NIL")
+                    }
+                    
+                    Text("Monday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.monday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.monday.close ?? "empty")
+                    
+                    Text("Tuesday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.tuesday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.tuesday.close ?? "empty")
+                    
+                    Text("Wednesday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.wednesday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.wednesday.close ?? "empty")
+                    
+                    Text("Thursday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.thursday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.thursday.close ?? "empty")
+                    
+                    Text("Friday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.friday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.friday.close ?? "empty")
+                    
+                    Text("Saturday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.saturday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.saturday.close ?? "empty")
+                    
+                    Text("Sunday")
+                    Text("OPEN")
+                    Text(foodTruck.regularHours?.sunday.open ?? "empty")
+                    Text("CLOSE")
+                    Text(foodTruck.regularHours?.sunday.close ?? "empty")
                 }
             
             } else {
