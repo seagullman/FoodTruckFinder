@@ -23,17 +23,17 @@ struct FoodTruck: Codable, Hashable, Identifiable {
     let name: String
     let description: String
     let websiteUrl: String
-    let hoursOfOperation: String
     let cuisineType: CuisineType
     let location: FTFLocation
+    let imageFileName: String?
     
     private enum CodingKeys: String, CodingKey {
         case name, 
              description,
              websiteUrl,
-             hoursOfOperation,
              cuisineType,
-             location
+             location,
+             imageFileName
     }
     
     static func == (lhs: FoodTruck, rhs: FoodTruck) -> Bool {

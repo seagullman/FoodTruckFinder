@@ -43,20 +43,11 @@ class NetworkManager {
         return try await makeRequest(urlString: urlString)
     }
     
-    func getFoodTruck(by documentId: String) async throws -> FoodTruck? {
-        let docRef = db.collection(foodTrucksCollectionId).document(documentId)
-        var foodTruck: FoodTruck?
+    func getFoodTruck(by documentId: String) async throws -> FoodTruck {
+        let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks/".appending(documentId)
         
-        do {
-            let document = try await docRef.getDocument()
-            if document.exists {
-                foodTruck = try document.data(as: FoodTruck.self)
-            }
-        } catch {
-            print("Error fetching food truck by documentId")
-            throw FTFError.invalidData
-        }
-        return foodTruck
+//        print("***** url: \(urlString)*****")
+        return try await makeRequest(urlString: urlString)
     }
     
     // MARK: Private functions

@@ -35,7 +35,29 @@ struct FoodTruckDetailView: View {
     var body: some View {
         ScrollView {
             if let foodTruck = viewModel.foodTruck {
-                
+                VStack {
+                    Text(foodTruck.name)
+                    Text(foodTruck.description)
+                    Text(foodTruck.location.description )
+                    Text(foodTruck.websiteUrl)
+                    Text(foodTruck.cuisineType.description)
+                    Text(foodTruck.imageFileName ?? "nada")
+                    
+//                    Text("Monday")
+//                    Text(foodTruck.regularHours?.monday.open ?? "empty")
+//                    Text("Tuesday")
+//                    Text(foodTruck.regularHours?.tuesday.open ?? "empty")
+//                    Text("Wednesday")
+//                    Text(foodTruck.regularHours?.wednesday.open ?? "empty")
+//                    Text("Thursday")
+//                    Text(foodTruck.regularHours?.thursday.open ?? "empty")
+//                    Text("Friday")
+//                    Text(foodTruck.regularHours?.friday.open ?? "empty")
+//                    Text("Saturday")
+//                    Text(foodTruck.regularHours?.saturday.open ?? "empty")
+//                    Text("Sunday")
+//                    Text(foodTruck.regularHours?.sunday.open ?? "empty")
+                }
             
             } else {
                 FullScreenLoadingView()

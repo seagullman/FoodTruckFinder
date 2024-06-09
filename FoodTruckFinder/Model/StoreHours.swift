@@ -9,13 +9,13 @@ import Foundation
 
 // Model for regular store hours
 struct RegularHours: Codable {
-    let Monday: OperatingHours
-    let Tuesday: OperatingHours
-    let Wednesday: OperatingHours
-    let Thursday: OperatingHours
-    let Friday: OperatingHours
-    let Saturday: OperatingHours
-    let Sunday: OperatingHours
+    let monday: OperatingHours
+    let tuesday: OperatingHours
+    let wednesday: OperatingHours
+    let thursday: OperatingHours
+    let friday: OperatingHours
+    let saturday: OperatingHours
+    let sunday: OperatingHours
 }
 
 // Model for operating hours of a single day
