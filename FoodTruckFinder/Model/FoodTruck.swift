@@ -24,7 +24,7 @@ struct FoodTruck: Codable, Hashable, Identifiable {
     let websiteUrl: String
     let cuisineType: CuisineType
     let location: FTFLocation
-    let imageFileName: String?
+    let imageUrl: String?
     let regularHours: RegularHours?
 
     private enum CodingKeys: String, CodingKey {
@@ -33,7 +33,7 @@ struct FoodTruck: Codable, Hashable, Identifiable {
              websiteUrl,
              cuisineType,
              location,
-             imageFileName,
+             imageUrl,
              regularHours
     }
 

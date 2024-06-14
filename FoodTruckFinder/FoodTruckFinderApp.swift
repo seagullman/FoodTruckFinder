@@ -25,6 +25,7 @@ struct FoodTruckFinderApp: App {
     var body: some Scene {
         WindowGroup {
             FTFTabView()
+                .tint(.red)
                 .environmentObject(sharedDataModel)
         }
     }

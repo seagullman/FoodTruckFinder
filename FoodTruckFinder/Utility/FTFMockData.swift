@@ -19,7 +19,7 @@ public struct FTFMockData {
                                     latitude: 35.940406,
                                     longitude: -83.894841
                                 ),
-                                imageFileName: nil, 
+                                imageUrl: nil, 
                                 regularHours: nil
                             )
     

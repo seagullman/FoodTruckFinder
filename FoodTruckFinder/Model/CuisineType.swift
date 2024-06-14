@@ -8,12 +8,15 @@
 import Foundation
 
 public enum CuisineType: String, Codable {
-    case american = "american"
-    case coffee = "coffee"
-    case mexican = "mexican"
-    case asian = "asian"
-    case japanese = "japanese"
-    case italian = "italian"
+    case american   = "american"
+    case coffee     = "coffee"
+    case mexican    = "mexican"
+    case asian      = "asian"
+    case japanese   = "japanese"
+    case italian    = "italian"
+    case bbq        = "bbq"
+    case sandwiches = "sandwiches"
+    case pizza      = "pizza"
     
     var description: String {
         switch self {
@@ -29,6 +32,12 @@ public enum CuisineType: String, Codable {
             return "Japanese"
         case .italian:
             return "Italian"
+        case .bbq:
+            return "BBQ"
+        case .sandwiches:
+            return "Sandwiches"
+        case .pizza:
+            return "Pizza"
         }
     }
 }

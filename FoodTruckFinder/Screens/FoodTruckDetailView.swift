@@ -7,96 +7,60 @@
 
 import SwiftUI
 
-// TODO: add loading state
-// TODO: layout UI
-// TODO: display menu
-// TODO: design UI
 struct FoodTruckDetailView: View {
     
     private let viewModel = ViewModel()
     
     let foodTruckId: String
     
-//    var body: some View {
-//        NavigationStack {
-//            ZStack {
-//                Color.secondary
-//                    .ignoresSafeArea()
-//                
-//                .navigationTitle("Nav Bar Background")
-//                .font(.title2)
-//            }
-//            .frame(height: 250)
-//            
-//            Spacer()
-//        }
-//    }
-    
     var body: some View {
         ScrollView {
             if let foodTruck = viewModel.foodTruck {
-                VStack {
-                    Text(foodTruck.name)
-                    Text(foodTruck.description)
-                    Text(foodTruck.location.description )
-                    Text(foodTruck.websiteUrl)
-                    Text(foodTruck.cuisineType.description)
-                    Text(foodTruck.imageFileName ?? "nada")
+                VStack(alignment: .leading) {
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .foregroundColor(.secondary)
+                            
+                            if let urlString = viewModel.foodTruck?.imageUrl,
+                               let url = URL(string: urlString) {
+                                CircleAsyncImageView(
+                                    url: url,
+                                    loadingIndicatorSize: CGSize(width: 75, height: 75),
+                                    borderColor: .white,
+                                    borderLineWidth: 4)
+                                .frame(width: 100, height: 100)
+                                .offset(CGSize(width: 20, height: geometry.size.height / 4))
+                            } else {
+                                // TODO: handle this case better
+                                Circle()
+                                    .foregroundStyle(.white)
+                                    .frame(width: 100, height: 100)
+                                    .offset(CGSize(width: 0, height: geometry.size.height / 2))
+                            }
+                        }
+                    }.frame(height: 200)
                     
-                    if foodTruck.regularHours == nil {
-                        Text("REG HOURS NIL")
-                    }
+                    VStack(alignment: .leading) {
+                        Text(foodTruck.name)
+                            .font(.title.bold())
+                        
+                        Text(foodTruck.cuisineType.description)
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                        
+                        Text(foodTruck.description)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }.padding(.leading, 10)
                     
-                    Text("Monday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.monday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.monday.close ?? "empty")
-                    
-                    Text("Tuesday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.tuesday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.tuesday.close ?? "empty")
-                    
-                    Text("Wednesday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.wednesday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.wednesday.close ?? "empty")
-                    
-                    Text("Thursday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.thursday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.thursday.close ?? "empty")
-                    
-                    Text("Friday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.friday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.friday.close ?? "empty")
-                    
-                    Text("Saturday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.saturday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.saturday.close ?? "empty")
-                    
-                    Text("Sunday")
-                    Text("OPEN")
-                    Text(foodTruck.regularHours?.sunday.open ?? "empty")
-                    Text("CLOSE")
-                    Text(foodTruck.regularHours?.sunday.close ?? "empty")
+                        .navigationBarTitleDisplayMode(.inline)
                 }
-            
             } else {
-                FullScreenLoadingView()
+//                FullScreenLoadingView()
             }
         }
-        .onAppear {
-            Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) }
-        }
+        .onAppear { Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) } }
     }
 }
 
