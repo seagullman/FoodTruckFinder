@@ -26,10 +26,21 @@ struct FoodTruckDetailView: View {
                                 Marker(foodTruck.name, coordinate: CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude))
                             }
                             .opacity(0.5)
-                            .disabled(true)
+//                            .disabled(true)
                             .onTapGesture {
-                                // TODO: handle when user taps on map
-                                print("MAP TAPPED")
+                                
+                                for menu in foodTruck.menu {
+                                    print(menu.category)
+                                    print("========================")
+                                    for item in menu.items {
+                                        print(item.name)
+                                        print(item.description)
+                                        print(item.price)
+                                        print(item.isGlutenFree)
+                                        print(item.isVegetarian)
+                                        print()
+                                    }
+                                }
                             }
                             
                             if let urlString = viewModel.foodTruck?.imageUrl,

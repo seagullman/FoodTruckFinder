@@ -26,6 +26,7 @@ struct FoodTruck: Codable, Hashable, Identifiable {
     let location: FTFLocation
     let imageUrl: String?
     let regularHours: RegularHours?
+    let menu: [MenuCategory]
 
     private enum CodingKeys: String, CodingKey {
         case name,
@@ -34,7 +35,8 @@ struct FoodTruck: Codable, Hashable, Identifiable {
              cuisineType,
              location,
              imageUrl,
-             regularHours
+             regularHours,
+             menu
     }
 
     static func == (lhs: FoodTruck, rhs: FoodTruck) -> Bool {
