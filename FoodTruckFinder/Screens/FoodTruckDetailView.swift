@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct FoodTruckDetailView: View {
     
-    private let viewModel = ViewModel()
-    
     let foodTruckId: String
+    
+    @State private var cameraPosition: MapCameraPosition = .automatic
+    
+    private let viewModel = ViewModel()
     
     var body: some View {
         ScrollView {
@@ -19,8 +22,15 @@ struct FoodTruckDetailView: View {
                 VStack(alignment: .leading) {
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
-                            Rectangle()
-                                .foregroundColor(.secondary)
+                            Map(position: $cameraPosition) {
+                                Marker(foodTruck.name, coordinate: CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude))
+                            }
+                            .opacity(0.5)
+                            .disabled(true)
+                            .onTapGesture {
+                                // TODO: handle when user taps on map
+                                print("MAP TAPPED")
+                            }
                             
                             if let urlString = viewModel.foodTruck?.imageUrl,
                                let url = URL(string: urlString) {
@@ -60,7 +70,17 @@ struct FoodTruckDetailView: View {
 //                FullScreenLoadingView()
             }
         }
-        .onAppear { Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) } }
+        .onAppear {
+            Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) }
+        }
+        .onChange(of: viewModel.foodTruck) { oldValue, newValue in
+            if let foodTruck = viewModel.foodTruck {
+                let location = CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude)
+                let locationSpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                let region = MKCoordinateRegion(center: location, span: locationSpan)
+                cameraPosition = .region(region)
+            }
+        }
     }
 }
 
