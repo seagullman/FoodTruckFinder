@@ -20,43 +20,14 @@ class NetworkManager {
     
     private init() {}
     
-    func getAllFoodTrucks() async throws -> Set<FoodTruck> {
-        var foodTrucks: Set<FoodTruck> = Set()
-        
-        do {
-          let snapshot = try await db.collection(foodTrucksCollectionId).getDocuments()
-          for document in snapshot.documents {
-              do {
-                  let foodTruck = try document.data(as: FoodTruck.self)
-                  foodTrucks.insert(foodTruck)
-              }
-          }
-        } catch {
-          print("Error getting documents: \(error)")
-        }
-        
-        return foodTrucks
-    }
-    
     func getFoodTrucks(within miles: Double, of location: CLLocation) async throws -> [FoodTruckListItem] {
         let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&distance=\(miles)"
         return try await makeRequest(urlString: urlString)
     }
     
-    func getFoodTruck(by documentId: String) async throws -> FoodTruck? {
-        let docRef = db.collection(foodTrucksCollectionId).document(documentId)
-        var foodTruck: FoodTruck?
-        
-        do {
-            let document = try await docRef.getDocument()
-            if document.exists {
-                foodTruck = try document.data(as: FoodTruck.self)
-            }
-        } catch {
-            print("Error fetching food truck by documentId")
-            throw FTFError.invalidData
-        }
-        return foodTruck
+    func getFoodTruck(by documentId: String) async throws -> FoodTruck {
+        let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks/".appending(documentId)
+        return try await makeRequest(urlString: urlString)
     }
     
     // MARK: Private functions
@@ -118,36 +89,3 @@ class NetworkManager {
     
 }
 
-//let id = UUID()
-//let name: String
-//let description: String
-//let websiteUrl: String
-//let hoursOfOperation: String
-//let cuisineType: CuisineType
-//let location: FTFLocation
-
-
-
-
-
-//class AppDelegate: NSObject, UIApplicationDelegate {
-//  func application(_ application: UIApplication,
-//                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//    FirebaseApp.configure()
-//    return true
-//  }
-//}
-//
-//@main
-//struct YourApp: App {
-//  // register app delegate for Firebase setup
-//  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-//
-//  var body: some Scene {
-//    WindowGroup {
-//      NavigationView {
-//        ContentView()
-//      }
-//    }
-//  }
-//}

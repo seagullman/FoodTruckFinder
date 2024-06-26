@@ -24,7 +24,8 @@
 		C71BDB6F2BA0ADA300854478 /* LoginView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB6E2BA0ADA300854478 /* LoginView+ViewModel.swift */; };
 		C71BDB722BA0B0AC00854478 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB712BA0B0AC00854478 /* Alert.swift */; };
 		C71BDB742BA0B22400854478 /* FTFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB732BA0B22400854478 /* FTFError.swift */; };
-		C72407F92C12A42000BC9B65 /* StoreHoursEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */; };
+		C71F91B72C151966006026BD /* StoreHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F91B62C151966006026BD /* StoreHours.swift */; };
+		C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F91B82C178D72006026BD /* CircleImageView.swift */; };
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
 		C72678F72B97C6C5009D48DE /* FoodTruckListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
@@ -82,7 +83,8 @@
 		C71BDB6E2BA0ADA300854478 /* LoginView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginView+ViewModel.swift"; sourceTree = "<group>"; };
 		C71BDB712BA0B0AC00854478 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		C71BDB732BA0B22400854478 /* FTFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFError.swift; sourceTree = "<group>"; };
-		C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHoursEntryView.swift; sourceTree = "<group>"; };
+		C71F91B62C151966006026BD /* StoreHours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHours.swift; sourceTree = "<group>"; };
+		C71F91B82C178D72006026BD /* CircleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
 		C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckListView.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				C726791F2B97C6F3009D48DE /* FoodTruck.swift */,
 				C72679232B97C7A9009D48DE /* FTFLocation.swift */,
 				C71BDB602B9E173800854478 /* User.swift */,
+				C71F91B62C151966006026BD /* StoreHours.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -265,7 +268,7 @@
 				C726792E2B97D3AA009D48DE /* FTFTabView.swift */,
 				C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */,
 				C77985022B98FFAD00184FED /* ListViewToolbarView.swift */,
-				C72407F82C12A42000BC9B65 /* StoreHoursEntryView.swift */,
+				C71F91B82C178D72006026BD /* CircleImageView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -276,9 +279,9 @@
 				C7957A592BA1400F0015DE0E /* CreateFoodTruckView.swift */,
 				C71BDB642B9E56CC00854478 /* FoodTruckDetailView.swift */,
 				C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */,
+				C71BDB622B9E1AFC00854478 /* LoginView.swift */,
 				C72679312B97D3EE009D48DE /* MapView.swift */,
 				C71BDB5B2B9B7EE900854478 /* OwnerDashboardView.swift */,
-				C71BDB622B9E1AFC00854478 /* LoginView.swift */,
 				C7957A5B2BA150110015DE0E /* SettingsView.swift */,
 			);
 			path = Screens;
@@ -432,6 +435,7 @@
 				C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */,
 				C71BDB652B9E56CC00854478 /* FoodTruckDetailView.swift in Sources */,
 				C726792B2B97D200009D48DE /* FoodTruckListCell.swift in Sources */,
+				C71F91B72C151966006026BD /* StoreHours.swift in Sources */,
 				C71BDB6F2BA0ADA300854478 /* LoginView+ViewModel.swift in Sources */,
 				C726792F2B97D3AA009D48DE /* FTFTabView.swift in Sources */,
 				C77985032B98FFAD00184FED /* ListViewToolbarView.swift in Sources */,
@@ -444,6 +448,7 @@
 				C71BDB742BA0B22400854478 /* FTFError.swift in Sources */,
 				C71BDB5C2B9B7EE900854478 /* OwnerDashboardView.swift in Sources */,
 				C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */,
+				C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */,
 				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
 				C71BDB5F2B9E147D00854478 /* ViewRouter.swift in Sources */,
 				C7957A5C2BA150110015DE0E /* SettingsView.swift in Sources */,
@@ -454,7 +459,6 @@
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
 				C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */,
 				C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */,
-				C72407F92C12A42000BC9B65 /* StoreHoursEntryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

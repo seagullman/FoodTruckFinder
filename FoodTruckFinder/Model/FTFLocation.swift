@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 
 public struct FTFLocation: Codable {
-    let name: String
+    let description: String
     let latitude: Double
     let longitude: Double
 }
