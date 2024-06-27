@@ -26,22 +26,22 @@ struct FoodTruckDetailView: View {
                                 Marker(foodTruck.name, coordinate: CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude))
                             }
                             .opacity(0.5)
-//                            .disabled(true)
-                            .onTapGesture {
-                                
-                                for menu in foodTruck.menu {
-                                    print(menu.category)
-                                    print("========================")
-                                    for item in menu.items {
-                                        print(item.name)
-                                        print(item.description)
-                                        print(item.price)
-                                        print(item.isGlutenFree)
-                                        print(item.isVegetarian)
-                                        print()
-                                    }
-                                }
-                            }
+                            .disabled(true)
+//                            .onTapGesture {
+//                                
+//                                for menu in foodTruck.menu {
+//                                    print(menu.category)
+//                                    print("========================")
+//                                    for item in menu.items {
+//                                        print(item.name)
+//                                        print(item.description)
+//                                        print(item.price)
+//                                        print(item.isGlutenFree)
+//                                        print(item.isVegetarian)
+//                                        print()
+//                                    }
+//                                }
+//                            }
                             
                             if let urlString = viewModel.foodTruck?.imageUrl,
                                let url = URL(string: urlString) {
@@ -73,7 +73,15 @@ struct FoodTruckDetailView: View {
                         Text(foodTruck.description)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                    }.padding(.leading, 10)
+                        
+//                        Text("Menu")
+//                            .font(.title.bold())
+//                            .padding([.top, .bottom], 30)
+                        
+                        MenuView(menuCategories: foodTruck.menu)
+                            .padding(.top, 20)
+                        
+                    }.padding(10)
                     
                         .navigationBarTitleDisplayMode(.inline)
                 }

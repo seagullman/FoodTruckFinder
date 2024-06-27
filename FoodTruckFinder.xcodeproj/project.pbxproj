@@ -47,6 +47,8 @@
 		C7957A5C2BA150110015DE0E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7957A5B2BA150110015DE0E /* SettingsView.swift */; };
 		C7C920C22C2CB0C500C8D101 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C920C12C2CB0C500C8D101 /* Menu.swift */; };
 		C7C920C42C2CB41300C8D101 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C920C32C2CB41300C8D101 /* MenuView.swift */; };
+		C7C920C62C2CB4FF00C8D101 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C920C52C2CB4FF00C8D101 /* MenuItemView.swift */; };
+		C7C920C82C2CB92500C8D101 /* MenuCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C920C72C2CB92500C8D101 /* MenuCategoryView.swift */; };
 		C7EF91492C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF91482C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift */; };
 		C7EF914B2C0531AE0034AB8B /* MapView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF914A2C0531AE0034AB8B /* MapView+ViewModel.swift */; };
 		C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */; };
@@ -111,6 +113,8 @@
 		C7957A5B2BA150110015DE0E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C7C920C12C2CB0C500C8D101 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		C7C920C32C2CB41300C8D101 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		C7C920C52C2CB4FF00C8D101 /* MenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
+		C7C920C72C2CB92500C8D101 /* MenuCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCategoryView.swift; sourceTree = "<group>"; };
 		C7EF91482C04FB890034AB8B /* FoodTruckDetailView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoodTruckDetailView+ViewModel.swift"; sourceTree = "<group>"; };
 		C7EF914A2C0531AE0034AB8B /* MapView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapView+ViewModel.swift"; sourceTree = "<group>"; };
 		C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataModel.swift; sourceTree = "<group>"; };
@@ -271,7 +275,9 @@
 				C726792E2B97D3AA009D48DE /* FTFTabView.swift */,
 				C71BDB6C2B9FF22700854478 /* FullScreenLoadingView.swift */,
 				C77985022B98FFAD00184FED /* ListViewToolbarView.swift */,
+				C7C920C52C2CB4FF00C8D101 /* MenuItemView.swift */,
 				C7C920C32C2CB41300C8D101 /* MenuView.swift */,
+				C7C920C72C2CB92500C8D101 /* MenuCategoryView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -433,6 +439,7 @@
 				C71BDB672B9EA4D600854478 /* FileUploadManager.swift in Sources */,
 				C7EF914B2C0531AE0034AB8B /* MapView+ViewModel.swift in Sources */,
 				C71BDB6B2B9F86EC00854478 /* OwnerDashboardView+ViewModel.swift in Sources */,
+				C7C920C62C2CB4FF00C8D101 /* MenuItemView.swift in Sources */,
 				C71BDB722BA0B0AC00854478 /* Alert.swift in Sources */,
 				C726792D2B97D245009D48DE /* FoodTruckListView+ViewModel.swift in Sources */,
 				C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */,
@@ -463,6 +470,7 @@
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
 				C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */,
 				C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */,
+				C7C920C82C2CB92500C8D101 /* MenuCategoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,11 +638,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FoodTruckFinder/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is needed in order to find food trucks in your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -660,11 +672,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FoodTruckFinder/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is needed in order to find food trucks in your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

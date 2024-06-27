@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct MenuView: View {
+    
+    let menuCategories: [MenuCategory]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ForEach(menuCategories) { category in
+            MenuCategoryView(menuCategory: category)
+        }
     }
 }
 
 #Preview {
-    MenuView()
+    MenuView(
+        menuCategories: [MenuCategory(category: "Appetizers",
+                            items: [
+                                MenuItem(
+                                    name: "Cheese Sticks",
+                                    description: "Lightly breaded and fried until golden brown. Served with ranch",
+                                    price: 6.99,
+                                    isVegetarian: true,
+                                    isGlutenFree: false
+                                )])])
 }
