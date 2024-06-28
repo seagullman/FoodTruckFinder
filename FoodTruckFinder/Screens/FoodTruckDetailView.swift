@@ -11,6 +11,7 @@ import MapKit
 struct FoodTruckDetailView: View {
     
     let foodTruckId: String
+    let distanceInMiles: Double
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     
@@ -27,10 +28,6 @@ struct FoodTruckDetailView: View {
                             }
                             .opacity(0.5)
                             .disabled(true)
-                            .onTapGesture {
-                                // TODO: handle when user taps on map
-                                print("MAP TAPPED")
-                            }
                             
                             if let urlString = viewModel.foodTruck?.imageUrl,
                                let url = URL(string: urlString) {
@@ -52,8 +49,16 @@ struct FoodTruckDetailView: View {
                     }.frame(height: 200)
                     
                     VStack(alignment: .leading) {
-                        Text(foodTruck.name)
-                            .font(.title.bold())
+                        HStack {
+                            Text(foodTruck.name)
+                                .font(.title.bold())
+                            
+                            Spacer()
+                            
+                            Text(String(format: "%.1f mi", distanceInMiles))
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                         
                         Text(foodTruck.cuisineType.description)
                             .font(.subheadline)
@@ -62,7 +67,11 @@ struct FoodTruckDetailView: View {
                         Text(foodTruck.description)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                    }.padding(.leading, 10)
+
+                        MenuView(menuCategories: foodTruck.menu)
+                            .padding(.top, 20)
+                        
+                    }.padding(10)
                     
                         .navigationBarTitleDisplayMode(.inline)
                 }
@@ -85,5 +94,5 @@ struct FoodTruckDetailView: View {
 }
 
 #Preview {
-    FoodTruckDetailView(foodTruckId: "1234")
+    FoodTruckDetailView(foodTruckId: "1234", distanceInMiles: 12.5)
 }

@@ -12,7 +12,7 @@ struct FTFTabView: View {
     var body: some View {
         TabView {
             FoodTruckListView()
-                .tabItem { Label("List", systemImage: "list.bullet") }
+                .tabItem { Label("Food Trucks", systemImage: "truck.box") }
             MapView()
                 .tabItem { Label("Map", systemImage: "mappin.and.ellipse") }
             SettingsView()
