@@ -100,7 +100,7 @@ struct RegistrationView: View {
                     Text("Already have an account?")
                     Text("Sign in")
                         .fontWeight(.bold)
-                        .font(.system(size: 14))
+                        .font(.system(size: 16))
                 }
             })
         }

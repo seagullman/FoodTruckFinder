@@ -42,6 +42,19 @@ struct LoginView: View {
                               title: "Password",
                               placeholder: "Enter your password",
                               isSecureField: true)
+                    
+                    HStack {
+                        Spacer()
+                        
+                        NavigationLink {
+                            ResetPasswordView()
+                                .navigationBarBackButtonHidden()
+                        } label: {
+                            Text("Forgot Password?")
+                                .fontWeight(.bold)
+                                .font(.system(size: 14))
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 
@@ -76,7 +89,7 @@ struct LoginView: View {
                         Text("Don't have an account?")
                         Text("Sign up")
                             .fontWeight(.bold)
-                            .font(.system(size: 14))
+                            .font(.system(size: 16))
                     }
                 }
             }

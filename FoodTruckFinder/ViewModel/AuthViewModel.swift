@@ -54,7 +54,7 @@ class AuthViewModel: ObservableObject {
             self.userSession = nil
             self.currentUser = nil
         } catch {
-            print("DEBUG: Failed to sign out with error \(error.localizedDescription)")
+            print("DEBUG: Failed to sign out with error: \(error.localizedDescription)")
         }
     }
     
@@ -62,6 +62,14 @@ class AuthViewModel: ObservableObject {
         Auth.auth().currentUser?.delete()
         self.userSession = nil
         self.currentUser = nil
+    }
+    
+    func resetPassword(withEmail email: String) async {
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+        } catch {
+            print("DEBUG: Failed to send password reset with error: \(error.localizedDescription)")
+        }
     }
     
     func fetchUser() async {
