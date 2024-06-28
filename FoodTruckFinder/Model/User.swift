@@ -15,15 +15,6 @@ enum UserType: String, Codable {
 struct User: Codable {
     var id: String
     var type: UserType
-    var email: String? = nil
-    var phoneNumber: String? = nil
-    var foodTruckId: String? = nil
-    
-    private enum CodingKeys: String, CodingKey {
-        case id,
-             type,
-             email,
-             phoneNumber,
-             foodTruckId
-    }
+    var email: String
+    var fullName: String
 }

@@ -8,36 +8,17 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
-        NavigationStack {
-            NavigationLink {
-                LoginView()
-            } label: {
-                Text("Sign In")
-            }
-
-            VStack {
-                Text("Settings View")
-                
-                if FTFAuthManager.shared.authState == .authenticated {
-                    Button {
-                        Task {
-                            do {
-                                 try FTFAuthManager.shared.signOut()
-                            } catch {
-                                print("***** Error signing user out")
-                            }
-                        }
-                    } label: {
-                        Text("Sign Out")
-                    }
-                } else {
-                    Button("Sign In") {
-                        LoginView()
-                    }
-                }
-            }
+        Button {
+            authViewModel.signOut()
+        } label: {
+            Text("Sign out")
+                .font(.title)
         }
+
     }
 }
 
