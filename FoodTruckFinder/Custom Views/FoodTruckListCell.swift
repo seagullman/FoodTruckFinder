@@ -32,7 +32,6 @@ struct FoodTruckListCell: View {
                     .frame(width: 75, height: 75)
             }
 
-//                .padding(.leading, 20)
             VStack(alignment: .leading) {
                 Text(listItem.name)
                 Text(listItem.description)

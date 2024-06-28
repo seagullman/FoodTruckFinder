@@ -11,6 +11,7 @@ import MapKit
 struct FoodTruckDetailView: View {
     
     let foodTruckId: String
+    let distanceInMiles: Double
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     
@@ -27,21 +28,6 @@ struct FoodTruckDetailView: View {
                             }
                             .opacity(0.5)
                             .disabled(true)
-//                            .onTapGesture {
-//                                
-//                                for menu in foodTruck.menu {
-//                                    print(menu.category)
-//                                    print("========================")
-//                                    for item in menu.items {
-//                                        print(item.name)
-//                                        print(item.description)
-//                                        print(item.price)
-//                                        print(item.isGlutenFree)
-//                                        print(item.isVegetarian)
-//                                        print()
-//                                    }
-//                                }
-//                            }
                             
                             if let urlString = viewModel.foodTruck?.imageUrl,
                                let url = URL(string: urlString) {
@@ -63,8 +49,16 @@ struct FoodTruckDetailView: View {
                     }.frame(height: 200)
                     
                     VStack(alignment: .leading) {
-                        Text(foodTruck.name)
-                            .font(.title.bold())
+                        HStack {
+                            Text(foodTruck.name)
+                                .font(.title.bold())
+                            
+                            Spacer()
+                            
+                            Text(String(format: "%.1f mi", distanceInMiles))
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                         
                         Text(foodTruck.cuisineType.description)
                             .font(.subheadline)
@@ -73,11 +67,7 @@ struct FoodTruckDetailView: View {
                         Text(foodTruck.description)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        
-//                        Text("Menu")
-//                            .font(.title.bold())
-//                            .padding([.top, .bottom], 30)
-                        
+
                         MenuView(menuCategories: foodTruck.menu)
                             .padding(.top, 20)
                         
@@ -104,5 +94,5 @@ struct FoodTruckDetailView: View {
 }
 
 #Preview {
-    FoodTruckDetailView(foodTruckId: "1234")
+    FoodTruckDetailView(foodTruckId: "1234", distanceInMiles: 12.5)
 }

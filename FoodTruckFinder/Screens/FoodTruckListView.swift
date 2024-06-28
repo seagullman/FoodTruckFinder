@@ -18,7 +18,7 @@ struct FoodTruckListView: View {
             NavigationStack {
                 List {
                     ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
-                        NavigationLink(destination: FoodTruckDetailView(foodTruckId: listItem.id)) {
+                        NavigationLink(destination: FoodTruckDetailView(foodTruckId: listItem.id, distanceInMiles: listItem.distanceInMiles)) {
                             FoodTruckListCell(listItem: listItem)
                         }
                     }
