@@ -25,7 +25,7 @@ struct FoodTruckFinderApp: App {
                     .tint(.red)
                     .environmentObject(sharedDataModel)
             } else {
-                RegistrationView() // Make this LoginView and have LoginView have a link to create an account
+                LoginView()
             }
         }.environmentObject(authViewModel)
     }
