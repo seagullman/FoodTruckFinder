@@ -94,22 +94,6 @@ struct LoginView: View {
                 }
             }
         }
-        
-//        Text("Login View")
-//        Form {
-//            TextField("Email", text: $email)
-//            TextField("Password", text: $password)
-//                .textContentType(.password)
-//                .autocorrectionDisabled()
-//                .autocapitalization(.none)
-//            Button {
-//                Task { try await authViewModel.signIn(withEmail: email, password: password) }
-//            } label: {
-//                Text("Login")
-//            }
-//            .disabled(!formIsValid)
-//            .opacity(formIsValid ? 1.0 : 0.5)
-//        }
     }
 }
 

@@ -17,7 +17,6 @@ struct RegistrationView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        
         VStack {
             Image("food-truck-clipart")
                 .resizable()

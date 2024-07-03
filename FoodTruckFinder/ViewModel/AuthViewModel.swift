@@ -79,7 +79,5 @@ class AuthViewModel: ObservableObject {
         else { return }
         
         self.currentUser = try? snapshot.data(as: User.self)
-        
-        print("DEBUG: Current user is: \(String(describing: self.currentUser))")
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InputView: View {
     @Binding var text: String
+    
     let title: String
     let placeholder: String
     var keyboardType: UIKeyboardType = .default
@@ -37,5 +38,8 @@ struct InputView: View {
 }
 
 #Preview {
-    InputView(text: .constant(""), title: "Email Address", placeholder: "name@example.com", keyboardType: .emailAddress)
+    InputView(text: .constant(""), 
+              title: "Email Address",
+              placeholder: "name@example.com",
+              keyboardType: .emailAddress)
 }
