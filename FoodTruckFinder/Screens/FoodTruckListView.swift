@@ -10,7 +10,10 @@ import CoreLocation
 
 struct FoodTruckListView: View {
     
-    @State var viewModel = ViewModel()
+    @State private var viewModel = ViewModel()
+    @State private var currentTask: Task<Void, Never>?
+    @State private var isInitialLoad = true
+    
     @EnvironmentObject var sharedDataModel: SharedDataModel
     
     var body: some View {
@@ -33,10 +36,16 @@ struct FoodTruckListView: View {
                 }
             }
             .onChange(of: viewModel.locationManager.lastLocation) {
-                Task { await fetchFoodTrucks() }
+                Task { runFetchFoodTrucksTask() }
             }
             .onChange(of: sharedDataModel.distance) {
-                Task { await fetchFoodTrucks() }
+                Task { runFetchFoodTrucksTask() }
+            }
+            .onAppear {
+                if isInitialLoad {
+                    Task { runFetchFoodTrucksTask() }
+                    self.isInitialLoad = false
+                }
             }
             
             if viewModel.isLoading {
@@ -49,7 +58,12 @@ struct FoodTruckListView: View {
         }
     }
     
-    func fetchFoodTrucks() async {
+    private func runFetchFoodTrucksTask() {
+            currentTask?.cancel()
+            currentTask = Task { await fetchFoodTrucks() }
+        }
+    
+    private func fetchFoodTrucks() async {
         if let location = viewModel.locationManager.lastLocation {
             await viewModel.fetchFoodTrucks(sharedDataModel.distance, of: location)
         }

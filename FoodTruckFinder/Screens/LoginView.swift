@@ -17,80 +17,90 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                // image
-                Image("food-truck-clipart")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-                    .padding(.vertical, 32)
-                
-                // form fields
-                
-                VStack(spacing: 24) {
-                    // email
+            ZStack {
+                VStack {
+                    // image
+                    Image("food-truck-clipart")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200)
+                        .padding(.vertical, 32)
                     
-                    InputView(text: $email, 
-                              title: "Email Address",
-                              placeholder: "name@example.com",
-                              keyboardType: .emailAddress)
-                    .autocapitalization(.none)
+                    // form fields
                     
-                    // password
-                    
-                    InputView(text: $password, 
-                              title: "Password",
-                              placeholder: "Enter your password",
-                              isSecureField: true)
-                    
-                    HStack {
-                        Spacer()
+                    VStack(spacing: 24) {
+                        // email
                         
-                        NavigationLink {
-                            ResetPasswordView()
-                                .navigationBarBackButtonHidden()
-                        } label: {
-                            Text("Forgot Password?")
+                        InputView(text: $email,
+                                  title: "Email Address",
+                                  placeholder: "name@example.com",
+                                  keyboardType: .emailAddress)
+                        .autocapitalization(.none)
+                        
+                        // password
+                        
+                        InputView(text: $password,
+                                  title: "Password",
+                                  placeholder: "Enter your password",
+                                  isSecureField: true)
+                        
+                        HStack {
+                            Spacer()
+                            
+                            NavigationLink {
+                                ResetPasswordView()
+                                    .navigationBarBackButtonHidden()
+                            } label: {
+                                Text("Forgot Password?")
+                                    .fontWeight(.bold)
+                                    .font(.system(size: 14))
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    // sign in buttton
+                    
+                    Button(action: {
+                        Task { try await authViewModel.signIn(withEmail: email, password: password) }
+                    }, label: {
+                        HStack {
+                            Text("SIGN IN")
+                                .fontWeight(.semibold)
+                            Image(systemName: "arrow.right")
+                        }
+                        .foregroundStyle(.white)
+                        .frame(width: UIScreen.main.bounds.width - 32, height: 48) // TODO: fix UISCreen.main deprecation
+                    })
+                    .disabled(!formIsValid)
+                    .background(Color(.systemBlue))
+                    .opacity(formIsValid ? 1.0 : 0.5)
+                    .cornerRadius(10)
+                    .padding(.top, 24)
+                    
+                    Spacer()
+                    
+                    // sign up button
+                    
+                    NavigationLink {
+                        RegistrationView()
+                            .navigationBarBackButtonHidden()
+                    } label: {
+                        HStack(spacing: 3) {
+                            Text("Don't have an account?")
+                            Text("Sign up")
                                 .fontWeight(.bold)
-                                .font(.system(size: 14))
+                                .font(.system(size: 16))
                         }
                     }
                 }
-                .padding(.horizontal)
+                .alert(isPresented: $authViewModel.showAlert) {
+                    Alert(title: Text("Error"),
+                          message: Text(authViewModel.authError?.description ?? ""))
+                }
                 
-                // sign in buttton
-                
-                Button(action: {
-                    Task { try await authViewModel.signIn(withEmail: email, password: password) }
-                }, label: {
-                    HStack {
-                        Text("SIGN IN")
-                            .fontWeight(.semibold)
-                        Image(systemName: "arrow.right")
-                    }
-                    .foregroundStyle(.white)
-                    .frame(width: UIScreen.main.bounds.width - 32, height: 48) // TODO: fix UISCreen.main deprecation
-                })
-                .disabled(!formIsValid)
-                .background(Color(.systemBlue))
-                .opacity(formIsValid ? 1.0 : 0.5)
-                .cornerRadius(10)
-                .padding(.top, 24)
-                
-                Spacer()
-                
-                // sign up button
-                
-                NavigationLink {
-                    RegistrationView()
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    HStack(spacing: 3) {
-                        Text("Don't have an account?")
-                        Text("Sign up")
-                            .fontWeight(.bold)
-                            .font(.system(size: 16))
-                    }
+                if authViewModel.isLoading {
+                    CustomProgressView()
                 }
             }
         }
