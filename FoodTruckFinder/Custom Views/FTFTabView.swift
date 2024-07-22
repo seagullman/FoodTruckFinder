@@ -17,11 +17,6 @@ struct FTFTabView: View {
                 .tabItem { Label("Map", systemImage: "mappin.and.ellipse") }
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
-            
-            if FTFAuthManager.shared.authState == .authenticated {
-                OwnerDashboardView()
-                    .tabItem { Label("Dashboard", systemImage: "menucard") }
-            }
         }
     }
 }

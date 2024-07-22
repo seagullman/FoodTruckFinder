@@ -12,18 +12,21 @@ import FirebaseCore
 struct FoodTruckFinderApp: App {
     
     @StateObject private var sharedDataModel = SharedDataModel()
-    var viewRouter: ViewRouter
+    @StateObject private var authViewModel = AuthViewModel()
     
     init() {
         FirebaseApp.configure()
-        viewRouter = ViewRouter()
     }
     
     var body: some Scene {
         WindowGroup {
-            FTFTabView()
-                .tint(.red)
-                .environmentObject(sharedDataModel)
-        }
+            if authViewModel.userSession != nil {
+                FTFTabView()
+                    .tint(.red)
+                    .environmentObject(sharedDataModel)
+            } else {
+                LoginView()
+            }
+        }.environmentObject(authViewModel)
     }
 }

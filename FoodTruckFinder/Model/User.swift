@@ -15,15 +15,15 @@ enum UserType: String, Codable {
 struct User: Codable {
     var id: String
     var type: UserType
-    var email: String? = nil
-    var phoneNumber: String? = nil
-    var foodTruckId: String? = nil
+    var email: String
+    var fullName: String
     
-    private enum CodingKeys: String, CodingKey {
-        case id,
-             type,
-             email,
-             phoneNumber,
-             foodTruckId
+    var initials: String {
+        let formatter = PersonNameComponentsFormatter()
+        if let components = formatter.personNameComponents(from: fullName) {
+            formatter.style = .abbreviated
+            return formatter.string(from: components)
+        }
+        return ""
     }
 }
