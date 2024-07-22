@@ -23,13 +23,24 @@ struct FoodTruckDetailView: View {
                 VStack(alignment: .leading) {
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
+                            
+                            // MARK: Header map image
+                            
                             Map(position: $cameraPosition) {
-                                Marker(foodTruck.name, coordinate: CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude))
+                                Marker(
+                                    foodTruck.name,
+                                    coordinate: CLLocationCoordinate2D(
+                                        latitude: foodTruck.location.latitude,
+                                        longitude: foodTruck.location.longitude
+                                    )
+                                )
                             }
                             .opacity(0.5)
                             .disabled(true)
                             
-                            if let urlString = viewModel.foodTruck?.imageUrl,
+                            // MARK: Food truck circle image
+                            
+                            if let urlString = foodTruck.imageUrl,
                                let url = URL(string: urlString) {
                                 CircleAsyncImageView(
                                     url: url,
@@ -48,32 +59,51 @@ struct FoodTruckDetailView: View {
                         }
                     }.frame(height: 200)
                     
+                    // MARK: Food truck info
+                    
                     VStack(alignment: .leading) {
                         HStack {
+                            // MARK: Name
+                            
                             Text(foodTruck.name)
                                 .font(.title.bold())
                             
                             Spacer()
+                            
+                            // MARK: Distance
                             
                             Text(String(format: "%.1f mi", distanceInMiles))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
                         
+                        // MARK: Cuisine type
+                        
                         Text(foodTruck.cuisineType.description)
                             .font(.subheadline)
                             .foregroundStyle(.primary)
                         
+                        // MARK: Description
+                        
                         Text(foodTruck.description)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                        
+                        // MARK: Location description
+                        
+                        HStack {
+                            Text("Location:")
+                            Text(foodTruck.location.description)
+                        }.font(.subheadline)
 
+                        // MARK: Menu
+                        
                         MenuView(menuCategories: foodTruck.menu)
                             .padding(.top, 20)
                         
-                    }.padding(10)
-                    
-                        .navigationBarTitleDisplayMode(.inline)
+                    }
+                    .padding(10)
+                    .navigationBarTitleDisplayMode(.inline)
                 }
             } else {
 //                FullScreenLoadingView()
@@ -83,6 +113,7 @@ struct FoodTruckDetailView: View {
             Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) }
         }
         .onChange(of: viewModel.foodTruck) { oldValue, newValue in
+            // Center the map pin in the center of the header
             if let foodTruck = viewModel.foodTruck {
                 let location = CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude)
                 let locationSpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
