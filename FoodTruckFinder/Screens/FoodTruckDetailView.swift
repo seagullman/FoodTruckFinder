@@ -16,6 +16,7 @@ struct FoodTruckDetailView: View {
     @State private var cameraPosition: MapCameraPosition = .automatic
     
     private let viewModel = ViewModel()
+    @Binding var navigationPath: [FTNavigationPath]
     
     var body: some View {
         ScrollView {
@@ -23,6 +24,7 @@ struct FoodTruckDetailView: View {
                 FoodTruckDetailHeaderView(
                     foodTruck: foodTruck,
                     distanceInMiles: distanceInMiles,
+                    navigationPath: $navigationPath,
                     cameraPosition: $cameraPosition)
             } else {
                 FullScreenLoadingView()
@@ -38,9 +40,10 @@ struct FoodTruckDetailView: View {
                 cameraPosition = .region(region)
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    FoodTruckDetailView(foodTruckId: "1234", distanceInMiles: 12.5)
+    FoodTruckDetailView(foodTruckId: "1234", distanceInMiles: 12.5, navigationPath: .constant([]))
 }

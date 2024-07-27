@@ -8,19 +8,29 @@
 import SwiftUI
 import CoreLocation
 
+enum FTNavigationPath: Hashable {
+    case foodTruckDetail(id: String, distanceInMiles: Double)
+    case locationDetail(foodTruckName: String, location: FTFLocation, closingTimeDateString: String)
+}
+
 struct FoodTruckListView: View {
     
     @State var viewModel = ViewModel()
     @EnvironmentObject var sharedDataModel: SharedDataModel
+    @State private var navigationPath = [FTNavigationPath]()
     
     var body: some View {
         ZStack {
-            NavigationStack {
+            NavigationStack(path: $navigationPath) {
                 List {
                     ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
-                        NavigationLink(destination: FoodTruckDetailView(foodTruckId: listItem.id, distanceInMiles: listItem.distanceInMiles)) {
-                            FoodTruckListCell(listItem: listItem)
-                        }
+                        FoodTruckListCell(listItem: listItem)
+                            .onTapGesture {
+                                navigationPath.append(.foodTruckDetail(
+                                    id: listItem.id,
+                                    distanceInMiles: listItem.distanceInMiles)
+                                )
+                            }
                     }
                 }
                 .disabled(viewModel.isLoading)
@@ -29,6 +39,20 @@ struct FoodTruckListView: View {
                 .toolbar {
                     ToolbarItem {
                         ListViewToolbarView(distance: $viewModel.distance, isLoading: false)
+                    }
+                }
+                .navigationDestination(for: FTNavigationPath.self) { path in
+                    switch path {
+                    case .foodTruckDetail(let id, let distanceInMiles):
+                        FoodTruckDetailView(
+                            foodTruckId: id,
+                            distanceInMiles: distanceInMiles,
+                            navigationPath: $navigationPath)
+                    case .locationDetail(let name, let location, let closingTimeDateString):
+                        FoodTruckDetailNavigationView(
+                            name: name, 
+                            location: location,
+                            closingTimeDateString: closingTimeDateString)
                     }
                 }
             }
