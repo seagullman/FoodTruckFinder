@@ -93,18 +93,12 @@ struct FoodTruckDetailHeaderView: View {
                         .frame(width: 20, height: 20)
                         .foregroundStyle(Color(.lightGray))
                 }
-
-                // MARK: Menu
-                
-                MenuView(menuCategories: foodTruck.menu)
-                    .padding(.top, 20)
-                
             }
             .onTapGesture {
                 navigationPath.append(.locationDetail(
                     foodTruckName: foodTruck.name,
                     location: foodTruck.location,
-                    closingTimeDateString: "TODO: implement me"))
+                    closingTimeDateString: foodTruck.openUntil))
             }
             .padding(10)
         }
@@ -122,7 +116,7 @@ struct FoodTruckDetailHeaderView: View {
                                                           latitude: 123,
                                                           longitude: 123),
                                     imageUrl: "",
-                                    regularHours: nil,
+                                    openUntil: nil,
                                     menu: [MenuCategory(
                                         category: "Apps",
                                         items: [MenuItem(

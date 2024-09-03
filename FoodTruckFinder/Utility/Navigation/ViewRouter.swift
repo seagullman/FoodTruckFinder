@@ -14,7 +14,6 @@ enum Screen {
     case loading
 }
 
-@Observable
 class ViewRouter: FTFAuthManagerDelegate {
     
     var currentScreen: Screen = .loading

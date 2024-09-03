@@ -14,31 +14,36 @@ struct FoodTruckDetailView: View {
     let distanceInMiles: Double
     
     @State private var cameraPosition: MapCameraPosition = .automatic
-    
-    private let viewModel = ViewModel()
+    @State private var viewModel = ViewModel()
     @Binding var navigationPath: [FTNavigationPath]
     
     var body: some View {
         ScrollView {
             if let foodTruck = viewModel.foodTruck {
-                FoodTruckDetailHeaderView(
-                    foodTruck: foodTruck,
-                    distanceInMiles: distanceInMiles,
-                    navigationPath: $navigationPath,
-                    cameraPosition: $cameraPosition)
+                VStack {
+                    FoodTruckDetailHeaderView(
+                        foodTruck: foodTruck,
+                        distanceInMiles: distanceInMiles,
+                        navigationPath: $navigationPath,
+                        cameraPosition: $cameraPosition)
+                    
+                    // MARK: Menu
+                    
+                    MenuView(menuCategories: foodTruck.menu)
+                        .padding(.top, 20)
+                }
+                .padding(10)
+                
             } else {
                 FullScreenLoadingView()
             }
         }
         .onAppear { Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) } }
-        .onChange(of: viewModel.foodTruck) { oldValue, newValue in
+        .onChange(of: viewModel.foodTruck) {
             // Center the map pin in the center of the header
-            if let foodTruck = viewModel.foodTruck {
-                let location = CLLocationCoordinate2D(latitude: foodTruck.location.latitude, longitude: foodTruck.location.longitude)
-                let locationSpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
-                let region = MKCoordinateRegion(center: location, span: locationSpan)
-                cameraPosition = .region(region)
-            }
+            guard let region = viewModel.mapRegionForFoodTruckLocation() else { return }
+            
+            cameraPosition = .region(region)
         }
         .navigationBarTitleDisplayMode(.inline)
     }

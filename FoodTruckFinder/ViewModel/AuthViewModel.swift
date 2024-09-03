@@ -15,6 +15,7 @@ protocol AuthenticationFormProtocol {
 
 @MainActor
 class AuthViewModel: ObservableObject {
+    
     @Published var userSession: FirebaseAuth.User? // firebase user
     @Published var currentUser: User?               // custom user object
     

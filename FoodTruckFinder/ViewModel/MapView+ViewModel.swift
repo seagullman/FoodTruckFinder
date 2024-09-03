@@ -14,6 +14,7 @@ extension MapView {
     internal class ViewModel {
         
         let locationManager = LocationManager()
+        
         var foodTruckListItems: [FoodTruckListItem] = []
         var isLoading: Bool = false
         

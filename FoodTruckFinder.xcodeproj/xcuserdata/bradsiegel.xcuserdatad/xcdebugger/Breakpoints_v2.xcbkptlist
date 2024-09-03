@@ -3,4 +3,132 @@
    uuid = "7E4756A8-A77B-40EB-956E-E78130B8B73C"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FE1F75C6-ADD6-45D2-A03A-4BB9AAD06275"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodTruckFinder/Screens/FoodTruckListView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FFC530F7-BAE5-4F29-A54B-EFA0D9B53290"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodTruckFinder/Screens/FoodTruckDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8CA95977-84A0-440E-9EA8-B1B4552552F9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodTruckFinder/Screens/FoodTruckDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5161A045-6FD7-43FD-9A54-922AE8F1AA57"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodTruckFinder/ViewModel/FoodTruckDetailView+ViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "fetchFoodTruckBy(id:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5161A045-6FD7-43FD-9A54-922AE8F1AA57 - 77f99c7d033fb1e3"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for FoodTruckFinder.FoodTruckDetailView.ViewModel.fetchFoodTruckBy(id: Swift.String) async -&gt; ()"
+                  moduleName = "FoodTruckFinder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bradsiegel/Documents/projects/ios/FoodTruckFinder/FoodTruckFinder/ViewModel/FoodTruckDetailView+ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "5161A045-6FD7-43FD-9A54-922AE8F1AA57 - c553a8b0e94b42d1"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for FoodTruckFinder.FoodTruckDetailView.ViewModel.fetchFoodTruckBy(id: Swift.String) async -&gt; ()"
+                  moduleName = "FoodTruckFinder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bradsiegel/Documents/projects/ios/FoodTruckFinder/FoodTruckFinder/ViewModel/FoodTruckDetailView+ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "5161A045-6FD7-43FD-9A54-922AE8F1AA57 - 292dbd600a12dc1"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for FoodTruckFinder.FoodTruckDetailView.ViewModel.fetchFoodTruckBy(id: Swift.String) async -&gt; ()"
+                  moduleName = "FoodTruckFinder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bradsiegel/Documents/projects/ios/FoodTruckFinder/FoodTruckFinder/ViewModel/FoodTruckDetailView+ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "5161A045-6FD7-43FD-9A54-922AE8F1AA57 - 6b3ebafb8e1befb6"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for FoodTruckFinder.FoodTruckDetailView.ViewModel.fetchFoodTruckBy(id: Swift.String) async -&gt; ()"
+                  moduleName = "FoodTruckFinder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bradsiegel/Documents/projects/ios/FoodTruckFinder/FoodTruckFinder/ViewModel/FoodTruckDetailView+ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
