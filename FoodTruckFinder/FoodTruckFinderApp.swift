@@ -8,16 +8,21 @@
 import SwiftUI
 import FirebaseCore
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
+}
+
 @main
 struct FoodTruckFinderApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var sharedDataModel = SharedDataModel()
     @StateObject private var authViewModel = AuthViewModel()
-    
-    init() {
-        FirebaseApp.configure()
-    }
-    
+
     var body: some Scene {
         WindowGroup {
             if authViewModel.userSession != nil {

@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-public struct FTFLocation: Codable {
+public struct FTFLocation: Codable, Hashable {
     let description: String
     let latitude: Double
     let longitude: Double
