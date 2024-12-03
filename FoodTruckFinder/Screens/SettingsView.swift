@@ -51,6 +51,10 @@ struct SettingsView: View {
                     }
                 }
                 
+                Section("Navigation Service") {
+                    NavigationServiceView()
+                }
+                
                 Section("Account") {
                     Button(action: {
                         authViewModel.signOut()
@@ -73,6 +77,12 @@ struct SettingsView: View {
         }
 
     }
+    
+//    func appVersion() {
+//        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+//            return version
+//        }
+//    }
 }
 
 #Preview {

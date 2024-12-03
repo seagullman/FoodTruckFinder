@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 @Observable
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+class LocationManager: NSObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
     
@@ -50,7 +50,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
-        lastLocation = location
+        #if targetEnvironment(simulator)
+            print("***** Using mock location")
+            lastLocation = CLLocation(latitude: 35.886322021484375, longitude: -83.81688690185547)
+        #else
+            lastLocation = location
+        #endif
         locationManager.stopUpdatingLocation()
         print(#function, location)
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 extension FoodTruckDetailView {
     
@@ -22,6 +23,13 @@ extension FoodTruckDetailView {
                 // TODO: handle error
                 print("***** Error fetching food truck: \(error)")
             }
+        }
+        
+        func mapRegionForFoodTruckLocation() -> MKCoordinateRegion? {
+            if let foodTruck {
+                return MapHelper.mapRegion(forLocagtion: foodTruck.location)
+            }
+            return nil
         }
     }
 }

@@ -11,22 +11,55 @@ import FirebaseAuth
 import CoreLocation
 
 
-class NetworkManager {
+class NetworkManager { // TODO: make a protocol for NetworkClient
     
     static let shared = NetworkManager()
     
     private let db = Firestore.firestore()
-    private let foodTrucksCollectionId = "food-trucks"
+    
+    private var baseUrlComponents: URLComponents {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "us-central1-food-truck-finder-ed9db.cloudfunctions.net"
+        components.path = "/api/location/foodtrucks/"
+        
+        return components
+    }
+    
+    private func allFoodTrucksUrlString(within miles: Double, of location: CLLocation) -> String? {
+        var components = baseUrlComponents
+        components.queryItems = [
+            .init(name: "latitude", value: String(location.coordinate.latitude)),
+            .init(name: "longitude", value: String(location.coordinate.longitude)),
+            .init(name: "distance", value: String(miles))
+        ]
+        
+        return components.url?.absoluteString
+    }
+    
+    private func foodTruckDetailUrlString(id: String) -> String? {
+        var components = baseUrlComponents
+        components.path += "\(id)"
+        
+        return components.url?.absoluteString
+    }
     
     private init() {}
     
     func getFoodTrucks(within miles: Double, of location: CLLocation) async throws -> [FoodTruckListItem] {
-        let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&distance=\(miles)"
+        guard let urlString = allFoodTrucksUrlString(within: miles, of: location) else {
+            throw FTFError.invalidUrl
+        }
+        
         return try await makeRequest(urlString: urlString)
     }
     
     func getFoodTruck(by documentId: String) async throws -> FoodTruck {
-        let urlString = "https://us-central1-food-truck-finder-ed9db.cloudfunctions.net/api/location/foodtrucks/".appending(documentId)
+        guard let urlString = foodTruckDetailUrlString(id: documentId) else {
+            throw FTFError.invalidUrl
+        }
+        
+        
         return try await makeRequest(urlString: urlString)
     }
     
@@ -53,38 +86,6 @@ class NetworkManager {
         } catch {
             throw FTFError.invalidData
         }
-    }
-    
-    func save(foodTruck: FoodTruck) async {
-        // TODO: If no document exists, it is created. If a document already exists, it is overwritten.
-        // need to fix this so it is an update if it exists
-        do {
-            try db.collection("food-trucks").document(Auth.auth().currentUser?.uid ?? String(describing: foodTruck.id)).setData(from: foodTruck)
-        } catch let error {
-          print("Error writing foodTruck to Firestore: \(error)")
-        }
-        
-        
-        
-        // Add a second document with a generated ID.
-//        do {
-//            let ref = try await db.collection("food-trucks").addDocument(data: [
-//                "id": foodTruck.id,
-//                "name": foodTruck.name,
-//                "description": foodTruck.description,
-//                "websiteUrl": foodTruck.websiteUrl,
-//                "hoursOfOperation": foodTruck.hoursOfOperation,
-//                "cuisineType": foodTruck.cuisineType.rawValue,
-//                "location": foodTruck.location
-//            ])
-//            
-////            let locationRef =  db.collection("food-trucks").document(ref.documentID)
-//            
-//            
-//          print("Document added with ID: \(ref.documentID)")
-//        } catch {
-//          print("Error adding document: \(error)")
-//        }
     }
     
 }

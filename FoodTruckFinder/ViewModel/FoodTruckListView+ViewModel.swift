@@ -10,12 +10,14 @@ import CoreLocation
 
 extension FoodTruckListView {
     
+    // TODO: add init that takes in NetworkClient protocol
+    
+    @MainActor
     @Observable
     internal class ViewModel {
-        var distance: Double = 5.0
-        var foodTruckListItems: [FoodTruckListItem] = []
-        var locationManager = LocationManager()
-        var isLoading: Bool = false
+       var foodTruckListItems: [FoodTruckListItem] = []
+       var locationManager = LocationManager()
+       var isLoading: Bool = false
 
         func fetchFoodTrucks(_ withinMiles: Double, of location: CLLocation) async { 
             
@@ -33,21 +35,5 @@ extension FoodTruckListView {
             
             isLoading.toggle()
         }
-        
-        /**
-         *  Calculates and returns the distance in miles from the user's last known
-         *  location and the FoodTruck's location.
-         */
-//        func currentDistance(from foodTruck: FoodTruck, currentUserLocation: CLLocation?) -> Double {
-//            guard let currentUserLocation else { return 0 }
-//            
-//            let foodTruckLocation = CLLocation(
-//                latitude: foodTruck.location.latitude,
-//                longitude: foodTruck.location.longitude
-//            )
-//            let distance = foodTruckLocation.distance(from: currentUserLocation).convert(from: .meters, to: .miles)
-//            
-//            return distance
-//        }
      }
 }

@@ -10,13 +10,13 @@ import CoreLocation
 
 enum FTNavigationPath: Hashable {
     case foodTruckDetail(id: String, distanceInMiles: Double)
-    case locationDetail(foodTruckName: String, location: FTFLocation, closingTimeDateString: String)
+    case locationDetail(foodTruckName: String, location: FTFLocation, closingTimeDateString: String?)
 }
 
 struct FoodTruckListView: View {
     
-    @State var viewModel = ViewModel()
     @EnvironmentObject var sharedDataModel: SharedDataModel
+    @State var viewModel = ViewModel()
     @State private var navigationPath = [FTNavigationPath]()
     
     var body: some View {
@@ -26,9 +26,11 @@ struct FoodTruckListView: View {
                     ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
                         FoodTruckListCell(listItem: listItem)
                             .onTapGesture {
-                                navigationPath.append(.foodTruckDetail(
-                                    id: listItem.id,
-                                    distanceInMiles: listItem.distanceInMiles)
+                                navigationPath.append(
+                                    .foodTruckDetail(
+                                        id: listItem.id,
+                                        distanceInMiles: listItem.distanceInMiles
+                                    )
                                 )
                             }
                     }
@@ -38,7 +40,7 @@ struct FoodTruckListView: View {
                 .navigationTitle("Food Trucks")
                 .toolbar {
                     ToolbarItem {
-                        ListViewToolbarView(distance: $viewModel.distance, isLoading: false)
+                        ListViewToolbarView(isLoading: false)
                     }
                 }
                 .navigationDestination(for: FTNavigationPath.self) { path in
@@ -52,7 +54,7 @@ struct FoodTruckListView: View {
                         FoodTruckDetailNavigationView(
                             name: name, 
                             location: location,
-                            closingTimeDateString: closingTimeDateString)
+                            openUntil: closingTimeDateString)
                     }
                 }
             }
@@ -74,6 +76,7 @@ struct FoodTruckListView: View {
     }
     
     func fetchFoodTrucks() async {
+        // TODO: add error handling
         if let location = viewModel.locationManager.lastLocation {
             await viewModel.fetchFoodTrucks(sharedDataModel.distance, of: location)
         }

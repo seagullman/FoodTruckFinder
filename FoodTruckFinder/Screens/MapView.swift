@@ -33,7 +33,7 @@ struct MapView: View {
                 }
             }
             
-            ListViewToolbarView(distance: $sharedDataModel.distance, isLoading: viewModel.isLoading)
+            ListViewToolbarView(isLoading: viewModel.isLoading)
                 .frame(width: 150, height: 150)
         }
         .onAppear { fetchFoodTrucks() }

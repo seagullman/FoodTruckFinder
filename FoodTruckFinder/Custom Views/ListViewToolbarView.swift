@@ -10,7 +10,6 @@ import SwiftUI
 struct ListViewToolbarView: View {
     
     @EnvironmentObject var sharedDataModel: SharedDataModel
-    @Binding var distance: Double
     
     let isLoading: Bool
     
@@ -39,5 +38,5 @@ struct ListViewToolbarView: View {
 }
 
 #Preview {
-    ListViewToolbarView(distance: .constant(5.0), isLoading: false)
+    ListViewToolbarView(isLoading: false)
 }
