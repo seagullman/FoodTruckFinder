@@ -59,6 +59,7 @@ class NetworkManager { // TODO: make a protocol for NetworkClient
             throw FTFError.invalidUrl
         }
         
+        
         return try await makeRequest(urlString: urlString)
     }
     
@@ -85,38 +86,6 @@ class NetworkManager { // TODO: make a protocol for NetworkClient
         } catch {
             throw FTFError.invalidData
         }
-    }
-    
-    func save(foodTruck: FoodTruck) async {
-        // TODO: If no document exists, it is created. If a document already exists, it is overwritten.
-        // need to fix this so it is an update if it exists
-        do {
-            try db.collection("food-trucks").document(Auth.auth().currentUser?.uid ?? String(describing: foodTruck.id)).setData(from: foodTruck)
-        } catch let error {
-          print("Error writing foodTruck to Firestore: \(error)")
-        }
-        
-        
-        
-        // Add a second document with a generated ID.
-//        do {
-//            let ref = try await db.collection("food-trucks").addDocument(data: [
-//                "id": foodTruck.id,
-//                "name": foodTruck.name,
-//                "description": foodTruck.description,
-//                "websiteUrl": foodTruck.websiteUrl,
-//                "hoursOfOperation": foodTruck.hoursOfOperation,
-//                "cuisineType": foodTruck.cuisineType.rawValue,
-//                "location": foodTruck.location
-//            ])
-//            
-////            let locationRef =  db.collection("food-trucks").document(ref.documentID)
-//            
-//            
-//          print("Document added with ID: \(ref.documentID)")
-//        } catch {
-//          print("Error adding document: \(error)")
-//        }
     }
     
 }

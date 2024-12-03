@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+// TODO: make a view model
 struct FoodTruckDetailNavigationView: View {
     
     let name: String

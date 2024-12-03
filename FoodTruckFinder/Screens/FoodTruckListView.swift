@@ -16,7 +16,7 @@ enum FTNavigationPath: Hashable {
 struct FoodTruckListView: View {
     
     @EnvironmentObject var sharedDataModel: SharedDataModel
-    @State var viewModel = ViewModel() // StateObject persists across view updates
+    @State var viewModel = ViewModel()
     @State private var navigationPath = [FTNavigationPath]()
     
     var body: some View {

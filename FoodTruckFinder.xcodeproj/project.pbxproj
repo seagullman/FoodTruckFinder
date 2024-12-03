@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C700948A2C6426930052B965 /* MapHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70094892C6426930052B965 /* MapHelper.swift */; };
 		C70094AE2C777E250052B965 /* NavigationMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70094AD2C777E250052B965 /* NavigationMapService.swift */; };
+		C71331702CC972B7004BBD71 /* MaterialActivityIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = C713316F2CC972B7004BBD71 /* MaterialActivityIndicator */; };
 		C71BDB522B9AC96B00854478 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C71BDB512B9AC96B00854478 /* FirebaseFirestoreSwift */; };
 		C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB532B9AC98800854478 /* NetworkManager.swift */; };
 		C71BDB562B9AD2F500854478 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */; };
@@ -149,6 +150,7 @@
 				C71BDB582B9B7A3600854478 /* FirebaseAuth in Frameworks */,
 				C71BDB692B9EA56B00854478 /* FirebaseStorage in Frameworks */,
 				C794B5A32C2F175B008F6558 /* FirebaseFirestore in Frameworks */,
+				C71331702CC972B7004BBD71 /* MaterialActivityIndicator in Frameworks */,
 				C794B5A12C2F175B008F6558 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +351,7 @@
 				C71BDB682B9EA56B00854478 /* FirebaseStorage */,
 				C794B5A02C2F175B008F6558 /* FirebaseAuth */,
 				C794B5A22C2F175B008F6558 /* FirebaseFirestore */,
+				C713316F2CC972B7004BBD71 /* MaterialActivityIndicator */,
 			);
 			productName = FoodTruckFinder;
 			productReference = C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */;
@@ -424,6 +427,7 @@
 			mainGroup = C72678E82B97C6C4009D48DE;
 			packageReferences = (
 				C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C713316E2CC972B7004BBD71 /* XCRemoteSwiftPackageReference "MaterialActivityIndicator" */,
 			);
 			productRefGroup = C72678F22B97C6C5009D48DE /* Products */;
 			projectDirPath = "";
@@ -601,7 +605,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -658,7 +662,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -854,6 +858,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C713316E2CC972B7004BBD71 /* XCRemoteSwiftPackageReference "MaterialActivityIndicator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nspavlo/MaterialActivityIndicator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.7;
+			};
+		};
 		C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -865,6 +877,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C713316F2CC972B7004BBD71 /* MaterialActivityIndicator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C713316E2CC972B7004BBD71 /* XCRemoteSwiftPackageReference "MaterialActivityIndicator" */;
+			productName = MaterialActivityIndicator;
+		};
 		C71BDB512B9AC96B00854478 /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
