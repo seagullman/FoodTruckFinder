@@ -51,10 +51,7 @@ struct FoodTruckListView: View {
                             distanceInMiles: distanceInMiles,
                             navigationPath: $navigationPath)
                     case .locationDetail(let name, let location, let closingTimeDateString):
-                        FoodTruckDetailNavigationView(
-                            name: name, 
-                            location: location,
-                            openUntil: closingTimeDateString)
+                        FoodTruckDetailInfoView(viewModel: .init(name: name, location: location, openUntil: closingTimeDateString))
                     }
                 }
             }

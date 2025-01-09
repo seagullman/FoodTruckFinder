@@ -9,13 +9,13 @@ import SwiftUI
 import MapKit
 
 // TODO: make a view model
-struct FoodTruckDetailNavigationView: View {
+struct FoodTruckDetailInfoView: View {
     
-    let name: String
-    let location: FTFLocation
-    let openUntil: String?
+    let viewModel: ViewModel
     
     @State private var cameraPosition: MapCameraPosition = .automatic
+    
+    // TODO: Move to viewmodel
     
     // Formatter to parse and format the date
     private var timeFormatter: DateFormatter {
@@ -34,10 +34,10 @@ struct FoodTruckDetailNavigationView: View {
         ScrollView {
             VStack {
                 Map(position: $cameraPosition) {
-                    Marker(name,
+                    Marker(viewModel.name,
                            coordinate: CLLocationCoordinate2D(
-                            latitude: location.latitude,
-                            longitude: location.longitude))
+                            latitude: viewModel.location.latitude,
+                            longitude: viewModel.location.longitude))
                 }
                 .frame(height: 200)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -46,21 +46,24 @@ struct FoodTruckDetailNavigationView: View {
                 VStack {
                     FoodTruckDetailLocationCellView(icon: "mappin.and.ellipse",
                                                     titleText: "Navigate to location",
-                                                    subtitleText: location.description,
+                                                    subtitleText: viewModel.location.description,
                                                     accessoryIcon: "arrow.up.right")
+                    .frame(height: 50)
                     
-                    if let openUntil {
+                    if let openUntil = viewModel.openUntil {
                         if let date = timeFormatter.date(from: openUntil) {
                             FoodTruckDetailLocationCellView(icon: "clock",
                                                             titleText: "Open",
                                                             titleTextColor: .green,
                                                             subtitleText: "At this location until \(timeAMPMFormatter.string(from: date))")
+                            .frame(height: 50)
                         }
                     }
                     
                     FoodTruckDetailLocationCellView(icon: "phone",
                                                     titleText: "708-403-3333",
                                                     accessoryIcon: "arrow.up.right")
+                    .frame(height: 50)
                     .onTapGesture {
                         makeCall(to: "7084032584")
                     }
@@ -69,10 +72,11 @@ struct FoodTruckDetailNavigationView: View {
                 }
             }
             .onAppear {
-                guard let region = MapHelper.mapRegion(forLocagtion: location) else { return }
+                guard let region = MapHelper.mapRegion(forLocagtion: viewModel.location) else { return }
+                
                 cameraPosition = .region(region)
             }
-            .navigationTitle(name)
+            .navigationTitle(viewModel.name)
         }
     }
     
@@ -88,11 +92,10 @@ struct FoodTruckDetailNavigationView: View {
 }
 
 #Preview {
-    FoodTruckDetailNavigationView(
-        name: "Test Truck",
-        location: FTFLocation(
-            description: "Located in the Food City parking lot.",
-            latitude: 35.9898,
-            longitude: -83.777),
-        openUntil: "2024-07-27 19:00:00")
+    FoodTruckDetailInfoView(
+        viewModel: FoodTruckDetailInfoView.ViewModel(name: "Test Truck",
+                                                     location: FTFLocation(description: "Located in the Food City parking lot.",
+                                                                           latitude: 35.9898,
+                                                                           longitude: -83.777),
+                                                     openUntil: "2024-07-27 19:00:00"))
 }

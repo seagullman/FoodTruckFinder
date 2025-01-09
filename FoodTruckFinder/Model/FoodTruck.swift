@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FoodTruckListItem: Codable, Identifiable {
+struct FoodTruckListItem: Codable, Identifiable, Equatable {
     let id: String
     let name: String
     let description: String
