@@ -13,7 +13,7 @@ struct FoodTruckDetailHeaderView: View {
     let foodTruck: FoodTruck
     let distanceInMiles: Double
     
-    @Binding var navigationPath: [FTNavigationPath]
+//    @Binding var navigationPath: [FTNavigationPath]
     @Binding var cameraPosition: MapCameraPosition
     
     var body: some View {
@@ -95,10 +95,11 @@ struct FoodTruckDetailHeaderView: View {
                 }
             }
             .onTapGesture {
-                navigationPath.append(.locationDetail(
-                    foodTruckName: foodTruck.name,
-                    location: foodTruck.location,
-                    closingTimeDateString: foodTruck.openUntil))
+                // TODO:
+//                navigationPath.append(.locationDetail(
+//                    foodTruckName: foodTruck.name,
+//                    location: foodTruck.location,
+//                    closingTimeDateString: foodTruck.openUntil))
             }
             .padding(10)
         }
@@ -127,6 +128,6 @@ struct FoodTruckDetailHeaderView: View {
                                             isGlutenFree: false
                                         )]
                                     )]),
-                              distanceInMiles: 123, navigationPath: .constant([]),
+                              distanceInMiles: 123,
                               cameraPosition: .constant(.automatic))
 }

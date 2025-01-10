@@ -8,54 +8,53 @@
 import SwiftUI
 import CoreLocation
 
-enum FTNavigationPath: Hashable {
-    case foodTruckDetail(id: String, distanceInMiles: Double)
-    case locationDetail(foodTruckName: String, location: FTFLocation, closingTimeDateString: String?)
+struct FoodTruckNavigationStack: View {
+    
+    @State private var routes: [FoodTruckRoute] = []
+    
+    var body: some View {
+        NavigationStack(path: $routes) {
+            FoodTruckListView()
+                .navigationDestination(for: FoodTruckRoute.self) { route in
+                    route.destination
+                }
+        }.environment(\.navigate, NavigateAction(action: { route in
+            if case let .foodTruck(foodTruckRoute) = route {
+                routes.append(foodTruckRoute)
+            }
+        }))
+    }
 }
 
 struct FoodTruckListView: View {
     
+    @Environment(\.navigate) private var navigate
     @EnvironmentObject var sharedDataModel: SharedDataModel
     @State var viewModel = ViewModel()
-    @State private var navigationPath = [FTNavigationPath]()
     
     var body: some View {
         ZStack {
-            NavigationStack(path: $navigationPath) {
-                List {
-                    ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
-                        FoodTruckListCell(listItem: listItem)
-                            .onTapGesture {
-                                navigationPath.append(
-                                    .foodTruckDetail(
+            List {
+                ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
+                    FoodTruckListCell(listItem: listItem)
+                        .onTapGesture {
+                            navigate(
+                                .foodTruck(
+                                    .detail(
                                         id: listItem.id,
                                         distanceInMiles: listItem.distanceInMiles
                                     )
                                 )
-                            }
-                    }
+                            )
+                        }
                 }
-                .disabled(viewModel.isLoading)
-                .refreshable { viewModel.locationManager.refreshLocation() }
-                .navigationTitle("Food Trucks")
-                .toolbar {
-                    ToolbarItem {
-                        ListViewToolbarView(isLoading: false)
-                    }
-                }
-                .navigationDestination(for: FTNavigationPath.self) { path in
-                    switch path {
-                    case .foodTruckDetail(let id, let distanceInMiles):
-                        FoodTruckDetailView(
-                            foodTruckId: id,
-                            distanceInMiles: distanceInMiles,
-                            navigationPath: $navigationPath)
-                    case .locationDetail(let name, let location, let closingTimeDateString):
-                        FoodTruckDetailNavigationView(
-                            name: name, 
-                            location: location,
-                            openUntil: closingTimeDateString)
-                    }
+            }
+            .disabled(viewModel.isLoading)
+            .refreshable { viewModel.locationManager.refreshLocation() }
+            .navigationTitle("Food Trucks")
+            .toolbar {
+                ToolbarItem {
+                    ListViewToolbarView(isLoading: false)
                 }
             }
             .onChange(of: viewModel.locationManager.lastLocation) {

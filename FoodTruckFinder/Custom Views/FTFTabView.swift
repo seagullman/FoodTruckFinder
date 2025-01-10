@@ -11,12 +11,11 @@ struct FTFTabView: View {
     
     var body: some View {
         TabView {
-            FoodTruckListView()
-                .tabItem { Label("Food Trucks", systemImage: "truck.box") }
-            MapView()
-                .tabItem { Label("Map", systemImage: "mappin.and.ellipse") }
-            SettingsView()
-                .tabItem { Label("Settings", systemImage: "gearshape") }
+            ForEach(AppScreen.allCases) { screen in
+                screen.destination
+                    .tag(screen as AppScreen)
+                    .tabItem { screen.label }
+            }
         }
     }
 }
