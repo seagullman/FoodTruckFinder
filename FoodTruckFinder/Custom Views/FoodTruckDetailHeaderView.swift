@@ -10,11 +10,11 @@ import MapKit
 
 struct FoodTruckDetailHeaderView: View {
     
+    @Environment(\.navigate) private var navigate
+    @Binding var cameraPosition: MapCameraPosition
+    
     let foodTruck: FoodTruck
     let distanceInMiles: Double
-    
-//    @Binding var navigationPath: [FTNavigationPath]
-    @Binding var cameraPosition: MapCameraPosition
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -95,11 +95,15 @@ struct FoodTruckDetailHeaderView: View {
                 }
             }
             .onTapGesture {
-                // TODO:
-//                navigationPath.append(.locationDetail(
-//                    foodTruckName: foodTruck.name,
-//                    location: foodTruck.location,
-//                    closingTimeDateString: foodTruck.openUntil))
+                navigate(
+                    .foodTruck(
+                        .info(
+                            name: foodTruck.name,
+                            location: foodTruck.location,
+                            closingTimeDateString: foodTruck.openUntil
+                        )
+                    )
+                )
             }
             .padding(10)
         }
@@ -107,7 +111,7 @@ struct FoodTruckDetailHeaderView: View {
 }
 
 #Preview {
-    FoodTruckDetailHeaderView(foodTruck:
+    FoodTruckDetailHeaderView(cameraPosition: .constant(.automatic), foodTruck:
                                 FoodTruck(
                                     name: "El Hurradurra",
                                     description: "Mexican food known for their tacos.",
@@ -128,6 +132,5 @@ struct FoodTruckDetailHeaderView: View {
                                             isGlutenFree: false
                                         )]
                                     )]),
-                              distanceInMiles: 123,
-                              cameraPosition: .constant(.automatic))
+                              distanceInMiles: 123)
 }

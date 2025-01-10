@@ -10,7 +10,7 @@ import SwiftUI
 enum FoodTruckRoute: Hashable {
     case list
     case detail(id: String, distanceInMiles: Double)
-    case info(name: String, location: FTFLocation, closingTimeDateString: String)
+    case info(name: String, location: FTFLocation, closingTimeDateString: String?)
     
     @ViewBuilder
     var destination: some View {

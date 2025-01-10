@@ -15,16 +15,15 @@ struct FoodTruckDetailView: View {
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var viewModel = ViewModel()
-//    @Binding var navigationPath: [FTNavigationPath]
     
     var body: some View {
         ScrollView {
             if let foodTruck = viewModel.foodTruck {
                 VStack {
                     FoodTruckDetailHeaderView(
+                        cameraPosition: $cameraPosition, 
                         foodTruck: foodTruck,
-                        distanceInMiles: distanceInMiles,
-                        cameraPosition: $cameraPosition)
+                        distanceInMiles: distanceInMiles)
                     
                     // MARK: Menu
                     
