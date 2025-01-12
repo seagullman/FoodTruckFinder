@@ -8,13 +8,15 @@
 import Foundation
 import CoreLocation
 
+// TODO: Possibly turn this into a LocationStore
+
 @Observable
 class LocationManager: NSObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
     
-    var locationStatus: CLAuthorizationStatus?
-    var lastLocation: CLLocation?
+    private(set) var locationStatus: CLAuthorizationStatus?
+    private(set) var lastLocation: CLLocation?
     
     override init() {
         super.init()

@@ -10,12 +10,19 @@ import FirebaseFirestore
 import FirebaseAuth
 import CoreLocation
 
+protocol NetworkClient {
+    func getFoodTrucks(within miles: Double, of location: CLLocation) async throws -> [FoodTruckListItem]
+    func getFoodTruck(by id: String) async throws -> FoodTruck
+}
 
-class NetworkManager { // TODO: make a protocol for NetworkClient
+class NetworkManager: NetworkClient {
     
     static let shared = NetworkManager()
     
-    private let db = Firestore.firestore()
+    private lazy var db: Firestore = {
+        return Firestore.firestore()
+    }()
+
     
     private var baseUrlComponents: URLComponents {
         var components = URLComponents()
@@ -54,8 +61,8 @@ class NetworkManager { // TODO: make a protocol for NetworkClient
         return try await makeRequest(urlString: urlString)
     }
     
-    func getFoodTruck(by documentId: String) async throws -> FoodTruck {
-        guard let urlString = foodTruckDetailUrlString(id: documentId) else {
+    func getFoodTruck(by id: String) async throws -> FoodTruck {
+        guard let urlString = foodTruckDetailUrlString(id: id) else {
             throw FTFError.invalidUrl
         }
         

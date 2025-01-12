@@ -9,11 +9,13 @@ import SwiftUI
 
 struct FTFTabView: View {
     
+    @Binding var selection: TabScreen?
+    
     var body: some View {
         TabView {
-            ForEach(AppScreen.allCases) { screen in
+            ForEach(TabScreen.allCases) { screen in
                 screen.destination
-                    .tag(screen as AppScreen)
+                    .tag(screen as TabScreen)
                     .tabItem { screen.label }
             }
         }
@@ -21,5 +23,5 @@ struct FTFTabView: View {
 }
 
 #Preview {
-    FTFTabView()
+    FTFTabView(selection: .constant(.list))
 }

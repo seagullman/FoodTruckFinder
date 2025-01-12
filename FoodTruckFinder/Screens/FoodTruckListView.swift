@@ -29,13 +29,15 @@ struct FoodTruckNavigationStack: View {
 struct FoodTruckListView: View {
     
     @Environment(\.navigate) private var navigate
+    @Environment(FoodTruckStore.self) private var foodTruckStore
     @EnvironmentObject var sharedDataModel: SharedDataModel
-    @State var viewModel = ViewModel()
+    
+    @State private var initialLoadComplete: Bool = false
     
     var body: some View {
         ZStack {
             List {
-                ForEach(viewModel.foodTruckListItems, id: \.id) { listItem in
+                ForEach(foodTruckStore.foodTruckListItems, id: \.id) { listItem in
                     FoodTruckListCell(listItem: listItem)
                         .onTapGesture {
                             navigate(
@@ -49,22 +51,22 @@ struct FoodTruckListView: View {
                         }
                 }
             }
-            .disabled(viewModel.isLoading)
-            .refreshable { viewModel.locationManager.refreshLocation() }
+            .disabled(foodTruckStore.isLoading)
+            .refreshable { foodTruckStore.locationManager.refreshLocation() }
             .navigationTitle("Food Trucks")
             .toolbar {
                 ToolbarItem {
                     ListViewToolbarView(isLoading: false)
                 }
             }
-            .onChange(of: viewModel.locationManager.lastLocation) {
+            .onChange(of: foodTruckStore.locationManager.lastLocation) {
                 Task { await fetchFoodTrucks() }
             }
             .onChange(of: sharedDataModel.distance) {
                 Task { await fetchFoodTrucks() }
             }
             
-            if viewModel.isLoading {
+            if foodTruckStore.isLoading {
                 ProgressView {
                     Text("Looking for food trucks near you...")
                 }
@@ -72,12 +74,18 @@ struct FoodTruckListView: View {
                 .controlSize(.large)
             }
         }
+        .task {
+            if !initialLoadComplete {
+                foodTruckStore.locationManager.refreshLocation()
+                initialLoadComplete = true
+            }
+        }
     }
     
     func fetchFoodTrucks() async {
         // TODO: add error handling
-        if let location = viewModel.locationManager.lastLocation {
-            await viewModel.fetchFoodTrucks(sharedDataModel.distance, of: location)
+        if let location = foodTruckStore.locationManager.lastLocation {
+            await foodTruckStore.fetchFoodTrucks(sharedDataModel.distance, of: location)
         }
     }
 }

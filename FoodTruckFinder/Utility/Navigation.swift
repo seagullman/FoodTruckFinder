@@ -27,12 +27,12 @@ enum FoodTruckRoute: Hashable {
 
 // Each case is a seperate tab in the TabView
 
-enum AppScreen: Hashable, Identifiable, CaseIterable {
+enum TabScreen: Hashable, Identifiable, CaseIterable {
     case list
     case map
     case settings
     
-    var id: AppScreen { self }
+    var id: TabScreen { self }
     
     @ViewBuilder
     var label: some View {
