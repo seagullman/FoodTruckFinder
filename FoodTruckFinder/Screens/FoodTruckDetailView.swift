@@ -10,15 +10,17 @@ import MapKit
 
 struct FoodTruckDetailView: View {
     
+    @Environment(FoodTruckStore.self) private var foodTruckStore
+    
     let foodTruckId: String
     let distanceInMiles: Double
     
     @State private var cameraPosition: MapCameraPosition = .automatic
-    @State private var viewModel = ViewModel()
+    @State private var initialLoadComplete: Bool = false // TODO: figure out a better solution than using a bool
     
     var body: some View {
         ScrollView {
-            if let foodTruck = viewModel.foodTruck {
+            if let foodTruck = foodTruckStore.foodTruck {
                 VStack {
                     FoodTruckDetailHeaderView(
                         cameraPosition: $cameraPosition, 
@@ -36,10 +38,15 @@ struct FoodTruckDetailView: View {
                 FullScreenLoadingView()
             }
         }
-        .onAppear { Task { await viewModel.fetchFoodTruckBy(id: foodTruckId) } }
-        .onChange(of: viewModel.foodTruck) {
+        .onAppear {
+            if !initialLoadComplete {
+                Task { await foodTruckStore.fetchFoodTruckBy(id: foodTruckId) }
+                initialLoadComplete = true
+            }
+        }
+        .onChange(of: foodTruckStore.foodTruck) {
             // Center the map pin in the center of the header
-            guard let region = viewModel.mapRegionForFoodTruckLocation() else { return }
+            guard let region = foodTruckStore.mapRegionForFoodTruckLocation() else { return }
             
             cameraPosition = .region(region)
         }

@@ -32,7 +32,7 @@ struct FoodTruckListView: View {
     @Environment(FoodTruckStore.self) private var foodTruckStore
     @EnvironmentObject var sharedDataModel: SharedDataModel
     
-    @State private var initialLoadComplete: Bool = false
+    @State private var initialLoadComplete: Bool = false // TODO: figure out a better solution than using a bool
     
     var body: some View {
         ZStack {

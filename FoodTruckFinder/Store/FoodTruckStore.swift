@@ -8,6 +8,7 @@
 import Foundation
 import Observation
 import CoreLocation
+import MapKit
 
 @Observable
 class FoodTruckStore {
@@ -17,6 +18,8 @@ class FoodTruckStore {
     private(set) var foodTruckListItems: [FoodTruckListItem] = []
     private(set) var locationManager = LocationManager()
     private(set) var isLoading: Bool = false
+    
+    private(set) var foodTruck: FoodTruck?
     
     init(httpClient: NetworkClient) {
         self.httpClient = httpClient
@@ -41,6 +44,25 @@ class FoodTruckStore {
         
         print("✅ fetchFoodTrucks: end")
         isLoading = false
+    }
+    
+    func fetchFoodTruckBy(id: String) async {
+        self.foodTruck = nil
+        
+        do {
+            let foodTruck = try await NetworkManager.shared.getFoodTruck(by: id)
+            self.foodTruck = foodTruck
+        } catch {
+            // TODO: handle error
+            print("***** Error fetching food truck: \(error)")
+        }
+    }
+    
+    func mapRegionForFoodTruckLocation() -> MKCoordinateRegion? {
+        if let foodTruck {
+            return MapHelper.mapRegion(forLocagtion: foodTruck.location)
+        }
+        return nil
     }
     
 }
