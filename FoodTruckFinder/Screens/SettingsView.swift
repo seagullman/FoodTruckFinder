@@ -57,7 +57,7 @@ struct SettingsView: View {
                 
                 Section("Account") {
                     Button(action: {
-                        authViewModel.signOut()
+                        Task { await authViewModel.signOut() }
                     }, label: {
                         SettingsRowView(imageName: "arrow.left.circle.fill",
                                         title: "Sign Out",
@@ -65,7 +65,7 @@ struct SettingsView: View {
                     })
                     
                     Button {
-                        authViewModel.deleteAccount()
+                        Task { try await authViewModel.deleteAccount() }
                     } label: {
                         SettingsRowView(imageName: "xmark.circle.fill",
                                         title: "Delete Account",

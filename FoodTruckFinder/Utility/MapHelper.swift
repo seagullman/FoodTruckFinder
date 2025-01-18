@@ -10,7 +10,7 @@ import MapKit
 
 struct MapHelper {
     
-    static func mapRegion(forLocagtion location: FTFLocation) -> MKCoordinateRegion? {
+    static func mapRegion(forLocation location: FTFLocation) -> MKCoordinateRegion? {
         let location = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
         let locationSpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         let region = MKCoordinateRegion(center: location, span: locationSpan)

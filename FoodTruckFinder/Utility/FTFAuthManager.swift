@@ -73,14 +73,14 @@ class FTFAuthManager {
 //        return fetchedUser
 //    }
     
-    func userHasRegisteredFoodTruck() async throws -> Bool {
-        guard let currentUser = Auth.auth().currentUser else { return false }
-        
-        let docRef = db.collection("food-trucks").document(currentUser.uid)
-        let document = try await docRef.getDocument()
-        
-        return document.exists
-    }
+//    func userHasRegisteredFoodTruck() async throws -> Bool {
+//        guard let currentUser = Auth.auth().currentUser else { return false }
+//        
+//        let docRef = db.collection("food-trucks").document(/*currentUser*/.uid)
+//        let document = try await docRef.getDocument()
+//        
+//        return document.exists
+//    }
     
     func addAuthStateListener() {
         Auth.auth().addStateDidChangeListener { [weak self] auth, user in

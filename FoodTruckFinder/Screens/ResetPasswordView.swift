@@ -28,7 +28,10 @@ struct ResetPasswordView: View {
             
             
             Button(action: {
-                Task { await authViewModel.resetPassword(withEmail: email) }
+                Task {
+                    
+                    try await authViewModel.resetPassword(withEmail: email)
+                }
                 dismiss()
             }, label: {
                 HStack {

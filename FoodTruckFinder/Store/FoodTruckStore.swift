@@ -10,6 +10,7 @@ import Observation
 import CoreLocation
 import MapKit
 
+@MainActor
 @Observable
 class FoodTruckStore {
     
@@ -33,7 +34,7 @@ class FoodTruckStore {
         
         do {
             print("✅ fetchFoodTrucks: calling network manager")
-            let foodTruckListItems = try await NetworkManager.shared.getFoodTrucks(within: withinMiles, of: location)
+            let foodTruckListItems = try await httpClient.getFoodTrucks(within: withinMiles, of: location)
             self.foodTruckListItems = foodTruckListItems
             isLoading = false
             
@@ -50,7 +51,7 @@ class FoodTruckStore {
         self.foodTruck = nil
         
         do {
-            let foodTruck = try await NetworkManager.shared.getFoodTruck(by: id)
+            let foodTruck = try await httpClient.getFoodTruck(by: id)
             self.foodTruck = foodTruck
         } catch {
             // TODO: handle error
@@ -60,7 +61,7 @@ class FoodTruckStore {
     
     func mapRegionForFoodTruckLocation() -> MKCoordinateRegion? {
         if let foodTruck {
-            return MapHelper.mapRegion(forLocagtion: foodTruck.location)
+            return MapHelper.mapRegion(forLocation: foodTruck.location)
         }
         return nil
     }

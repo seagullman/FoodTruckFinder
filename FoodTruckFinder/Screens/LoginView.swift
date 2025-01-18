@@ -94,6 +94,9 @@ struct LoginView: View {
                 }
             }
         }
+//        .task {
+//            await authViewModel.signOut()
+//        }
     }
 }
 

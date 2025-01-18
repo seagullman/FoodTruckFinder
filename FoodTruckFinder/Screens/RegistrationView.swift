@@ -74,7 +74,7 @@ struct RegistrationView: View {
             .padding(.horizontal)
             
             Button(action: {
-                Task { try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName)}
+                Task { try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName, phoneNumber: "+17083055727")}
             }, label: {
                 HStack {
                     Text("SIGN UP")
@@ -102,6 +102,28 @@ struct RegistrationView: View {
                         .font(.system(size: 16))
                 }
             })
+        }
+        .sheet(isPresented: $authViewModel.shouldNavigateToConfirmCodeScreen) {
+            ConfirmCodeView()
+        }
+    }
+}
+
+struct ConfirmCodeView: View {
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var code = ""
+    
+    var body: some View {
+        VStack {
+            Text("One time code:")
+            TextField("ONe time code", text: $code)
+            Button {
+                Task { try await authViewModel.confirmSignUp(email: "blsiege@gmail.com", confirmationCode: code) }
+            } label: {
+                Text("CONFIRM")
+            }
+
         }
     }
 }

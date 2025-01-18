@@ -28,6 +28,10 @@
 		C71F91B72C151966006026BD /* StoreHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F91B62C151966006026BD /* StoreHours.swift */; };
 		C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F91B82C178D72006026BD /* CircleImageView.swift */; };
 		C725008A2D340ED800F19059 /* FoodTruckStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72500892D340ED800F19059 /* FoodTruckStore.swift */; };
+		C72500992D36007E00F19059 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = C72500982D36007E00F19059 /* AWSCognitoAuthPlugin */; };
+		C725009B2D36007E00F19059 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = C725009A2D36007E00F19059 /* Amplify */; };
+		C725009E2D36011400F19059 /* Authenticator in Frameworks */ = {isa = PBXBuildFile; productRef = C725009D2D36011400F19059 /* Authenticator */; };
+		C72500A02D36028100F19059 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = C725009F2D36028100F19059 /* amplifyconfiguration.json */; };
 		C72678F52B97C6C5009D48DE /* FoodTruckFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */; };
 		C72678F72B97C6C5009D48DE /* FoodTruckListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */; };
 		C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72678F82B97C6C6009D48DE /* Assets.xcassets */; };
@@ -102,6 +106,7 @@
 		C71F91B62C151966006026BD /* StoreHours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHours.swift; sourceTree = "<group>"; };
 		C71F91B82C178D72006026BD /* CircleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		C72500892D340ED800F19059 /* FoodTruckStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckStore.swift; sourceTree = "<group>"; };
+		C725009F2D36028100F19059 /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
 		C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTruckFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72678F42B97C6C5009D48DE /* FoodTruckFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckFinderApp.swift; sourceTree = "<group>"; };
 		C72678F62B97C6C5009D48DE /* FoodTruckListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckListView.swift; sourceTree = "<group>"; };
@@ -149,8 +154,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C71BDB522B9AC96B00854478 /* FirebaseFirestoreSwift in Frameworks */,
+				C725009B2D36007E00F19059 /* Amplify in Frameworks */,
 				C71BDB582B9B7A3600854478 /* FirebaseAuth in Frameworks */,
+				C72500992D36007E00F19059 /* AWSCognitoAuthPlugin in Frameworks */,
 				C71BDB692B9EA56B00854478 /* FirebaseStorage in Frameworks */,
+				C725009E2D36011400F19059 /* Authenticator in Frameworks */,
 				C794B5A32C2F175B008F6558 /* FirebaseFirestore in Frameworks */,
 				C71331702CC972B7004BBD71 /* MaterialActivityIndicator in Frameworks */,
 				C794B5A12C2F175B008F6558 /* FirebaseAuth in Frameworks */,
@@ -202,6 +210,7 @@
 		C72678E82B97C6C4009D48DE = {
 			isa = PBXGroup;
 			children = (
+				C725009F2D36028100F19059 /* amplifyconfiguration.json */,
 				C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */,
 				C72678F32B97C6C5009D48DE /* FoodTruckFinder */,
 				C72679042B97C6C6009D48DE /* FoodTruckFinderTests */,
@@ -363,6 +372,9 @@
 				C794B5A02C2F175B008F6558 /* FirebaseAuth */,
 				C794B5A22C2F175B008F6558 /* FirebaseFirestore */,
 				C713316F2CC972B7004BBD71 /* MaterialActivityIndicator */,
+				C72500982D36007E00F19059 /* AWSCognitoAuthPlugin */,
+				C725009A2D36007E00F19059 /* Amplify */,
+				C725009D2D36011400F19059 /* Authenticator */,
 			);
 			productName = FoodTruckFinder;
 			productReference = C72678F12B97C6C5009D48DE /* FoodTruckFinder.app */;
@@ -439,6 +451,8 @@
 			packageReferences = (
 				C71BDB502B9AC96B00854478 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				C713316E2CC972B7004BBD71 /* XCRemoteSwiftPackageReference "MaterialActivityIndicator" */,
+				C72500972D36007E00F19059 /* XCRemoteSwiftPackageReference "amplify-swift" */,
+				C725009C2D36011400F19059 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */,
 			);
 			productRefGroup = C72678F22B97C6C5009D48DE /* Products */;
 			projectDirPath = "";
@@ -459,6 +473,7 @@
 				C72678FC2B97C6C6009D48DE /* Preview Assets.xcassets in Resources */,
 				C72678F92B97C6C6009D48DE /* Assets.xcassets in Resources */,
 				C71BDB562B9AD2F500854478 /* GoogleService-Info.plist in Resources */,
+				C72500A02D36028100F19059 /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,6 +901,22 @@
 				minimumVersion = 10.22.1;
 			};
 		};
+		C72500972D36007E00F19059 /* XCRemoteSwiftPackageReference "amplify-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.45.4;
+			};
+		};
+		C725009C2D36011400F19059 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-ui-swift-authenticator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -906,6 +937,21 @@
 		C71BDB682B9EA56B00854478 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseStorage;
+		};
+		C72500982D36007E00F19059 /* AWSCognitoAuthPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C72500972D36007E00F19059 /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = AWSCognitoAuthPlugin;
+		};
+		C725009A2D36007E00F19059 /* Amplify */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C72500972D36007E00F19059 /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = Amplify;
+		};
+		C725009D2D36011400F19059 /* Authenticator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C725009C2D36011400F19059 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */;
+			productName = Authenticator;
 		};
 		C794B5A02C2F175B008F6558 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

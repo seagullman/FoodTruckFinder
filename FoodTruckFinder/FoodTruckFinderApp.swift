@@ -7,6 +7,9 @@
 
 import SwiftUI
 import FirebaseCore
+import Amplify
+import AWSCognitoAuthPlugin
+import Authenticator
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -25,16 +28,54 @@ struct FoodTruckFinderApp: App {
     @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // TODO: Singleton necessary or no?
     @State private var selection: TabScreen?
     
+    init() {
+        configureAmplify()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            if authViewModel.userSession != nil {
-                FTFTabView(selection: $selection)
-                    .tint(.red)
-                    .environmentObject(sharedDataModel)
-                    .environment(foodTruckStore)
-            } else {
-                LoginView()
+            switch authViewModel.loadingState {
+            case .loading:
+                FullScreenLoadingView() // TODO: customize this
+            case .loaded:
+                if authViewModel.userSession != nil {
+                    
+                    FTFTabView(selection: $selection)
+                        .tint(.red)
+                        .environmentObject(sharedDataModel)
+                        .environment(foodTruckStore)
+                    
+                } else {
+                    LoginView()
+                }
+            case .failed(let error):
+                // TODO: handle error
+                EmptyView()
             }
         }.environmentObject(authViewModel)
+    }
+    
+    func configureAmplify() {
+        do {
+            try Amplify.add(plugin: AWSCognitoAuthPlugin())
+            try Amplify.configure()
+            print("✅ Amplify configured successfully")
+        } catch {
+            print("❌ Failed to configure Amplify: \(error)")
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        Authenticator { state in
+            VStack {
+                Button("Sign out") {
+                    Task {
+                        await state.signOut()
+                    }
+                }
+            }
+        }
     }
 }
