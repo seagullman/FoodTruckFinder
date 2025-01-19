@@ -49,7 +49,7 @@ struct FoodTruckFinderApp: App {
                     LoginView()
                 }
             case .failed(let error):
-                // TODO: handle error
+                // TODO: handle error /  maybe a retry button or just show login
                 EmptyView()
             }
         }.environmentObject(authViewModel)
@@ -62,20 +62,6 @@ struct FoodTruckFinderApp: App {
             print("✅ Amplify configured successfully")
         } catch {
             print("❌ Failed to configure Amplify: \(error)")
-        }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        Authenticator { state in
-            VStack {
-                Button("Sign out") {
-                    Task {
-                        await state.signOut()
-                    }
-                }
-            }
         }
     }
 }

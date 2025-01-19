@@ -11,7 +11,7 @@ protocol AuthenticationFormProtocol {
     var formIsValid: Bool { get }
 }
 
-// TODO: move this somewhere else
+// Move this to a more general location if reused elsewhere
 enum LoadingState<T> {
     case loading
     case loaded(T)
@@ -21,35 +21,33 @@ enum LoadingState<T> {
 @MainActor
 class AuthViewModel: ObservableObject {
     
-    @Published var userSession: AuthUser?
-    @Published var currentUser: User?
-    @Published var shouldNavigateToConfirmCodeScreen: Bool = false
+    @Published var userSession: AuthUser? // AWS Cognito user
+    @Published var currentUser: User? // FoodTruckFinder user
+    @Published var shouldNavigateToConfirmCodeScreen = false
     @Published var loadingState: LoadingState<Void> = .loading
     
     init() {
-        Task {
-            await checkAuthSession()
-        }
+        Task { await checkAuthSession() }
     }
     
     func signIn(withEmail email: String, password: String) async throws {
         try await withLoadingState {
             let signInResult = try await Amplify.Auth.signIn(username: email, password: password)
             if signInResult.isSignedIn {
-                print("DEBUG: User signed in successfully")
-                await self.fetchUser()
+                print("✅ User signed in successfully")
+                try await self.fetchUser()
             } else {
-                print("DEBUG: Additional steps required for sign-in")
+                print("⚠️ Additional steps required for sign-in")
             }
         }
     }
     
     func createUser(withEmail email: String, password: String, fullName: String, phoneNumber: String) async throws {
         try await withLoadingState {
-            let userAttributes = [
-                AuthUserAttribute(.email, value: email),
-                AuthUserAttribute(.name, value: fullName),
-                AuthUserAttribute(.phoneNumber, value: phoneNumber)
+            let userAttributes: [AuthUserAttribute] = [
+                .init(.email, value: email),
+                .init(.name, value: fullName),
+                .init(.phoneNumber, value: phoneNumber)
             ]
             let signUpResult = try await Amplify.Auth.signUp(
                 username: email,
@@ -59,12 +57,12 @@ class AuthViewModel: ObservableObject {
             
             switch signUpResult.nextStep {
             case .done:
-                print("✅ DEBUG: Sign-up complete")
-            case .confirmUser(_, _, _):
-                print("✅ DEBUG: Confirmation required. Please check your email for the verification code.")
+                print("✅ Sign-up complete")
+            case .confirmUser:
+                print("📩 Confirmation required. Check email for verification code.")
                 self.shouldNavigateToConfirmCodeScreen = true
             case .completeAutoSignIn(let session):
-                print("***** \(session)")
+                print("🔄 Auto sign-in session: \(session)")
             }
         }
     }
@@ -73,19 +71,25 @@ class AuthViewModel: ObservableObject {
         try await withLoadingState {
             let confirmResult = try await Amplify.Auth.confirmSignUp(for: email, confirmationCode: confirmationCode)
             if confirmResult.isSignUpComplete {
-                print("DEBUG: User confirmed successfully")
+                print("✅ User confirmed successfully")
             } else {
-                print("DEBUG: User confirmation incomplete")
+                print("⚠️ User confirmation incomplete")
             }
         }
     }
     
     func signOut() async {
-        try? await withLoadingState {
-            _ = try await Amplify.Auth.signOut()
-            self.userSession = nil
-            self.currentUser = nil
-            print("DEBUG: User signed out successfully")
+        do {
+            try await withLoadingState {
+                _ = await Amplify.Auth.signOut()
+                self.userSession = nil
+                self.currentUser = nil
+                print("🚪 User signed out successfully")
+            }
+        } catch {
+            // TODO: handle error
+            print("⚠️ Error signing out: \(error.localizedDescription)")
+            loadingState = .failed(error)
         }
     }
     
@@ -94,45 +98,48 @@ class AuthViewModel: ObservableObject {
             try await Amplify.Auth.deleteUser()
             self.userSession = nil
             self.currentUser = nil
-            print("DEBUG: User account deleted successfully")
+            print("🗑️ User account deleted successfully")
         }
     }
     
     func resetPassword(withEmail email: String) async throws {
         try await withLoadingState {
             let resetResult = try await Amplify.Auth.resetPassword(for: email)
-            if resetResult.isPasswordReset {
-                print("DEBUG: Password reset complete")
-            } else {
-                print("DEBUG: Further steps needed for password reset")
-            }
+            print(resetResult.isPasswordReset ? "✅ Password reset complete" : "⚠️ Further steps needed for password reset")
         }
     }
     
-    func fetchUser() async {
-        try? await withLoadingState {
+    func fetchUser() async throws {
+        try await withLoadingState {
             let attributes = try await Amplify.Auth.fetchUserAttributes()
-            let email = attributes.first(where: { $0.key == .email })?.value
-            let name = attributes.first(where: { $0.key == .name })?.value
+            let email = attributes.first(where: { $0.key == .email })?.value ?? "No Email"
+            let name = attributes.first(where: { $0.key == .name })?.value ?? "No Name"
             
+            self.userSession = try await Amplify.Auth.getCurrentUser()
             self.currentUser = User(
                 id: self.userSession?.userId ?? "Unknown",
                 type: .customer,
-                email: email ?? "No Email",
-                fullName: name ?? "No Name"
+                email: email,
+                fullName: name
             )
         }
     }
     
     func checkAuthSession() async {
-        try? await withLoadingState {
-            let session = try await Amplify.Auth.fetchAuthSession()
-            if session.isSignedIn {
-                self.userSession = try await Amplify.Auth.getCurrentUser()
-                await self.fetchUser()
-            } else {
-                self.userSession = nil
+        do {
+            try await withLoadingState {
+                let session = try await Amplify.Auth.fetchAuthSession()
+                if session.isSignedIn {
+                    self.userSession = try await Amplify.Auth.getCurrentUser()
+                    try await self.fetchUser()
+                } else {
+                    self.userSession = nil
+                }
             }
+        } catch {
+            // TODO: handle error
+            print("⚠️ Error checking authentication session: \(error.localizedDescription)")
+            loadingState = .failed(error)
         }
     }
 }
@@ -141,7 +148,7 @@ class AuthViewModel: ObservableObject {
 extension AuthViewModel {
     private func withLoadingState<T>(
         task: @escaping () async throws -> T
-    ) async rethrows -> T? {
+    ) async throws -> T {
         loadingState = .loading
         do {
             let result = try await task()
