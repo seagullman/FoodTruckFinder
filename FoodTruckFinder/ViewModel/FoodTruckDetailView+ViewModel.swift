@@ -27,7 +27,7 @@ extension FoodTruckDetailView {
         
         func mapRegionForFoodTruckLocation() -> MKCoordinateRegion? {
             if let foodTruck {
-                return MapHelper.mapRegion(forLocagtion: foodTruck.location)
+                return MapHelper.mapRegion(forLocation: foodTruck.location)
             }
             return nil
         }

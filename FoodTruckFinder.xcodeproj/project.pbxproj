@@ -15,7 +15,6 @@
 		C71BDB562B9AD2F500854478 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */; };
 		C71BDB582B9B7A3600854478 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C71BDB572B9B7A3600854478 /* FirebaseAuth */; };
 		C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB592B9B7D1E00854478 /* FTFAuthManager.swift */; };
-		C71BDB5F2B9E147D00854478 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB5E2B9E147D00854478 /* ViewRouter.swift */; };
 		C71BDB612B9E173800854478 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB602B9E173800854478 /* User.swift */; };
 		C71BDB632B9E1AFC00854478 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB622B9E1AFC00854478 /* LoginView.swift */; };
 		C71BDB652B9E56CC00854478 /* FoodTruckDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BDB642B9E56CC00854478 /* FoodTruckDetailView.swift */; };
@@ -94,7 +93,6 @@
 		C71BDB532B9AC98800854478 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C71BDB552B9AD2F500854478 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C71BDB592B9B7D1E00854478 /* FTFAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTFAuthManager.swift; sourceTree = "<group>"; };
-		C71BDB5E2B9E147D00854478 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		C71BDB602B9E173800854478 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C71BDB622B9E1AFC00854478 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C71BDB642B9E56CC00854478 /* FoodTruckDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckDetailView.swift; sourceTree = "<group>"; };
@@ -182,14 +180,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C71BDB5D2B9E146500854478 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				C71BDB5E2B9E147D00854478 /* ViewRouter.swift */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		C71BDB702BA0B09B00854478 /* Error Handling */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,7 +285,6 @@
 				C72679352B980568009D48DE /* LocationManager.swift */,
 				C71BDB532B9AC98800854478 /* NetworkManager.swift */,
 				C71BDB702BA0B09B00854478 /* Error Handling */,
-				C71BDB5D2B9E146500854478 /* Navigation */,
 				C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */,
 				C70094892C6426930052B965 /* MapHelper.swift */,
 			);
@@ -526,7 +515,6 @@
 				C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */,
 				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
 				C70094AE2C777E250052B965 /* NavigationMapService.swift in Sources */,
-				C71BDB5F2B9E147D00854478 /* ViewRouter.swift in Sources */,
 				C794B5A72C2F2571008F6558 /* RegistrationView.swift in Sources */,
 				C7957A5C2BA150110015DE0E /* SettingsView.swift in Sources */,
 				C71BDB612B9E173800854478 /* User.swift in Sources */,

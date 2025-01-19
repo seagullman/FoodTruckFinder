@@ -11,9 +11,10 @@ protocol AuthenticationFormProtocol {
     var formIsValid: Bool { get }
 }
 
-enum LoadingState {
+// TODO: move this somewhere else
+enum LoadingState<T> {
     case loading
-    case loaded
+    case loaded(T)
     case failed(Error)
 }
 
@@ -23,7 +24,7 @@ class AuthViewModel: ObservableObject {
     @Published var userSession: AuthUser?
     @Published var currentUser: User?
     @Published var shouldNavigateToConfirmCodeScreen: Bool = false
-    @Published var loadingState: LoadingState = .loading
+    @Published var loadingState: LoadingState<Void> = .loading
     
     init() {
         Task {
@@ -144,7 +145,7 @@ extension AuthViewModel {
         loadingState = .loading
         do {
             let result = try await task()
-            loadingState = .loaded
+            loadingState = .loaded(())
             return result
         } catch {
             loadingState = .failed(error)

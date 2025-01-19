@@ -36,43 +36,21 @@ struct FoodTruckListView: View {
     
     var body: some View {
         ZStack {
-            List {
-                ForEach(foodTruckStore.foodTruckListItems, id: \.id) { listItem in
-                    FoodTruckListCell(listItem: listItem)
-                        .onTapGesture {
-                            navigate(
-                                .foodTruck(
-                                    .detail(
-                                        id: listItem.id,
-                                        distanceInMiles: listItem.distanceInMiles
-                                    )
-                                )
-                            )
-                        }
-                }
+            switch foodTruckStore.foodTruckListLoadingState {
+            case .loading:
+                loadingView
+            case .loaded(let listItems):
+                foodTruckItemList(items: listItems)
+            case .failed(_):
+                // TODO: update with error handling
+                EmptyView()
             }
-            .disabled(foodTruckStore.isLoading)
-            .refreshable { foodTruckStore.locationManager.refreshLocation() }
-            .navigationTitle("Food Trucks")
-            .toolbar {
-                ToolbarItem {
-                    ListViewToolbarView(isLoading: false)
-                }
-            }
-            .onChange(of: foodTruckStore.locationManager.lastLocation) {
-                Task { await fetchFoodTrucks() }
-            }
-            .onChange(of: sharedDataModel.distance) {
-                Task { await fetchFoodTrucks() }
-            }
-            
-            if foodTruckStore.isLoading {
-                ProgressView {
-                    Text("Looking for food trucks near you...")
-                }
-                .progressViewStyle(CircularProgressViewStyle())
-                .controlSize(.large)
-            }
+        }
+        .onChange(of: foodTruckStore.locationManager.lastLocation) {
+            Task { await fetchFoodTrucks() }
+        }
+        .onChange(of: sharedDataModel.distance) {
+            Task { await fetchFoodTrucks() }
         }
         .task {
             if !initialLoadComplete {
@@ -86,6 +64,39 @@ struct FoodTruckListView: View {
         // TODO: add error handling
         if let location = foodTruckStore.locationManager.lastLocation {
             await foodTruckStore.fetchFoodTrucks(sharedDataModel.distance, of: location)
+        }
+    }
+    
+    var loadingView: some View {
+        ProgressView {
+            Text("Looking for food trucks near you...")
+        }
+        .progressViewStyle(CircularProgressViewStyle())
+        .controlSize(.large)
+    }
+    
+    func foodTruckItemList(items: [FoodTruckListItem]) -> some View {
+        List {
+            ForEach(items, id: \.id) { listItem in
+                FoodTruckListCell(listItem: listItem)
+                    .onTapGesture {
+                        navigate(
+                            .foodTruck(
+                                .detail(
+                                    id: listItem.id,
+                                    distanceInMiles: listItem.distanceInMiles
+                                )
+                            )
+                        )
+                    }
+            }
+        }
+        .refreshable { foodTruckStore.locationManager.refreshLocation() }
+        .navigationTitle("Food Trucks")
+        .toolbar {
+            ToolbarItem {
+                ListViewToolbarView(isLoading: false)
+            }
         }
     }
 }
