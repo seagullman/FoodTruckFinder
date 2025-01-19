@@ -60,5 +60,4 @@ class FoodTruckStore {
     func mapRegionForFoodTruck(location: FTFLocation) -> MKCoordinateRegion? {
         return MapHelper.mapRegion(forLocation: location)
     }
-    
 }

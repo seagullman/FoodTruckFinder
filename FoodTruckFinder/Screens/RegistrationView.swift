@@ -13,7 +13,7 @@ struct RegistrationView: View {
     @State var password: String = ""
     @State var confirmPassword: String = ""
     
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -74,7 +74,7 @@ struct RegistrationView: View {
             .padding(.horizontal)
             
             Button(action: {
-                Task { try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName, phoneNumber: "+17083055727")}
+                Task { try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName) }
             }, label: {
                 HStack {
                     Text("SIGN UP")
@@ -103,15 +103,20 @@ struct RegistrationView: View {
                 }
             })
         }
-        .sheet(isPresented: $authViewModel.shouldNavigateToConfirmCodeScreen) {
+        // TODO: this is not working
+        .sheet(isPresented: Binding(
+            get: { authViewModel.shouldNavigateToConfirmCodeScreen },
+            set: { authViewModel.shouldNavigateToConfirmCodeScreen = $0 }
+        )) {
             ConfirmCodeView()
         }
     }
 }
 
+// TODO: remove this and create new file
 struct ConfirmCodeView: View {
     
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
     @State private var code = ""
     
     var body: some View {
@@ -144,4 +149,5 @@ extension RegistrationView: AuthenticationFormProtocol {
 
 #Preview {
     RegistrationView()
+        .environment(AuthViewModel())
 }

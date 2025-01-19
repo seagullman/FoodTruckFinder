@@ -19,12 +19,13 @@ enum LoadingState<T> {
 }
 
 @MainActor
-class AuthViewModel: ObservableObject {
+@Observable
+class AuthViewModel {
     
-    @Published var userSession: AuthUser? // AWS Cognito user
-    @Published var currentUser: User? // FoodTruckFinder user
-    @Published var shouldNavigateToConfirmCodeScreen = false
-    @Published var loadingState: LoadingState<Void> = .loading
+    var userSession: AuthUser? // AWS Cognito user
+    var currentUser: User? // FoodTruckFinder user
+    var shouldNavigateToConfirmCodeScreen:  Bool = false
+    var loadingState: LoadingState<Void> = .loading
     
     init() {
         Task { await checkAuthSession() }
@@ -42,12 +43,11 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func createUser(withEmail email: String, password: String, fullName: String, phoneNumber: String) async throws {
+    func createUser(withEmail email: String, password: String, fullName: String) async throws {
         try await withLoadingState {
             let userAttributes: [AuthUserAttribute] = [
                 .init(.email, value: email),
-                .init(.name, value: fullName),
-                .init(.phoneNumber, value: phoneNumber)
+                .init(.name, value: fullName)
             ]
             let signUpResult = try await Amplify.Auth.signUp(
                 username: email,

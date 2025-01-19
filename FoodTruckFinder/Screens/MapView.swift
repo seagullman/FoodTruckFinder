@@ -8,16 +8,6 @@
 import SwiftUI
 import MapKit
 
-//
-// TODO: not sure if we are going to use this or just the FoodTruckListItem
-//
-struct FoodTruckLocation: Identifiable {
-    let id = UUID()
-    let name: String
-    let latitude: Double
-    let longitude: Double
-}
-
 struct MapView: View {
     
     @State private var viewModel = ViewModel()

@@ -10,7 +10,7 @@ import SwiftUI
 struct ResetPasswordView: View {
     @State var email: String = ""
     
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

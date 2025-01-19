@@ -13,7 +13,7 @@ struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
     
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
     
     var body: some View {
         NavigationStack {
@@ -82,6 +82,7 @@ struct LoginView: View {
                 // sign up button
                 
                 NavigationLink {
+                    // TODO: implement the navigation functionality
                     RegistrationView()
                         .navigationBarBackButtonHidden()
                 } label: {
@@ -114,4 +115,5 @@ extension LoginView: AuthenticationFormProtocol {
 
 #Preview {
     LoginView()
+        .environment(AuthViewModel())
 }
