@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
+    @Environment(AuthStore.self) var authViewModel: AuthStore
     
     var body: some View {
         if let user = authViewModel.currentUser {

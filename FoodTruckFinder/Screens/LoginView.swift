@@ -13,7 +13,7 @@ struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
     
-    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
+    @Environment(AuthStore.self) var authViewModel: AuthStore
     
     var body: some View {
         NavigationStack {
@@ -115,5 +115,5 @@ extension LoginView: AuthenticationFormProtocol {
 
 #Preview {
     LoginView()
-        .environment(AuthViewModel())
+        .environment(AuthStore())
 }

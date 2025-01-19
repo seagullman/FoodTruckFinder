@@ -1,5 +1,5 @@
 //
-//  AuthViewModel.swift
+//  AuthStore.swift
 //  FoodTruckFinder
 //
 //  Created by Brad Siegel on 6/28/24.
@@ -20,7 +20,7 @@ enum LoadingState<T> {
 
 @MainActor
 @Observable
-class AuthViewModel {
+class AuthStore {
     
     var userSession: AuthUser? // AWS Cognito user
     var currentUser: User? // FoodTruckFinder user
@@ -145,7 +145,7 @@ class AuthViewModel {
 }
 
 @MainActor
-extension AuthViewModel {
+extension AuthStore {
     private func withLoadingState<T>(
         task: @escaping () async throws -> T
     ) async throws -> T {

@@ -24,7 +24,7 @@ struct FoodTruckFinderApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var sharedDataModel = SharedDataModel()
-    @State private var authViewModel = AuthViewModel()
+    @State private var authViewModel = AuthStore()
     @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // TODO: Singleton necessary or no?
     @State private var selection: TabScreen?
     

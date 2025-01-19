@@ -13,7 +13,7 @@ struct RegistrationView: View {
     @State var password: String = ""
     @State var confirmPassword: String = ""
     
-    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
+    @Environment(AuthStore.self) var authViewModel: AuthStore
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -116,7 +116,7 @@ struct RegistrationView: View {
 // TODO: remove this and create new file
 struct ConfirmCodeView: View {
     
-    @Environment(AuthViewModel.self) var authViewModel: AuthViewModel
+    @Environment(AuthStore.self) var authViewModel: AuthStore
     @State private var code = ""
     
     var body: some View {
@@ -149,5 +149,5 @@ extension RegistrationView: AuthenticationFormProtocol {
 
 #Preview {
     RegistrationView()
-        .environment(AuthViewModel())
+        .environment(AuthStore())
 }
