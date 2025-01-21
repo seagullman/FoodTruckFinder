@@ -41,7 +41,6 @@ struct FoodTruckDetailView: View {
             }
         }
         .task(id: foodTruckId) {
-            print("🍌 .task(id: foodTruckId)")
             if !initialLoadComplete {
                 await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
                 initialLoadComplete.toggle()

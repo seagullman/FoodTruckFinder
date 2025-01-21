@@ -32,7 +32,13 @@ struct FoodTruckListView: View {
     @Environment(FoodTruckStore.self) private var foodTruckStore
     @EnvironmentObject var sharedDataModel: SharedDataModel
     
-    @State private var initialLoadComplete: Bool = false // TODO: figure out a better solution than using a bool
+    @State private var showDistanceFilter: Bool = false
+    
+    var contentHeight: CGFloat {
+        let rowHeight: CGFloat = 64 // Approximate row height
+        let padding: CGFloat = 50   // Extra space for safe area and title
+        return CGFloat(Constants.distanceFilterOptions.count) * rowHeight + padding
+    }
     
     var body: some View {
         ZStack {
@@ -46,6 +52,7 @@ struct FoodTruckListView: View {
                 EmptyView()
             }
         }
+        .navigationTitle("Food Trucks")
         .onChange(of: foodTruckStore.locationManager.lastLocation) {
             Task { await fetchFoodTrucks() }
         }
@@ -53,9 +60,10 @@ struct FoodTruckListView: View {
             Task { await fetchFoodTrucks() }
         }
         .task {
-            if !initialLoadComplete {
+            guard case .loaded = foodTruckStore.foodTruckListLoadingState else {
+                
                 foodTruckStore.locationManager.refreshLocation()
-                initialLoadComplete.toggle()
+                return
             }
         }
     }
@@ -86,7 +94,7 @@ struct FoodTruckListView: View {
                     } description: {
                         Text("Try expanding your search or checking back later — more trucks might roll in soon!")
                         Button {
-                            print()
+                            self.showDistanceFilter = true
                         } label: {
                             Text("Expand Search Area")
                                 .padding(5)
@@ -112,11 +120,20 @@ struct FoodTruckListView: View {
                 .refreshable { foodTruckStore.locationManager.refreshLocation() }
             }
         }
-        .navigationTitle("Food Trucks")
         .toolbar {
             ToolbarItem {
-                ListViewToolbarView(isLoading: false)
+                Button(action: {
+                    self.showDistanceFilter = true
+                }, label: {
+                    Image(systemName: "slider.vertical.3")
+                })
             }
+        }
+        .sheet(isPresented: $showDistanceFilter) {
+            DistanceFilterView(isPresented: $showDistanceFilter)
+                .presentationDetents([.height(contentHeight)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(16)
         }
     }
 }
