@@ -13,10 +13,12 @@ struct RegistrationView: View {
     @State var password: String = ""
     @State var confirmPassword: String = ""
     
-    @Environment(AuthStore.self) var authViewModel: AuthStore
+    @Environment(AuthStore.self) var authStore: AuthStore
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
+        @Bindable var authStore = authStore
+        
         VStack {
             Image("food-truck-clipart")
                 .resizable()
@@ -74,7 +76,7 @@ struct RegistrationView: View {
             .padding(.horizontal)
             
             Button(action: {
-                Task { try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName) }
+                Task { try await authStore.createUser(withEmail: email, password: password, fullName: fullName) }
             }, label: {
                 HStack {
                     Text("SIGN UP")
@@ -103,11 +105,7 @@ struct RegistrationView: View {
                 }
             })
         }
-        // TODO: this is not working
-        .sheet(isPresented: Binding(
-            get: { authViewModel.shouldNavigateToConfirmCodeScreen },
-            set: { authViewModel.shouldNavigateToConfirmCodeScreen = $0 }
-        )) {
+        .sheet(isPresented: $authStore.shouldNavigateToConfirmCodeScreen) {
             ConfirmCodeView()
         }
     }

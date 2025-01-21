@@ -9,12 +9,14 @@ import SwiftUI
 
 class SharedDataModel: ObservableObject {
     
-    private let distanceKey = "distance"
+    private let distanceFilterOptionKey = "distanceFilterOption"
     private let navigationMapServiceKey = "navigationMapService"
     
-   @Published var distance: Double {
+    @Published var distanceFilterOption: FilterOption {
         didSet {
-            UserDefaults.standard.set(distance, forKey: distanceKey)
+            if let encoded = try? JSONEncoder().encode(distanceFilterOption) {
+                UserDefaults.standard.set(encoded, forKey: distanceFilterOptionKey)
+            }
         }
     }
     
@@ -27,9 +29,13 @@ class SharedDataModel: ObservableObject {
     }
     
     init() {
-        // Load distance from UserDefaults or use default value
-        let savedValue = UserDefaults.standard.double(forKey: distanceKey)
-        distance = savedValue == 0 ? 5.0 : savedValue
+        // Load distanceFilterOption from UserDefaults
+        if let savedData = UserDefaults.standard.data(forKey: distanceFilterOptionKey),
+           let decodedOption = try? JSONDecoder().decode(FilterOption.self, from: savedData) {
+            self.distanceFilterOption = decodedOption
+        } else {
+            self.distanceFilterOption = FilterOption(text: "5 miles", value: 5.0)
+        }
         
         // Load navigationMapService from UserDefaults or use default value
         if let savedData = UserDefaults.standard.data(forKey: navigationMapServiceKey),

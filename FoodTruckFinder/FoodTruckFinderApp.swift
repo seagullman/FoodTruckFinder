@@ -24,7 +24,7 @@ struct FoodTruckFinderApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var sharedDataModel = SharedDataModel()
-    @State private var authViewModel = AuthStore()
+    @State private var authStore = AuthStore()
     @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // TODO: Singleton necessary or no?
     @State private var selection: TabScreen?
     
@@ -34,12 +34,11 @@ struct FoodTruckFinderApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ConfirmCodeView() // TODO: remove
-            switch authViewModel.loadingState {
+            switch authStore.loadingState {
             case .loading:
                 FullScreenLoadingView() // TODO: customize this
             case .loaded:
-                if authViewModel.userSession != nil {
+                if authStore.userSession != nil {
                     
                     FTFTabView(selection: $selection)
                         .tint(.red)
@@ -53,7 +52,7 @@ struct FoodTruckFinderApp: App {
                 // TODO: handle error /  maybe a retry button or just show login
                 EmptyView()
             }
-        }.environment(authViewModel)
+        }.environment(authStore)
     }
     
     func configureAmplify() {

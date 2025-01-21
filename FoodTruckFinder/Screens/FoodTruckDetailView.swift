@@ -11,11 +11,12 @@ import MapKit
 struct FoodTruckDetailView: View {
     
     @Environment(FoodTruckStore.self) private var foodTruckStore
+    
     @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var initialLoadComplete: Bool = false // TODO: figure out a better solution than using a bool
     
     let foodTruckId: String
     let distanceInMiles: Double
-    
     
     var body: some View {
         ScrollView {
@@ -24,7 +25,13 @@ struct FoodTruckDetailView: View {
                 FullScreenLoadingView()
             case .loaded(let foodTruck):
                 if let foodTruck {
+                    // Center the map pin in the center of the header
                     detailView(foodTruck: foodTruck)
+                        .task {
+                            if let region = foodTruckStore.mapRegionForFoodTruck(location: foodTruck.location) {
+                                cameraPosition = .region(region)
+                            }
+                        }
                 } else {
                     // TODO: show error view
                 }
@@ -33,16 +40,13 @@ struct FoodTruckDetailView: View {
                 EmptyView()
             }
         }
-        .task(id: foodTruckId) {  // ✅ This ensures it only runs when foodTruckId changes
-            await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
+        .task(id: foodTruckId) {
+            print("🍌 .task(id: foodTruckId)")
+            if !initialLoadComplete {
+                await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
+                initialLoadComplete.toggle()
+            }
         }
-        // TODO: fix this, maybe make the region a published var or add it to a tuple with the LoadingState enum
-//        .onChange(of: foodTruckStore.foodTruck) {
-//            // Center the map pin in the center of the header
-//            guard let region = foodTruckStore.mapRegionForFoodTruckLocation() else { return }
-//            
-//            cameraPosition = .region(region)
-//        }
         .navigationBarTitleDisplayMode(.inline)
     }
     

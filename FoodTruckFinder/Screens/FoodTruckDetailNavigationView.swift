@@ -70,6 +70,7 @@ struct FoodTruckDetailNavigationView: View {
             }
             .onAppear {
                 guard let region = MapHelper.mapRegion(forLocation: location) else { return }
+                
                 cameraPosition = .region(region)
             }
             .navigationTitle(name)

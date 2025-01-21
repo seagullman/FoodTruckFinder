@@ -51,6 +51,7 @@
 		C73D3D6D2C56D2F20098D1F9 /* FoodTruckDetailLocationCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73D3D6C2C56D2F20098D1F9 /* FoodTruckDetailLocationCellView.swift */; };
 		C73D3D8F2C597C220098D1F9 /* NavigationMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73D3D8E2C597C220098D1F9 /* NavigationMenuView.swift */; };
 		C756769B2C63F1B3000C1F04 /* NavigationServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C756769A2C63F1B3000C1F04 /* NavigationServiceView.swift */; };
+		C7704A732D3DFC380023C12F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7704A722D3DFC380023C12F /* Constants.swift */; };
 		C77985032B98FFAD00184FED /* ListViewToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77985022B98FFAD00184FED /* ListViewToolbarView.swift */; };
 		C794B5A12C2F175B008F6558 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C794B5A02C2F175B008F6558 /* FirebaseAuth */; };
 		C794B5A32C2F175B008F6558 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C794B5A22C2F175B008F6558 /* FirebaseFirestore */; };
@@ -127,6 +128,7 @@
 		C73D3D6C2C56D2F20098D1F9 /* FoodTruckDetailLocationCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckDetailLocationCellView.swift; sourceTree = "<group>"; };
 		C73D3D8E2C597C220098D1F9 /* NavigationMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuView.swift; sourceTree = "<group>"; };
 		C756769A2C63F1B3000C1F04 /* NavigationServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationServiceView.swift; sourceTree = "<group>"; };
+		C7704A722D3DFC380023C12F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C77985022B98FFAD00184FED /* ListViewToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewToolbarView.swift; sourceTree = "<group>"; };
 		C794B5A42C2F1A9F008F6558 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		C794B5A62C2F2571008F6558 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				C71BDB702BA0B09B00854478 /* Error Handling */,
 				C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */,
 				C70094892C6426930052B965 /* MapHelper.swift */,
+				C7704A722D3DFC380023C12F /* Constants.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				C72679362B980568009D48DE /* LocationManager.swift in Sources */,
 				C71BDB742BA0B22400854478 /* FTFError.swift in Sources */,
 				C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */,
+				C7704A732D3DFC380023C12F /* Constants.swift in Sources */,
 				C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */,
 				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
 				C70094AE2C777E250052B965 /* NavigationMapService.swift in Sources */,

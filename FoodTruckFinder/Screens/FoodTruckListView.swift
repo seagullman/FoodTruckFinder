@@ -49,13 +49,13 @@ struct FoodTruckListView: View {
         .onChange(of: foodTruckStore.locationManager.lastLocation) {
             Task { await fetchFoodTrucks() }
         }
-        .onChange(of: sharedDataModel.distance) {
+        .onChange(of: sharedDataModel.distanceFilterOption) {
             Task { await fetchFoodTrucks() }
         }
         .task {
             if !initialLoadComplete {
                 foodTruckStore.locationManager.refreshLocation()
-                initialLoadComplete = true
+                initialLoadComplete.toggle()
             }
         }
     }
@@ -63,7 +63,7 @@ struct FoodTruckListView: View {
     func fetchFoodTrucks() async {
         // TODO: add error handling
         if let location = foodTruckStore.locationManager.lastLocation {
-            await foodTruckStore.fetchFoodTrucks(sharedDataModel.distance, of: location)
+            await foodTruckStore.fetchFoodTrucks(sharedDataModel.distanceFilterOption.value, of: location)
         }
     }
     
@@ -76,22 +76,42 @@ struct FoodTruckListView: View {
     }
     
     func foodTruckItemList(items: [FoodTruckListItem]) -> some View {
-        List {
-            ForEach(items, id: \.id) { listItem in
-                FoodTruckListCell(listItem: listItem)
-                    .onTapGesture {
-                        navigate(
-                            .foodTruck(
-                                .detail(
-                                    id: listItem.id,
-                                    distanceInMiles: listItem.distanceInMiles
-                                )
-                            )
-                        )
+        VStack {
+            if items.isEmpty {
+                VStack {
+                    // TODO: move this to another file
+                    ContentUnavailableView {
+                        Label("No Food Trucks Found", systemImage: "magnifyingglass")
+                        
+                    } description: {
+                        Text("Try expanding your search or checking back later — more trucks might roll in soon!")
+                        Button {
+                            print()
+                        } label: {
+                            Text("Expand Search Area")
+                                .padding(5)
+                        }.buttonStyle(.bordered).tint(.secondary)
                     }
+                }
+            } else {
+                List {
+                    ForEach(items, id: \.id) { listItem in
+                        FoodTruckListCell(listItem: listItem)
+                            .onTapGesture {
+                                navigate(
+                                    .foodTruck(
+                                        .detail(
+                                            id: listItem.id,
+                                            distanceInMiles: listItem.distanceInMiles
+                                        )
+                                    )
+                                )
+                            }
+                    }
+                }
+                .refreshable { foodTruckStore.locationManager.refreshLocation() }
             }
         }
-        .refreshable { foodTruckStore.locationManager.refreshLocation() }
         .navigationTitle("Food Trucks")
         .toolbar {
             ToolbarItem {

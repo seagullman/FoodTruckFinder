@@ -27,12 +27,12 @@ struct MapView: View {
                 .frame(width: 150, height: 150)
         }
         .onAppear { fetchFoodTrucks() }
-        .onChange(of: sharedDataModel.distance) { fetchFoodTrucks() }
+        .onChange(of: sharedDataModel.distanceFilterOption.value) { fetchFoodTrucks() }
     }
     
     func fetchFoodTrucks() {
         if let location = viewModel.locationManager.lastLocation {
-            Task { await viewModel.fetchFoodTrucks(sharedDataModel.distance, of: location) }
+            Task { await viewModel.fetchFoodTrucks(sharedDataModel.distanceFilterOption.value, of: location) }
         }
     }
 }
