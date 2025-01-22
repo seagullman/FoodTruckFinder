@@ -30,8 +30,6 @@ struct ListViewToolbarView: View {
     }
 }
 
-//Text("1 mile")
-//    .tag(1.0)
 #Preview {
     ListViewToolbarView(isLoading: false)
 }

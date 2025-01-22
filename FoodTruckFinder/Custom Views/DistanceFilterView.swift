@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DistanceFilterView: View, ShapeStyle {
+struct DistanceFilterView: View {
 
     @EnvironmentObject var sharedDataModel: SharedDataModel
     @Binding var isPresented: Bool

@@ -24,7 +24,6 @@ class AuthStore {
     
     var userSession: AuthUser? // AWS Cognito user
     var currentUser: User? // FoodTruckFinder user
-    var shouldNavigateToConfirmCodeScreen:  Bool = false
     var loadingState: LoadingState<Void> = .loading
     
     init() {
@@ -60,7 +59,6 @@ class AuthStore {
                 print("✅ Sign-up complete")
             case .confirmUser:
                 print("📩 Confirmation required. Check email for verification code.")
-                self.shouldNavigateToConfirmCodeScreen = true
             case .completeAutoSignIn(let session):
                 print("🔄 Auto sign-in session: \(session)")
             }

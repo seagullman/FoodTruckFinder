@@ -52,6 +52,7 @@
 		C73D3D8F2C597C220098D1F9 /* NavigationMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73D3D8E2C597C220098D1F9 /* NavigationMenuView.swift */; };
 		C756769B2C63F1B3000C1F04 /* NavigationServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C756769A2C63F1B3000C1F04 /* NavigationServiceView.swift */; };
 		C76F3B4E2D3F587A00BF2B26 /* DistanceFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F3B4D2D3F587A00BF2B26 /* DistanceFilterView.swift */; };
+		C76F3B502D40301700BF2B26 /* ConfirmCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F3B4F2D40301700BF2B26 /* ConfirmCodeView.swift */; };
 		C7704A732D3DFC380023C12F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7704A722D3DFC380023C12F /* Constants.swift */; };
 		C77985032B98FFAD00184FED /* ListViewToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77985022B98FFAD00184FED /* ListViewToolbarView.swift */; };
 		C794B5A12C2F175B008F6558 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C794B5A02C2F175B008F6558 /* FirebaseAuth */; };
@@ -130,6 +131,7 @@
 		C73D3D8E2C597C220098D1F9 /* NavigationMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuView.swift; sourceTree = "<group>"; };
 		C756769A2C63F1B3000C1F04 /* NavigationServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationServiceView.swift; sourceTree = "<group>"; };
 		C76F3B4D2D3F587A00BF2B26 /* DistanceFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFilterView.swift; sourceTree = "<group>"; };
+		C76F3B4F2D40301700BF2B26 /* ConfirmCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmCodeView.swift; sourceTree = "<group>"; };
 		C7704A722D3DFC380023C12F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C77985022B98FFAD00184FED /* ListViewToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewToolbarView.swift; sourceTree = "<group>"; };
 		C794B5A42C2F1A9F008F6558 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				C794B5A62C2F2571008F6558 /* RegistrationView.swift */,
 				C794B5AC2C2F56EC008F6558 /* ResetPasswordView.swift */,
 				C7957A5B2BA150110015DE0E /* SettingsView.swift */,
+				C76F3B4F2D40301700BF2B26 /* ConfirmCodeView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				C72679202B97C6F3009D48DE /* FoodTruck.swift in Sources */,
 				C794B5AB2C2F42EB008F6558 /* SettingsRowView.swift in Sources */,
 				C7EF914D2C053BE20034AB8B /* SharedDataModel.swift in Sources */,
+				C76F3B502D40301700BF2B26 /* ConfirmCodeView.swift in Sources */,
 				C794B5AD2C2F56EC008F6558 /* ResetPasswordView.swift in Sources */,
 				C71BDB5A2B9B7D1E00854478 /* FTFAuthManager.swift in Sources */,
 				C73D3D8F2C597C220098D1F9 /* NavigationMenuView.swift in Sources */,
