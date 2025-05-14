@@ -33,6 +33,7 @@ struct FoodTruckListView: View {
     @EnvironmentObject var sharedDataModel: SharedDataModel
     
     @State private var showDistanceFilter: Bool = false
+    @State private var errorItem: AlertItem?
     
     var contentHeight: CGFloat {
         let rowHeight: CGFloat = 64 // Approximate row height
@@ -47,11 +48,18 @@ struct FoodTruckListView: View {
                 loadingView
             case .loaded(let listItems):
                 foodTruckItemList(items: listItems)
-            case .failed(_):
-                // TODO: update with error handling
+            case .failed(let errorItem):
                 EmptyView()
             }
         }
+//        .onChange(of: foodTruckStore.foodTruckListLoadingState) { newState in
+//            if case .failed(let errorItem) = newState {
+//                self.errorItem = errorItem
+//            }
+//        }
+//        .alert(item: $errorItem) { error in
+//            Alert(title: Text(error.title), message: Text(error.message), dismissButton: .default(Text("OK")))
+//        }
         .navigationTitle("Food Trucks")
         .onChange(of: foodTruckStore.locationManager.lastLocation) {
             Task { await fetchFoodTrucks() }

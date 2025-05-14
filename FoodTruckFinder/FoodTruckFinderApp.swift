@@ -28,6 +28,8 @@ struct FoodTruckFinderApp: App {
     @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // TODO: Singleton necessary or no?
     @State private var selection: TabScreen?
     
+    @State private var routes: [Route] = []
+    
     init() {
         configureAmplify()
     }
@@ -36,23 +38,22 @@ struct FoodTruckFinderApp: App {
         WindowGroup {
             switch authStore.loadingState {
             case .loading:
-                FullScreenLoadingView() // TODO: customize this
+                FullScreenLoadingView() // TODO: this is called when the user registers a new account, prevents navigation to the one time code entry screen.
             case .loaded:
                 if authStore.userSession != nil {
-                    
                     FTFTabView(selection: $selection)
                         .tint(.red)
-                        .environmentObject(sharedDataModel)
                         .environment(foodTruckStore)
-                    
                 } else {
-                    LoginView()
+                    UnauthenticatedNavigationStack()
                 }
             case .failed(let error):
                 // TODO: handle error /  maybe a retry button or just show login
                 EmptyView()
             }
-        }.environment(authStore)
+        }
+        .environment(authStore)
+        .environmentObject(sharedDataModel)
     }
     
     func configureAmplify() {

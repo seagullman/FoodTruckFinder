@@ -11,7 +11,7 @@ struct ConfirmCodeView: View {
     @Environment(AuthStore.self) var authStore: AuthStore
     @State private var code = ""
     
-//    let email: String
+    let email: String
     
     var body: some View {
         VStack {
@@ -19,7 +19,7 @@ struct ConfirmCodeView: View {
             TextField("ONe time code", text: $code)
             Button {
                 print("🫣 user: \(authStore.currentUser?.email)")
-//                Task { try await authStore.confirmSignUp(email: email, confirmationCode: code) }
+                Task { try await authStore.confirmSignUp(email: email, confirmationCode: code) }
             } label: {
                 Text("CONFIRM")
             }
@@ -29,6 +29,6 @@ struct ConfirmCodeView: View {
 }
 
 #Preview {
-    ConfirmCodeView()
+    ConfirmCodeView(email: "test@email.com")
         .environment(AuthStore())
 }

@@ -15,6 +15,7 @@ struct RegistrationView: View {
     
     @Environment(AuthStore.self) var authStore: AuthStore
     @Environment(\.dismiss) var dismiss
+    @Environment(\.navigate) var navigate
     
     var body: some View {
         @Bindable var authStore = authStore
@@ -77,8 +78,11 @@ struct RegistrationView: View {
             
             Button(action: {
                 Task {
+                    // TODO: screen does not navigate when this is uncommented, works when commented
+                    // In FoodTruckApp.swift, the switch on loading state is showing the full screen loading 
                     try await authStore.createUser(withEmail: email, password: password, fullName: fullName)
-                    // TODO: call navigate
+                    
+                    navigate(.unauthenticated(.codeConfirmation(email: email)))
                 }
             }, label: {
                 HStack {

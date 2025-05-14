@@ -19,34 +19,42 @@ struct FoodTruckDetailView: View {
     let distanceInMiles: Double
     
     var body: some View {
-        ScrollView {
+        ZStack {
             switch foodTruckStore.foodTruckLoadingState {
             case .loading:
                 FullScreenLoadingView()
             case .loaded(let foodTruck):
-                if let foodTruck {
-                    // Center the map pin in the center of the header
-                    detailView(foodTruck: foodTruck)
-                        .task {
-                            if let region = foodTruckStore.mapRegionForFoodTruck(location: foodTruck.location) {
-                                cameraPosition = .region(region)
-                            }
-                        }
-                } else {
-                    // TODO: show error view
-                }
+                loadedView(foodTruck: foodTruck)
             case .failed(let error):
                 // TODO: change this parameter to use AlertContext and set a variable to the alert to show an error alert
                 EmptyView()
             }
         }
         .task(id: foodTruckId) {
-            if !initialLoadComplete {
+            guard case .loaded = foodTruckStore.foodTruckLoadingState else {
                 await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
-                initialLoadComplete.toggle()
+                return
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    private func loadedView(foodTruck: FoodTruck?) -> some View {
+        if let foodTruck {
+            ScrollView {
+                // Center the map pin in the center of the header
+                detailView(foodTruck: foodTruck)
+                    .task {
+                        if let region = await foodTruckStore.mapRegionForFoodTruck(location: foodTruck.location) {
+                            cameraPosition = .region(region)
+                        }
+                    }
+            }
+        } else {
+            // TODO: show error view
+            EmptyView()
+        }
     }
     
     private func detailView(foodTruck: FoodTruck) -> some View {

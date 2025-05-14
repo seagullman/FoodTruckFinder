@@ -15,7 +15,7 @@ protocol AuthenticationFormProtocol {
 enum LoadingState<T> {
     case loading
     case loaded(T)
-    case failed(Error)
+    case failed(AlertItem)
 }
 
 @MainActor
@@ -31,48 +31,66 @@ class AuthStore {
     }
     
     func signIn(withEmail email: String, password: String) async throws {
-        try await withLoadingState {
-            let signInResult = try await Amplify.Auth.signIn(username: email, password: password)
-            if signInResult.isSignedIn {
-                print("✅ User signed in successfully")
-                try await self.fetchUser()
-            } else {
-                print("⚠️ Additional steps required for sign-in")
+        do {
+            try await withLoadingState {
+                let signInResult = try await Amplify.Auth.signIn(username: email, password: password)
+                if signInResult.isSignedIn {
+                    print("✅ User signed in successfully")
+                    try await self.fetchUser()
+                } else {
+                    print("⚠️ Additional steps required for sign-in")
+                }
             }
+        } catch {
+            // TODO: handle error
+            print("⚠️ Error signing up: \(error.localizedDescription)")
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
         }
     }
     
     func createUser(withEmail email: String, password: String, fullName: String) async throws {
-        try await withLoadingState {
-            let userAttributes: [AuthUserAttribute] = [
-                .init(.email, value: email),
-                .init(.name, value: fullName)
-            ]
-            let signUpResult = try await Amplify.Auth.signUp(
-                username: email,
-                password: password,
-                options: .init(userAttributes: userAttributes)
-            )
-            
-            switch signUpResult.nextStep {
-            case .done:
-                print("✅ Sign-up complete")
-            case .confirmUser:
-                print("📩 Confirmation required. Check email for verification code.")
-            case .completeAutoSignIn(let session):
-                print("🔄 Auto sign-in session: \(session)")
-            }
+        do {
+//            try await withLoadingState {
+                let userAttributes: [AuthUserAttribute] = [
+                    .init(.email, value: email),
+                    .init(.name, value: fullName)
+                ]
+                let signUpResult = try await Amplify.Auth.signUp(
+                    username: email,
+                    password: password,
+                    options: .init(userAttributes: userAttributes)
+                )
+                
+                switch signUpResult.nextStep {
+                case .done:
+                    print("✅ Sign-up complete")
+                case .confirmUser:
+                    print("📩 Confirmation required. Check email for verification code.")
+                case .completeAutoSignIn(let session):
+                    print("🔄 Auto sign-in session: \(session)")
+                }
+//            }
+        } catch {
+            // TODO: handle error
+            print("⚠️ Error signing up: \(error.localizedDescription)")
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
         }
     }
     
     func confirmSignUp(email: String, confirmationCode: String) async throws {
-        try await withLoadingState {
-            let confirmResult = try await Amplify.Auth.confirmSignUp(for: email, confirmationCode: confirmationCode)
-            if confirmResult.isSignUpComplete {
-                print("✅ User confirmed successfully")
-            } else {
-                print("⚠️ User confirmation incomplete")
+        do {
+            try await withLoadingState {
+                let confirmResult = try await Amplify.Auth.confirmSignUp(for: email, confirmationCode: confirmationCode)
+                if confirmResult.isSignUpComplete {
+                    print("✅ User confirmed successfully")
+                } else {
+                    print("⚠️ User confirmation incomplete")
+                }
             }
+        } catch {
+            // TODO: handle error
+            print("⚠️ Error signing up: \(error.localizedDescription)")
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
         }
     }
     
@@ -87,7 +105,7 @@ class AuthStore {
         } catch {
             // TODO: handle error
             print("⚠️ Error signing out: \(error.localizedDescription)")
-            loadingState = .failed(error)
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
         }
     }
     
@@ -137,7 +155,7 @@ class AuthStore {
         } catch {
             // TODO: handle error
             print("⚠️ Error checking authentication session: \(error.localizedDescription)")
-            loadingState = .failed(error)
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
         }
     }
 }
@@ -153,7 +171,7 @@ extension AuthStore {
             loadingState = .loaded(())
             return result
         } catch {
-            loadingState = .failed(error)
+            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param
             throw error
         }
     }

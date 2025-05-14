@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: Routes
+
 enum FoodTruckRoute: Hashable {
     case list
     case detail(id: String, distanceInMiles: Double)
@@ -21,6 +23,21 @@ enum FoodTruckRoute: Hashable {
             FoodTruckDetailView(foodTruckId: id, distanceInMiles: distanceInMiles)
         case .info(let name, let location, let closingTimeDateString):
             FoodTruckDetailNavigationView(name: name, location: location, openUntil: closingTimeDateString)
+        }
+    }
+}
+
+enum UnauthenticatedRoute: Hashable {
+    case codeConfirmation(email: String)
+    case registration
+    
+    @ViewBuilder
+    var destination: some View {
+        switch self {
+        case .codeConfirmation(let email):
+            ConfirmCodeView(email: email)
+        case .registration:
+            RegistrationView()
         }
     }
 }
@@ -61,11 +78,15 @@ enum TabScreen: Hashable, Identifiable, CaseIterable {
 
 enum Route: Hashable {
     case foodTruck(FoodTruckRoute)
+    case unauthenticated(UnauthenticatedRoute)
     
+    @ViewBuilder
     var destination: some View {
         switch self {
         case .foodTruck(let foodTruckRoute):
             foodTruckRoute.destination
+        case .unauthenticated(let unauthenticatedRoute):
+            unauthenticatedRoute.destination
         }
     }
 }

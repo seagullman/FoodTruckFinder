@@ -36,12 +36,10 @@ class FoodTruckStore {
             let foodTruckListItems = try await httpClient.getFoodTrucks(within: withinMiles, of: location)
             self.foodTruckListLoadingState = .loaded(foodTruckListItems)
         } catch {
-            // TODO: handle error
+            // TODO: handle errord
             print("❌ Error fetching food trucks: \(error.localizedDescription)")
-            self.foodTruckListLoadingState = .failed(error)
+            self.foodTruckListLoadingState = .failed(AlertContext.invalidRequest)
         }
-        
-        print("✅ fetchFoodTrucks: end")
     }
     
     func fetchFoodTruckBy(id: String) async {
@@ -53,7 +51,7 @@ class FoodTruckStore {
         } catch {
             // TODO: handle error
             print("***** Error fetching food truck: \(error)")
-            self.foodTruckLoadingState = .failed(error)
+            self.foodTruckLoadingState = .failed(AlertContext.invalidRequest)
         }
     }
     
