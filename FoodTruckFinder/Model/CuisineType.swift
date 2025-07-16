@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum CuisineType: String, Codable {
+public enum CuisineType: String, Codable, CaseIterable {
     case american   = "american"
     case coffee     = "coffee"
     case mexican    = "mexican"
@@ -39,5 +39,9 @@ public enum CuisineType: String, Codable {
         case .pizza:
             return "Pizza"
         }
+    }
+    
+    var displayName: String {
+        return description
     }
 }

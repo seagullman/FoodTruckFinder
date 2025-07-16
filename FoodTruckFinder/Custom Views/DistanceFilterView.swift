@@ -13,10 +13,12 @@ struct DistanceFilterView: View {
     @Binding var isPresented: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) { // Adds spacing between options
+        VStack(alignment: .leading, spacing: 16) {
             Text("Select search distance")
-                .font(.subheadline)
-                .padding(.bottom)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.primary)
+                .padding(.bottom, 4)
+            
             ForEach(Constants.distanceFilterOptions) { option in
                 Button(action: {
                     sharedDataModel.distanceFilterOption = option
@@ -24,23 +26,30 @@ struct DistanceFilterView: View {
                 }) {
                     HStack {
                         Text(option.text)
-                            .font(.headline)
-                            .foregroundColor(.white).bold()
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(option == sharedDataModel.distanceFilterOption ? .white : .primary)
+                        
                         Spacer()
+                        
                         if option == sharedDataModel.distanceFilterOption {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.white) // Make checkmark stand out
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
                         }
                     }
-                    .padding()
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(option == sharedDataModel.distanceFilterOption ? Color.red : Color(.systemGray6))
+                    )
                     .frame(maxWidth: .infinity)
-                    .background(.red) // Light red background
-                    .cornerRadius(12) // Rounded corners
                 }
-                .buttonStyle(.plain) // Removes default button styling
+                .buttonStyle(PlainButtonStyle())
             }
         }
-        .padding(.horizontal) // Adds spacing on the sides
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
     }
 }
 
