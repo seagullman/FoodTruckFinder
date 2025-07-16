@@ -18,7 +18,7 @@ enum FoodTruckRoute: Hashable {
     var destination: some View {
         switch self {
         case .list:
-            FoodTruckNavigationStack()
+            FoodTruckListView()
         case .detail(let id, let distanceInMiles):
             FoodTruckDetailView(foodTruckId: id, distanceInMiles: distanceInMiles)
         case .info(let name, let location, let closingTimeDateString):
@@ -67,7 +67,7 @@ enum TabScreen: Hashable, Identifiable, CaseIterable {
     var destination: some View {
         switch self {
         case .list:
-            FoodTruckNavigationStack()
+            FoodTruckListView()
         case .map:
             MapView()
         case .settings:

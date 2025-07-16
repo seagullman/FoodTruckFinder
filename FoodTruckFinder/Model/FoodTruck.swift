@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FoodTruckListItem: Codable, Identifiable {
+struct FoodTruckListItem: Codable, Identifiable, Equatable {
     let id: String
     let name: String
     let description: String
@@ -15,6 +15,7 @@ struct FoodTruckListItem: Codable, Identifiable {
     let latitude: Double
     let longitude: Double
     let imageUrl: String?
+    let cuisineType: CuisineType?
 }
 
 struct FoodTruck: Codable, Hashable, Identifiable {

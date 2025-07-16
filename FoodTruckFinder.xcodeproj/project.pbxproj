@@ -55,6 +55,11 @@
 		C76F3B502D40301700BF2B26 /* ConfirmCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F3B4F2D40301700BF2B26 /* ConfirmCodeView.swift */; };
 		C7704A732D3DFC380023C12F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7704A722D3DFC380023C12F /* Constants.swift */; };
 		C77985032B98FFAD00184FED /* ListViewToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77985022B98FFAD00184FED /* ListViewToolbarView.swift */; };
+		C77CAEE02E26BA3B00F30918 /* FoodTruckMapDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77CAEDE2E26BA3B00F30918 /* FoodTruckMapDetailSheet.swift */; };
+		C77CAEE12E26BA3B00F30918 /* FoodTruckMapMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77CAEDF2E26BA3B00F30918 /* FoodTruckMapMarker.swift */; };
+		C77CAEE32E26C2C300F30918 /* FoodTruckBottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77CAEE22E26C2C300F30918 /* FoodTruckBottomOverlay.swift */; };
+		C77CAEE52E26DA3C00F30918 /* FoodTruckCompactOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77CAEE42E26DA3C00F30918 /* FoodTruckCompactOverlay.swift */; };
+		C77CAEE72E2744FB00F30918 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77CAEE62E2744FB00F30918 /* LoadingState.swift */; };
 		C794B5A12C2F175B008F6558 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C794B5A02C2F175B008F6558 /* FirebaseAuth */; };
 		C794B5A32C2F175B008F6558 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C794B5A22C2F175B008F6558 /* FirebaseFirestore */; };
 		C794B5A52C2F1A9F008F6558 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C794B5A42C2F1A9F008F6558 /* AuthStore.swift */; };
@@ -134,6 +139,11 @@
 		C76F3B4F2D40301700BF2B26 /* ConfirmCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmCodeView.swift; sourceTree = "<group>"; };
 		C7704A722D3DFC380023C12F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C77985022B98FFAD00184FED /* ListViewToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewToolbarView.swift; sourceTree = "<group>"; };
+		C77CAEDE2E26BA3B00F30918 /* FoodTruckMapDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckMapDetailSheet.swift; sourceTree = "<group>"; };
+		C77CAEDF2E26BA3B00F30918 /* FoodTruckMapMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckMapMarker.swift; sourceTree = "<group>"; };
+		C77CAEE22E26C2C300F30918 /* FoodTruckBottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckBottomOverlay.swift; sourceTree = "<group>"; };
+		C77CAEE42E26DA3C00F30918 /* FoodTruckCompactOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckCompactOverlay.swift; sourceTree = "<group>"; };
+		C77CAEE62E2744FB00F30918 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		C794B5A42C2F1A9F008F6558 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		C794B5A62C2F2571008F6558 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		C794B5A82C2F3AB0008F6558 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
@@ -290,6 +300,7 @@
 				C7EF914C2C053BE20034AB8B /* SharedDataModel.swift */,
 				C70094892C6426930052B965 /* MapHelper.swift */,
 				C7704A722D3DFC380023C12F /* Constants.swift */,
+				C77CAEE62E2744FB00F30918 /* LoadingState.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -306,6 +317,10 @@
 		C72679292B97D1E3009D48DE /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				C77CAEE42E26DA3C00F30918 /* FoodTruckCompactOverlay.swift */,
+				C77CAEE22E26C2C300F30918 /* FoodTruckBottomOverlay.swift */,
+				C77CAEDE2E26BA3B00F30918 /* FoodTruckMapDetailSheet.swift */,
+				C77CAEDF2E26BA3B00F30918 /* FoodTruckMapMarker.swift */,
 				C71F91B82C178D72006026BD /* CircleImageView.swift */,
 				C73D3D682C4F41160098D1F9 /* FoodTruckDetailHeaderView.swift */,
 				C73D3D6C2C56D2F20098D1F9 /* FoodTruckDetailLocationCellView.swift */,
@@ -494,6 +509,7 @@
 				C71BDB672B9EA4D600854478 /* FileUploadManager.swift in Sources */,
 				C76F3B4E2D3F587A00BF2B26 /* DistanceFilterView.swift in Sources */,
 				C7EF914B2C0531AE0034AB8B /* MapView+ViewModel.swift in Sources */,
+				C77CAEE52E26DA3C00F30918 /* FoodTruckCompactOverlay.swift in Sources */,
 				C725008A2D340ED800F19059 /* FoodTruckStore.swift in Sources */,
 				C7C920C62C2CB4FF00C8D101 /* MenuItemView.swift in Sources */,
 				C700948A2C6426930052B965 /* MapHelper.swift in Sources */,
@@ -502,9 +518,12 @@
 				C72679342B97D90F009D48DE /* FTF+Double.swift in Sources */,
 				C7C920C42C2CB41300C8D101 /* MenuView.swift in Sources */,
 				C71BDB652B9E56CC00854478 /* FoodTruckDetailView.swift in Sources */,
+				C77CAEE02E26BA3B00F30918 /* FoodTruckMapDetailSheet.swift in Sources */,
+				C77CAEE12E26BA3B00F30918 /* FoodTruckMapMarker.swift in Sources */,
 				C726792B2B97D200009D48DE /* FoodTruckListCell.swift in Sources */,
 				C71F91B72C151966006026BD /* StoreHours.swift in Sources */,
 				C726792F2B97D3AA009D48DE /* FTFTabView.swift in Sources */,
+				C77CAEE72E2744FB00F30918 /* LoadingState.swift in Sources */,
 				C77985032B98FFAD00184FED /* ListViewToolbarView.swift in Sources */,
 				C72678F72B97C6C5009D48DE /* FoodTruckListView.swift in Sources */,
 				C73A68AD2D3056F6002FB056 /* Navigation.swift in Sources */,
@@ -516,6 +535,7 @@
 				C71BDB542B9AC98800854478 /* NetworkManager.swift in Sources */,
 				C7704A732D3DFC380023C12F /* Constants.swift in Sources */,
 				C71F91B92C178D72006026BD /* CircleImageView.swift in Sources */,
+				C77CAEE32E26C2C300F30918 /* FoodTruckBottomOverlay.swift in Sources */,
 				C72679222B97C74B009D48DE /* CuisineType.swift in Sources */,
 				C70094AE2C777E250052B965 /* NavigationMapService.swift in Sources */,
 				C794B5A72C2F2571008F6558 /* RegistrationView.swift in Sources */,

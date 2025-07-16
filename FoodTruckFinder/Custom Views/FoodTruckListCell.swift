@@ -77,7 +77,8 @@ struct FoodTruckListCell: View {
             distanceInMiles: 6.5,
             latitude: 123,
             longitude: 456,
-            imageUrl: ""
+            imageUrl: "",
+            cuisineType: .american
         )
     )
 }

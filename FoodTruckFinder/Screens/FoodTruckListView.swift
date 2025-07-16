@@ -8,24 +8,6 @@
 import SwiftUI
 import CoreLocation
 
-struct FoodTruckNavigationStack: View {
-    
-    @State private var routes: [FoodTruckRoute] = []
-    
-    var body: some View {
-        NavigationStack(path: $routes) {
-            FoodTruckListView()
-                .navigationDestination(for: FoodTruckRoute.self) { route in
-                    route.destination
-                }
-        }.environment(\.navigate, NavigateAction(action: { route in
-            if case let .foodTruck(foodTruckRoute) = route {
-                routes.append(foodTruckRoute)
-            }
-        }))
-    }
-}
-
 struct FoodTruckListView: View {
     
     @Environment(\.navigate) private var navigate
@@ -48,19 +30,23 @@ struct FoodTruckListView: View {
                 loadingView
             case .loaded(let listItems):
                 foodTruckItemList(items: listItems)
-            case .failed(let errorItem):
-                EmptyView()
+            case .failed(let _):
+                errorView
             }
         }
-//        .onChange(of: foodTruckStore.foodTruckListLoadingState) { newState in
-//            if case .failed(let errorItem) = newState {
-//                self.errorItem = errorItem
-//            }
-//        }
-//        .alert(item: $errorItem) { error in
-//            Alert(title: Text(error.title), message: Text(error.message), dismissButton: .default(Text("OK")))
-//        }
         .navigationTitle("Food Trucks")
+        .onChange(of: foodTruckStore.foodTruckListLoadingState) { newState in
+            if case .failed(let errorItem) = newState {
+                self.errorItem = errorItem
+            }
+        }
+        .alert(item: $errorItem) { error in
+            Alert(
+                title: error.title,
+                message: error.message,
+                dismissButton: .default(Text("OK"))
+            )
+        }
         .onChange(of: foodTruckStore.locationManager.lastLocation) {
             Task { await fetchFoodTrucks() }
         }
@@ -69,21 +55,13 @@ struct FoodTruckListView: View {
         }
         .task {
             guard case .loaded = foodTruckStore.foodTruckListLoadingState else {
-                
                 foodTruckStore.locationManager.refreshLocation()
                 return
             }
         }
     }
     
-    func fetchFoodTrucks() async {
-        // TODO: add error handling
-        if let location = foodTruckStore.locationManager.lastLocation {
-            await foodTruckStore.fetchFoodTrucks(sharedDataModel.distanceFilterOption.value, of: location)
-        }
-    }
-    
-    var loadingView: some View {
+    private var loadingView: some View {
         ProgressView {
             Text("Looking for food trucks near you...")
         }
@@ -91,50 +69,60 @@ struct FoodTruckListView: View {
         .controlSize(.large)
     }
     
-    func foodTruckItemList(items: [FoodTruckListItem]) -> some View {
+    private var emptyStateView: some View {
+        ContentUnavailableView {
+            Label("No Food Trucks Found", systemImage: "magnifyingglass")
+        } description: {
+            Text("Try expanding your search or checking back later — more trucks might roll in soon!")
+        } actions: {
+            Button("Expand Search Area") {
+                self.showDistanceFilter = true
+            }
+            .buttonStyle(.bordered)
+            .tint(.secondary)
+        }
+    }
+
+    private var errorView: some View {
+        ContentUnavailableView {
+            Label("Error Loading Food Trucks", systemImage: "exclamationmark.triangle")
+        } description: {
+            Text("There was an error loading food trucks. Please try again.")
+        } actions: {
+            Button("Retry") {
+                foodTruckStore.locationManager.refreshLocation()
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+    
+    private func foodTruckItemList(items: [FoodTruckListItem]) -> some View {
         VStack {
             if items.isEmpty {
-                VStack {
-                    // TODO: move this to another file
-                    ContentUnavailableView {
-                        Label("No Food Trucks Found", systemImage: "magnifyingglass")
-                        
-                    } description: {
-                        Text("Try expanding your search or checking back later — more trucks might roll in soon!")
-                        Button {
-                            self.showDistanceFilter = true
-                        } label: {
-                            Text("Expand Search Area")
-                                .padding(5)
-                        }.buttonStyle(.bordered).tint(.secondary)
-                    }
-                }
+                emptyStateView
             } else {
                 List {
                     ForEach(items, id: \.id) { listItem in
                         FoodTruckListCell(listItem: listItem)
+                            .contentShape(Rectangle())
                             .onTapGesture {
-                                navigate(
-                                    .foodTruck(
-                                        .detail(
-                                            id: listItem.id,
-                                            distanceInMiles: listItem.distanceInMiles
-                                        )
-                                    )
-                                )
+                                print("📋 FoodTruckListView: Tapped on food truck: \(listItem.name)")
+                                navigate(.foodTruck(.detail(id: listItem.id, distanceInMiles: listItem.distanceInMiles)))
                             }
                     }
                 }
-                .refreshable { foodTruckStore.locationManager.refreshLocation() }
+                .refreshable {
+                    foodTruckStore.locationManager.refreshLocation()
+                }
             }
         }
         .toolbar {
             ToolbarItem {
-                Button(action: {
+                Button {
                     self.showDistanceFilter = true
-                }, label: {
+                } label: {
                     Image(systemName: "slider.vertical.3")
-                })
+                }
             }
         }
         .sheet(isPresented: $showDistanceFilter) {
@@ -144,8 +132,18 @@ struct FoodTruckListView: View {
                 .presentationCornerRadius(16)
         }
     }
+    
+    private func fetchFoodTrucks() async {
+        if let location = foodTruckStore.locationManager.lastLocation {
+            await foodTruckStore.fetchFoodTrucks(sharedDataModel.distanceFilterOption.value, of: location)
+        }
+    }
 }
 
 #Preview {
-    FoodTruckListView()
+    NavigationStack {
+        FoodTruckListView()
+            .environment(FoodTruckStore(httpClient: NetworkManager.shared))
+            .environmentObject(SharedDataModel())
+    }
 }

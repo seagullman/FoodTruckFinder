@@ -31,10 +31,9 @@ struct FoodTruckDetailView: View {
             }
         }
         .task(id: foodTruckId) {
-            guard case .loaded = foodTruckStore.foodTruckLoadingState else {
-                await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
-                return
-            }
+            print("🔍 FoodTruckDetailView: Loading food truck with ID: \(foodTruckId)")
+            // Always fetch the food truck by ID to ensure we get the correct one
+            await foodTruckStore.fetchFoodTruckBy(id: foodTruckId)
         }
         .navigationBarTitleDisplayMode(.inline)
     }

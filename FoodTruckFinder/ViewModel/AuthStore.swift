@@ -11,20 +11,13 @@ protocol AuthenticationFormProtocol {
     var formIsValid: Bool { get }
 }
 
-// Move this to a more general location if reused elsewhere
-enum LoadingState<T> {
-    case loading
-    case loaded(T)
-    case failed(AlertItem)
-}
-
 @MainActor
 @Observable
 class AuthStore {
     
     var userSession: AuthUser? // AWS Cognito user
     var currentUser: User? // FoodTruckFinder user
-    var loadingState: LoadingState<Void> = .loading
+    var loadingState: AuthLoadingState = .loading
     
     init() {
         Task { await checkAuthSession() }
@@ -168,7 +161,7 @@ extension AuthStore {
         loadingState = .loading
         do {
             let result = try await task()
-            loadingState = .loaded(())
+            loadingState = .loaded
             return result
         } catch {
             loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param
