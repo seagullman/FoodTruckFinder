@@ -309,18 +309,7 @@ struct FoodTruckListView: View {
     private var loadingView: some View {
         VStack(spacing: 24) {
             // Animated loading indicator
-            ZStack {
-                Circle()
-                    .stroke(Color(.systemGray5), lineWidth: 4)
-                    .frame(width: 80, height: 80)
-                
-                Circle()
-                    .trim(from: 0, to: 0.7)
-                    .stroke(Color.red, style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                    .frame(width: 80, height: 80)
-                    .rotationEffect(.degrees(-90))
-                    .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: UUID())
-            }
+            LoadingSpinner()
             
             VStack(spacing: 8) {
                 Text("Discovering Food Trucks")
@@ -411,6 +400,28 @@ struct FoodTruckListView: View {
 }
 
 // MARK: - Supporting Views
+
+struct LoadingSpinner: View {
+    @State private var isAnimating = false
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color(.systemGray5), lineWidth: 4)
+                .frame(width: 80, height: 80)
+            
+            Circle()
+                .trim(from: 0, to: 0.7)
+                .stroke(Color.red, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                .frame(width: 80, height: 80)
+                .rotationEffect(.degrees(isAnimating ? 360 : 0))
+                .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isAnimating)
+        }
+        .onAppear {
+            isAnimating = true
+        }
+    }
+}
 
 struct FilterChip: View {
     let title: String
