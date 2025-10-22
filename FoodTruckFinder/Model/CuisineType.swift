@@ -44,4 +44,27 @@ public enum CuisineType: String, Codable, CaseIterable {
     var displayName: String {
         return description
     }
+    
+    var iconName: String {
+        switch self {
+        case .american:
+            return "flag.fill"
+        case .coffee:
+            return "cup.and.saucer.fill"
+        case .mexican:
+            return "tortilla.fill"
+        case .asian:
+            return "chopsticks"
+        case .japanese:
+            return "fish.fill"
+        case .italian:
+            return "leaf.fill"
+        case .bbq:
+            return "flame.fill"
+        case .sandwiches:
+            return "sandwich"
+        case .pizza:
+            return "circle.grid.3x3.fill"
+        }
+    }
 }

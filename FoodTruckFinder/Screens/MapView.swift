@@ -25,6 +25,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
+            // Map background
             Map(coordinateRegion: $mapRegion, showsUserLocation: true, annotationItems: viewModel.foodTruckListItems) { foodTruck in
                 MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: foodTruck.latitude, longitude: foodTruck.longitude)) {
                     FoodTruckMapMarker(
@@ -39,68 +40,74 @@ struct MapView: View {
                     }
                 }
             }
-            .tint(.blue) // Override the app's red tint to show standard blue user location dot
+            .tint(.blue)
             
-            // Loading spinner overlay
+            // Loading overlay with modern design
             if isUpdatingMapRegion || viewModel.isLoading {
-                Color.black.opacity(0.3)
+                Color.black.opacity(0.2)
                     .ignoresSafeArea()
                 
-                VStack(spacing: 16) {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .red))
-                        .scaleEffect(1.5)
+                VStack(spacing: 20) {
+                    LoadingSpinner()
                     
-                    Text("Finding food trucks..")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
+                    Text("Finding food trucks...")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.primary)
                 }
-                .padding(24)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+                .padding(32)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 4)
+                )
             }
             
-            // Top controls - filter and recenter buttons
+            // Top controls with modern design
             VStack {
                 HStack {
                     Spacer()
                     
-                    // Recenter button
-                    Button(action: {
-                        print("🎯 MapView: Recenter button tapped - resetting map to optimal view")
-                        handleMapRecenter()
-                    }) {
-                        Image(systemName: "location")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .frame(width: 44, height: 44)
-                            .background(.red)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                    }
-                    .disabled(viewModel.isLoading || isUpdatingMapRegion)
-                    .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
-                    
-                    // Filter button
-                    Button(action: {
-                        showingFilterSheet = true
-                    }) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "slider.horizontal.3")
-                            Text("\(sharedDataModel.distanceFilterOption.text)")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
+                    VStack(spacing: 12) {
+                        // Recenter button
+                        Button(action: {
+                            print("🎯 MapView: Recenter button tapped - resetting map to optimal view")
+                            handleMapRecenter()
+                        }) {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(width: 48, height: 48)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(Color.red)
+                                        .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
+                                )
                         }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
-                        .background(.red)
-                        .cornerRadius(20)
-                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                        .disabled(viewModel.isLoading || isUpdatingMapRegion)
+                        .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
+                        
+                        // Filter button
+                        Button(action: {
+                            showingFilterSheet = true
+                        }) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "slider.horizontal.3")
+                                    .font(.system(size: 14, weight: .medium))
+                                Text("\(sharedDataModel.distanceFilterOption.text)")
+                                    .font(.system(size: 13, weight: .medium))
+                            }
+                            .foregroundColor(.primary)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .black.opacity(0.1), radius: 6, x: 0, y: 3)
+                            )
+                        }
+                        .disabled(viewModel.isLoading || isUpdatingMapRegion)
+                        .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
                     }
-                    .disabled(viewModel.isLoading || isUpdatingMapRegion)
-                    .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
                 }
                 
                 Spacer()
@@ -108,7 +115,7 @@ struct MapView: View {
             .padding(.top, 16)
             .padding(.trailing, 16)
             
-            // Compact bottom overlay for selected food truck - positioned above tab bar
+            // Bottom overlay for selected food truck
             if let selectedFoodTruck = selectedFoodTruck {
                 VStack {
                     Spacer()
@@ -116,7 +123,6 @@ struct MapView: View {
                     FoodTruckCompactOverlay(
                         foodTruck: selectedFoodTruck,
                         onViewDetails: {
-                            // Capture the values for navigation
                             let foodTruckId = selectedFoodTruck.id
                             let distance = selectedFoodTruck.distanceInMiles
                             let name = selectedFoodTruck.name
@@ -124,10 +130,7 @@ struct MapView: View {
                             print("🗺️ MapView: Navigating to detail for food truck: \(name) (ID: \(foodTruckId))")
                             print("🗺️ MapView: Preserving selection for when user returns")
                             
-                            // Set navigation flag to track that we're navigating
                             isNavigatingToDetail = true
-                            
-                            // Navigate without clearing selection - this preserves the selection for when user returns
                             navigate(.foodTruck(.detail(id: foodTruckId, distanceInMiles: distance)))
                         },
                         onClose: {
@@ -141,7 +144,7 @@ struct MapView: View {
                         removal: .move(edge: .bottom).combined(with: .opacity).combined(with: .scale(scale: 0.9))
                     ))
                 }
-                .padding(.bottom, 100) // Space above tab bar (adjust based on your tab bar height)
+                .padding(.bottom, 100)
             }
         }
         .onAppear { 
@@ -152,13 +155,10 @@ struct MapView: View {
                 hasInitiallyLoaded = true
             } else {
                 print("🗺️ MapView: Returning from navigation - using existing data, no loading needed")
-                // When returning from detail view, we don't need to refetch data or show loading
-                // The food truck data is still fresh and the map region should stay as-is
             }
         }
         .onChange(of: sharedDataModel.distanceFilterOption.value) { 
             print("🗺️ MapView: Distance filter changed - updating map region")
-            // Clear selection when filter changes
             selectedFoodTruck = nil
             fetchFoodTrucks(shouldUpdateMapRegion: true) 
         }
@@ -203,12 +203,10 @@ struct MapView: View {
     private func handleMapRecenter() {
         print("🎯 MapView: Recentering map to show all food trucks optimally")
         
-        // Clear current selection when recentering
         withAnimation(.easeOut(duration: 0.3)) {
             selectedFoodTruck = nil
         }
         
-        // Recalculate and animate to the optimal map region
         Task {
             await updateMapRegionForFoodTrucks()
         }
@@ -217,23 +215,19 @@ struct MapView: View {
     private func handleTabRefresh() {
         print("🔄 MapView: Performing tab refresh - fetching fresh data and updating map region")
         
-        // Clear current selection when refreshing
         withAnimation(.easeOut(duration: 0.3)) {
             selectedFoodTruck = nil
         }
         
-        // Refresh location and fetch fresh food truck data with map region update
         viewModel.locationManager.refreshLocation()
         
-        // Add a small delay to allow location refresh, then fetch food trucks
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.fetchFoodTrucks(shouldUpdateMapRegion: true)
         }
     }
     
     private func updateMapRegionForFoodTrucks() async {
-        guard !viewModel.foodTruckListItems.isEmpty,
-              let userLocation = viewModel.locationManager.lastLocation else { 
+        guard !viewModel.foodTruckListItems.isEmpty else { 
             await MainActor.run {
                 isUpdatingMapRegion = false
             }
@@ -243,34 +237,32 @@ struct MapView: View {
         let foodTruckCoordinates = viewModel.foodTruckListItems.map { 
             CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) 
         }
-        let allCoordinates = foodTruckCoordinates + [userLocation.coordinate]
         
-        let minLat = allCoordinates.map { $0.latitude }.min() ?? userLocation.coordinate.latitude
-        let maxLat = allCoordinates.map { $0.latitude }.max() ?? userLocation.coordinate.latitude
-        let minLon = allCoordinates.map { $0.longitude }.min() ?? userLocation.coordinate.longitude
-        let maxLon = allCoordinates.map { $0.longitude }.max() ?? userLocation.coordinate.longitude
+        let minLat = foodTruckCoordinates.map { $0.latitude }.min()!
+        let maxLat = foodTruckCoordinates.map { $0.latitude }.max()!
+        let minLon = foodTruckCoordinates.map { $0.longitude }.min()!
+        let maxLon = foodTruckCoordinates.map { $0.longitude }.max()!
         
-        // Calculate center point
+        // Calculate center point based only on food truck locations
         let centerLat = (minLat + maxLat) / 2
         let centerLon = (minLon + maxLon) / 2
         
-        // Add padding for better visibility
-        let latDelta = max((maxLat - minLat) * 1.4, 0.01) // Increased padding for better centering
-        let lonDelta = max((maxLon - minLon) * 1.4, 0.01) // Increased padding for better centering
+        // Calculate optimal span with better padding
+        let latDelta = max((maxLat - minLat) * 1.6, 0.015) // Increased padding for better visibility
+        let lonDelta = max((maxLon - minLon) * 1.6, 0.015) // Increased padding for better visibility
         
-        // Adjust center slightly north to account for bottom overlay taking up screen space
-        let adjustedCenterLat = centerLat + (latDelta * 0.1) // Shift center up by 10% of the span
+        // Adjust center to account for UI elements
+        let adjustedCenterLat = centerLat + (latDelta * 0.08) // Shift center up slightly
         
         await MainActor.run {
-            withAnimation(.easeInOut(duration: 1.0)) {
+            withAnimation(.easeInOut(duration: 1.2)) {
                 mapRegion = MKCoordinateRegion(
                     center: CLLocationCoordinate2D(latitude: adjustedCenterLat, longitude: centerLon),
                     span: MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
                 )
             }
             
-            // Hide loading spinner after animation completes
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 isUpdatingMapRegion = false
             }
         }

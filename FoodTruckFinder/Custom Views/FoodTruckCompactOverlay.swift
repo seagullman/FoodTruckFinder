@@ -13,80 +13,84 @@ struct FoodTruckCompactOverlay: View {
     let onClose: () -> Void
     
     var body: some View {
-        HStack(spacing: 12) {
-            // Food truck icon
+        HStack(spacing: 14) {
+            // Food truck icon with modern design
             Image(systemName: "truck.box.fill")
-                .font(.title2)
+                .font(.system(size: 18, weight: .medium))
                 .foregroundColor(.red)
-                .frame(width: 40, height: 40)
+                .frame(width: 44, height: 44)
                 .background(Color.red.opacity(0.1))
-                .clipShape(Circle())
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
                 // Food truck name
                 Text(foodTruck.name)
-                    .font(.headline)
-                    .fontWeight(.semibold)
+                    .font(.system(size: 16, weight: .semibold))
                     .lineLimit(1)
                     .foregroundColor(.primary)
                 
                 HStack(spacing: 8) {
                     // Cuisine type
                     if let cuisineType = foodTruck.cuisineType {
-                        Text(cuisineType.description)
-                            .font(.caption)
+                        Text(cuisineType.displayName)
+                            .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.secondary)
                     }
                     
                     // Distance
                     Text("• \(foodTruck.distanceInMiles.formatted(.number.precision(.fractionLength(1)))) mi")
-                        .font(.caption)
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.secondary)
                 }
             }
             
             Spacer()
             
-            // Action buttons
+            // Action buttons with modern design
             HStack(spacing: 8) {
                 // View Details button
                 Button(action: onViewDetails) {
                     HStack(spacing: 4) {
                         Text("Details")
-                            .font(.caption)
-                            .fontWeight(.medium)
+                            .font(.system(size: 13, weight: .medium))
                         Image(systemName: "arrow.right")
-                            .font(.caption2)
+                            .font(.system(size: 11, weight: .medium))
                     }
                     .foregroundColor(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(.red)
-                    .cornerRadius(16)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color.red)
+                    )
                 }
                 .buttonStyle(.plain)
                 
                 // Close button
                 Button(action: onClose) {
                     Image(systemName: "xmark")
-                        .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.secondary)
-                        .frame(width: 24, height: 24)
-                        .background(Color.secondary.opacity(0.1))
-                        .clipShape(Circle())
+                        .frame(width: 28, height: 28)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(Color(.systemGray6))
+                        )
                 }
                 .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(Color.primary.opacity(0.1), lineWidth: 0.5)
+                .stroke(Color.primary.opacity(0.08), lineWidth: 0.5)
         )
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
         .padding(.horizontal, 16)
     }
 }

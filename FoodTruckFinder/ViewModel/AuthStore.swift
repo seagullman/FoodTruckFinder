@@ -5,7 +5,8 @@
 //  Created by Brad Siegel on 6/28/24.
 //
 import Foundation
-import Amplify
+import FirebaseAuth
+// import Amplify  // Temporarily disabled due to Xcode 16 compatibility issues
 
 protocol AuthenticationFormProtocol {
     var formIsValid: Bool { get }
@@ -15,7 +16,7 @@ protocol AuthenticationFormProtocol {
 @Observable
 class AuthStore {
     
-    var userSession: AuthUser? // AWS Cognito user
+    var userSession: FirebaseAuth.User? // Firebase user (temporary until Amplify is fixed)
     var currentUser: User? // FoodTruckFinder user
     var loadingState: AuthLoadingState = .loading
     
@@ -26,85 +27,62 @@ class AuthStore {
     func signIn(withEmail email: String, password: String) async throws {
         do {
             try await withLoadingState {
-                let signInResult = try await Amplify.Auth.signIn(username: email, password: password)
-                if signInResult.isSignedIn {
-                    print("✅ User signed in successfully")
-                    try await self.fetchUser()
-                } else {
-                    print("⚠️ Additional steps required for sign-in")
-                }
+                let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+                self.userSession = authResult.user
+                print("✅ User signed in successfully")
+                try await self.fetchUser()
             }
         } catch {
-            // TODO: handle error
-            print("⚠️ Error signing up: \(error.localizedDescription)")
-            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
+            print("⚠️ Error signing in: \(error.localizedDescription)")
+            loadingState = .failed(AlertContext.invalidRequest)
+            throw error
         }
     }
     
     func createUser(withEmail email: String, password: String, fullName: String) async throws {
         do {
-//            try await withLoadingState {
-                let userAttributes: [AuthUserAttribute] = [
-                    .init(.email, value: email),
-                    .init(.name, value: fullName)
-                ]
-                let signUpResult = try await Amplify.Auth.signUp(
-                    username: email,
-                    password: password,
-                    options: .init(userAttributes: userAttributes)
-                )
+            try await withLoadingState {
+                let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+                self.userSession = authResult.user
                 
-                switch signUpResult.nextStep {
-                case .done:
-                    print("✅ Sign-up complete")
-                case .confirmUser:
-                    print("📩 Confirmation required. Check email for verification code.")
-                case .completeAutoSignIn(let session):
-                    print("🔄 Auto sign-in session: \(session)")
-                }
-//            }
+                // Update display name
+                let changeRequest = authResult.user.createProfileChangeRequest()
+                changeRequest.displayName = fullName
+                try await changeRequest.commitChanges()
+                
+                print("✅ Sign-up complete")
+                try await self.fetchUser()
+            }
         } catch {
-            // TODO: handle error
             print("⚠️ Error signing up: \(error.localizedDescription)")
-            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
+            loadingState = .failed(AlertContext.invalidRequest)
+            throw error
         }
     }
     
     func confirmSignUp(email: String, confirmationCode: String) async throws {
-        do {
-            try await withLoadingState {
-                let confirmResult = try await Amplify.Auth.confirmSignUp(for: email, confirmationCode: confirmationCode)
-                if confirmResult.isSignUpComplete {
-                    print("✅ User confirmed successfully")
-                } else {
-                    print("⚠️ User confirmation incomplete")
-                }
-            }
-        } catch {
-            // TODO: handle error
-            print("⚠️ Error signing up: \(error.localizedDescription)")
-            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
-        }
+        // Firebase doesn't require email confirmation by default
+        // This method is kept for compatibility but does nothing
+        print("✅ Email confirmation not required with Firebase")
     }
     
     func signOut() async {
         do {
             try await withLoadingState {
-                _ = await Amplify.Auth.signOut()
+                try Auth.auth().signOut()
                 self.userSession = nil
                 self.currentUser = nil
                 print("🚪 User signed out successfully")
             }
         } catch {
-            // TODO: handle error
             print("⚠️ Error signing out: \(error.localizedDescription)")
-            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
+            loadingState = .failed(AlertContext.invalidRequest)
         }
     }
     
     func deleteAccount() async throws {
         try await withLoadingState {
-            try await Amplify.Auth.deleteUser()
+            try await Auth.auth().currentUser?.delete()
             self.userSession = nil
             self.currentUser = nil
             print("🗑️ User account deleted successfully")
@@ -113,23 +91,23 @@ class AuthStore {
     
     func resetPassword(withEmail email: String) async throws {
         try await withLoadingState {
-            let resetResult = try await Amplify.Auth.resetPassword(for: email)
-            print(resetResult.isPasswordReset ? "✅ Password reset complete" : "⚠️ Further steps needed for password reset")
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+            print("✅ Password reset email sent")
         }
     }
     
     func fetchUser() async throws {
         try await withLoadingState {
-            let attributes = try await Amplify.Auth.fetchUserAttributes()
-            let email = attributes.first(where: { $0.key == .email })?.value ?? "No Email"
-            let name = attributes.first(where: { $0.key == .name })?.value ?? "No Name"
+            guard let firebaseUser = Auth.auth().currentUser else {
+                throw NSError(domain: "AuthStore", code: -1, userInfo: [NSLocalizedDescriptionKey: "No user logged in"])
+            }
             
-            self.userSession = try await Amplify.Auth.getCurrentUser()
+            self.userSession = firebaseUser
             self.currentUser = User(
-                id: self.userSession?.userId ?? "Unknown",
+                id: firebaseUser.uid,
                 type: .customer,
-                email: email,
-                fullName: name
+                email: firebaseUser.email ?? "No Email",
+                fullName: firebaseUser.displayName ?? "No Name"
             )
         }
     }
@@ -137,18 +115,17 @@ class AuthStore {
     func checkAuthSession() async {
         do {
             try await withLoadingState {
-                let session = try await Amplify.Auth.fetchAuthSession()
-                if session.isSignedIn {
-                    self.userSession = try await Amplify.Auth.getCurrentUser()
+                if let firebaseUser = Auth.auth().currentUser {
+                    self.userSession = firebaseUser
                     try await self.fetchUser()
                 } else {
                     self.userSession = nil
+                    self.currentUser = nil
                 }
             }
         } catch {
-            // TODO: handle error
             print("⚠️ Error checking authentication session: \(error.localizedDescription)")
-            loadingState = .failed(AlertContext.invalidRequest) // TODO: change this param, create error mapper
+            loadingState = .failed(AlertContext.invalidRequest)
         }
     }
 }

@@ -1,0 +1,304 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FoodTruckFinder Backend Infrastructure
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        FOOD_TRUCKS_TABLE: !Ref FoodTrucksTable
+        USERS_TABLE: !Ref UsersTable
+        IMAGES_BUCKET: !Ref ImagesBucket
+        ENVIRONMENT: !Ref Environment
+
+Resources:
+  # DynamoDB Tables
+  FoodTrucksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'FoodTrucks-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: geoHash
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: GeoHashIndex
+          KeySchema:
+            - AttributeName: geoHash
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'Users-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: EmailIndex
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # S3 Bucket for Images
+  ImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'foodtruckfinder-images-${Environment}-${AWS::AccountId}'
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3000
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  ImagesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ImagesBucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Sub '${ImagesBucket.Arn}/*'
+
+  # API Gateway
+  FoodTruckApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'FoodTruckFinderAPI-${Environment}'
+      StageName: !Ref Environment
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt UserPool.Arn
+
+  # Cognito User Pool
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub 'FoodTruckFinder-${Environment}'
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Schema:
+        - Name: email
+          Required: true
+          Mutable: false
+        - Name: name
+          Required: true
+          Mutable: true
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireUppercase: true
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub 'FoodTruckFinder-Client-${Environment}'
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
+
+  # Lambda Functions
+  GetFoodTrucksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetFoodTrucks-${Environment}'
+      CodeUri: lambda/get_food_trucks/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        GetFoodTrucks:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks
+            Method: GET
+            Auth:
+              Authorizer: NONE
+
+  GetFoodTruckByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetFoodTruckById-${Environment}'
+      CodeUri: lambda/get_food_truck_by_id/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        GetFoodTruckById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks/{id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+
+  CreateFoodTruckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'CreateFoodTruck-${Environment}'
+      CodeUri: lambda/create_food_truck/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        CreateFoodTruck:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks
+            Method: POST
+
+  UpdateFoodTruckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'UpdateFoodTruck-${Environment}'
+      CodeUri: lambda/update_food_truck/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        UpdateFoodTruck:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks/{id}
+            Method: PUT
+
+  DeleteFoodTruckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'DeleteFoodTruck-${Environment}'
+      CodeUri: lambda/delete_food_truck/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        DeleteFoodTruck:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks/{id}
+            Method: DELETE
+
+  GetPresignedUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetPresignedUrl-${Environment}'
+      CodeUri: lambda/get_presigned_url/
+      Handler: app.lambda_handler
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref ImagesBucket
+      Events:
+        GetPresignedUrl:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /upload-url
+            Method: POST
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub 'https://${FoodTruckApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}'
+    Export:
+      Name: !Sub '${AWS::StackName}-ApiEndpoint'
+
+  UserPoolId:
+    Description: Cognito User Pool ID
+    Value: !Ref UserPool
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolId'
+
+  UserPoolClientId:
+    Description: Cognito User Pool Client ID
+    Value: !Ref UserPoolClient
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolClientId'
+
+  ImagesBucketName:
+    Description: S3 Bucket for images
+    Value: !Ref ImagesBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-ImagesBucket'
+
+  FoodTrucksTableName:
+    Description: DynamoDB FoodTrucks table name
+    Value: !Ref FoodTrucksTable
+    Export:
+      Name: !Sub '${AWS::StackName}-FoodTrucksTable'

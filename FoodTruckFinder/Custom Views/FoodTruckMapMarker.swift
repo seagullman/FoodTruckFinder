@@ -16,7 +16,6 @@ struct FoodTruckMapMarker: View {
     
     var body: some View {
         Button(action: {
-            // Add haptic feedback for better interaction
             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
             impactFeedback.impactOccurred()
             
@@ -25,31 +24,54 @@ struct FoodTruckMapMarker: View {
             }
         }) {
             VStack(spacing: 0) {
-                // Food truck icon with selection state
-                Image(systemName: "truck.box.fill")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                    .frame(width: isSelected ? 36 : 32, height: isSelected ? 36 : 32)
-                    .background(isSelected ? Color.red.opacity(0.9) : .red)
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: isSelected ? 3 : 0)
-                            .scaleEffect(isSelected ? 1.1 : 1.0)
-                    )
-                    .shadow(color: .black.opacity(isSelected ? 0.4 : 0.3), radius: isSelected ? 6 : 3, x: 0, y: isSelected ? 4 : 2)
-                    .scaleEffect(isPressed ? 0.9 : 1.0)
+                // Food truck logo or fallback icon
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(isSelected ? Color.red : Color.white)
+                        .frame(width: isSelected ? 40 : 36, height: isSelected ? 40 : 36)
+                        .shadow(color: .black.opacity(isSelected ? 0.2 : 0.15), radius: isSelected ? 8 : 6, x: 0, y: isSelected ? 4 : 3)
+                    
+                    if let imageUrlString = foodTruck.imageUrl, let url = URL(string: imageUrlString) {
+                        // Show actual food truck logo
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: isSelected ? 36 : 32, height: isSelected ? 36 : 32)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        } placeholder: {
+                            // Fallback to truck icon while loading
+                            Image(systemName: "truck.box.fill")
+                                .font(.system(size: isSelected ? 16 : 14, weight: .medium))
+                                .foregroundColor(isSelected ? .white : .primary)
+                        }
+                    } else {
+                        // Fallback to truck icon when no image
+                        Image(systemName: "truck.box.fill")
+                            .font(.system(size: isSelected ? 16 : 14, weight: .medium))
+                            .foregroundColor(isSelected ? .white : .primary)
+                    }
+                }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(isSelected ? Color.white : Color.red.opacity(0.6), lineWidth: isSelected ? 2 : 1.5)
+                )
+                .scaleEffect(isPressed ? 0.95 : 1.0)
                 
-                // Pointer triangle with selection state
+                // Pointer triangle with modern design
                 Triangle()
-                    .fill(isSelected ? Color.red.opacity(0.9) : .red)
-                    .frame(width: isSelected ? 14 : 12, height: isSelected ? 10 : 8)
-                    .offset(y: -2)
-                    .scaleEffect(isPressed ? 0.9 : 1.0)
+                    .fill(isSelected ? Color.red : Color.white)
+                    .frame(width: isSelected ? 16 : 14, height: isSelected ? 12 : 10)
+                    .offset(y: -1)
+                    .overlay(
+                        Triangle()
+                            .stroke(isSelected ? Color.white : Color.red.opacity(0.6), lineWidth: isSelected ? 2 : 1.5)
+                    )
+                    .scaleEffect(isPressed ? 0.95 : 1.0)
             }
         }
         .buttonStyle(.plain)
-        .scaleEffect(isSelected ? 1.1 : 1.0)
+        .scaleEffect(isSelected ? 1.05 : 1.0)
         .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isSelected)
         .animation(.easeInOut(duration: 0.1), value: isPressed)
         .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
@@ -72,7 +94,7 @@ private struct Triangle: Shape {
 
 #Preview {
     HStack(spacing: 20) {
-        // Normal state
+        // Normal state with image
         FoodTruckMapMarker(
             foodTruck: FoodTruckListItem(
                 id: "1",
@@ -81,14 +103,14 @@ private struct Triangle: Shape {
                 distanceInMiles: 0.5,
                 latitude: 37.7749,
                 longitude: -122.4194,
-                imageUrl: nil,
+                imageUrl: "https://example.com/taco-truck.jpg",
                 cuisineType: .mexican
             ),
             isSelected: false,
             onTap: {}
         )
         
-        // Selected state
+        // Selected state with image
         FoodTruckMapMarker(
             foodTruck: FoodTruckListItem(
                 id: "2",
@@ -97,10 +119,26 @@ private struct Triangle: Shape {
                 distanceInMiles: 1.2,
                 latitude: 37.7849,
                 longitude: -122.4094,
-                imageUrl: nil,
+                imageUrl: "https://example.com/pizza-truck.jpg",
                 cuisineType: .pizza
             ),
             isSelected: true,
+            onTap: {}
+        )
+        
+        // Normal state without image (fallback)
+        FoodTruckMapMarker(
+            foodTruck: FoodTruckListItem(
+                id: "3",
+                name: "Coffee Corner",
+                description: "Artisan coffee and pastries",
+                distanceInMiles: 0.8,
+                latitude: 37.7949,
+                longitude: -122.4294,
+                imageUrl: nil,
+                cuisineType: .coffee
+            ),
+            isSelected: false,
             onTap: {}
         )
     }

@@ -1,0 +1,53 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "foodtruckfinder-backend"
+region = "us-east-1"
+
+[default.deploy.parameters]
+stack_name = "foodtruckfinder-backend"
+s3_prefix = "foodtruckfinder"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=dev"
+image_repositories = []
+resolve_s3 = true
+
+[dev.global.parameters]
+stack_name = "foodtruckfinder-backend-dev"
+region = "us-east-1"
+
+[dev.deploy.parameters]
+s3_prefix = "foodtruckfinder-backend-dev"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=\"dev\""
+resolve_s3 = true
+image_repositories = []
+
+[staging.global.parameters]
+stack_name = "foodtruckfinder-backend-staging"
+region = "us-east-1"
+
+[staging.deploy.parameters]
+stack_name = "foodtruckfinder-backend-staging"
+s3_prefix = "foodtruckfinder"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=staging"
+resolve_s3 = true
+
+[prod.global.parameters]
+stack_name = "foodtruckfinder-backend-prod"
+region = "us-east-1"
+
+[prod.deploy.parameters]
+stack_name = "foodtruckfinder-backend-prod"
+s3_prefix = "foodtruckfinder"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=prod"
+resolve_s3 = true

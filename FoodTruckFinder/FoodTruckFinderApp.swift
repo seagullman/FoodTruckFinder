@@ -7,9 +7,9 @@
 
 import SwiftUI
 import FirebaseCore
-import Amplify
-import AWSCognitoAuthPlugin
-import Authenticator
+// import Amplify
+// import AWSCognitoAuthPlugin
+// import Authenticator
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -25,13 +25,13 @@ struct FoodTruckFinderApp: App {
     
     @StateObject private var sharedDataModel = SharedDataModel()
     @State private var authStore = AuthStore()
-    @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // TODO: Singleton necessary or no?
+    @State private var foodTruckStore = FoodTruckStore(httpClient: NetworkManager.shared) // Using AWS backend via NetworkManager
     @State private var selection: TabScreen?
     
     @State private var routes: [Route] = []
     
     init() {
-        configureAmplify()
+        // configureAmplify() // Disabled until Amplify compatibility issue is resolved
     }
     
     var body: some Scene {
@@ -56,6 +56,9 @@ struct FoodTruckFinderApp: App {
         .environmentObject(sharedDataModel)
     }
     
+    // Temporarily disabled - Amplify has compatibility issues with Xcode 16
+    // Once fixed, uncomment this to enable AWS Cognito authentication
+    /*
     func configureAmplify() {
         do {
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
@@ -65,4 +68,5 @@ struct FoodTruckFinderApp: App {
             print("❌ Failed to configure Amplify: \(error)")
         }
     }
+    */
 }
