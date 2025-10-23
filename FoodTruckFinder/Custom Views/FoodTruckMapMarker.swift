@@ -14,66 +14,95 @@ struct FoodTruckMapMarker: View {
     
     @State private var isPressed = false
     
+    private var accentColor: Color {
+        guard let cuisine = foodTruck.cuisineType else { return .red }
+        switch cuisine {
+        case .mexican: return .orange
+        case .pizza: return .red
+        case .asian, .japanese: return .purple
+        case .italian: return .green
+        case .bbq: return .brown
+        case .coffee: return .brown
+        case .sandwiches: return .yellow
+        case .american: return .blue
+        }
+    }
+    
     var body: some View {
         Button(action: {
-            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+            let impactFeedback = UIImpactFeedbackGenerator(style: .light)
             impactFeedback.impactOccurred()
             
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.65)) {
                 onTap()
             }
         }) {
             VStack(spacing: 0) {
-                // Food truck logo or fallback icon
+                // Main marker circle
                 ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(isSelected ? Color.red : Color.white)
-                        .frame(width: isSelected ? 40 : 36, height: isSelected ? 40 : 36)
-                        .shadow(color: .black.opacity(isSelected ? 0.2 : 0.15), radius: isSelected ? 8 : 6, x: 0, y: isSelected ? 4 : 3)
+                    // Outer glow
+                    if isSelected {
+                        Circle()
+                            .fill(accentColor.opacity(0.2))
+                            .frame(width: 56, height: 56)
+                            .blur(radius: 8)
+                    }
                     
+                    // Main circle
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: isSelected ? [accentColor, accentColor.opacity(0.8)] : [.white, Color(.systemGray6)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: isSelected ? 44 : 38, height: isSelected ? 44 : 38)
+                        .overlay(
+                            Circle()
+                                .stroke(isSelected ? Color.white : accentColor.opacity(0.4), lineWidth: isSelected ? 3 : 2)
+                        )
+                        .shadow(color: .black.opacity(isSelected ? 0.25 : 0.15), radius: isSelected ? 12 : 8, x: 0, y: isSelected ? 6 : 4)
+                    
+                    // Icon or image
                     if let imageUrlString = foodTruck.imageUrl, let url = URL(string: imageUrlString) {
-                        // Show actual food truck logo
                         AsyncImage(url: url) { image in
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: isSelected ? 36 : 32, height: isSelected ? 36 : 32)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .frame(width: isSelected ? 36 : 30, height: isSelected ? 36 : 30)
+                                .clipShape(Circle())
                         } placeholder: {
-                            // Fallback to truck icon while loading
-                            Image(systemName: "truck.box.fill")
-                                .font(.system(size: isSelected ? 16 : 14, weight: .medium))
-                                .foregroundColor(isSelected ? .white : .primary)
+                            Image(systemName: "fork.knife")
+                                .font(.system(size: isSelected ? 18 : 15, weight: .semibold))
+                                .foregroundColor(isSelected ? .white : accentColor)
                         }
                     } else {
-                        // Fallback to truck icon when no image
-                        Image(systemName: "truck.box.fill")
-                            .font(.system(size: isSelected ? 16 : 14, weight: .medium))
-                            .foregroundColor(isSelected ? .white : .primary)
+                        Image(systemName: "fork.knife")
+                            .font(.system(size: isSelected ? 18 : 15, weight: .semibold))
+                            .foregroundColor(isSelected ? .white : accentColor)
                     }
                 }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(isSelected ? Color.white : Color.red.opacity(0.6), lineWidth: isSelected ? 2 : 1.5)
-                )
-                .scaleEffect(isPressed ? 0.95 : 1.0)
+                .scaleEffect(isPressed ? 0.92 : 1.0)
                 
-                // Pointer triangle with modern design
+                // Pointer triangle
                 Triangle()
-                    .fill(isSelected ? Color.red : Color.white)
-                    .frame(width: isSelected ? 16 : 14, height: isSelected ? 12 : 10)
-                    .offset(y: -1)
+                    .fill(isSelected ? accentColor : .white)
+                    .frame(width: isSelected ? 18 : 15, height: isSelected ? 14 : 11)
+                    .offset(y: -2)
                     .overlay(
                         Triangle()
-                            .stroke(isSelected ? Color.white : Color.red.opacity(0.6), lineWidth: isSelected ? 2 : 1.5)
+                            .stroke(isSelected ? Color.white : accentColor.opacity(0.4), lineWidth: isSelected ? 2.5 : 1.5)
+                            .offset(y: -2)
                     )
-                    .scaleEffect(isPressed ? 0.95 : 1.0)
+                    .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+                    .scaleEffect(isPressed ? 0.92 : 1.0)
             }
         }
         .buttonStyle(.plain)
-        .scaleEffect(isSelected ? 1.05 : 1.0)
-        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isSelected)
-        .animation(.easeInOut(duration: 0.1), value: isPressed)
+        .scaleEffect(isSelected ? 1.12 : 1.0)
+        .animation(.spring(response: 0.35, dampingFraction: 0.68), value: isSelected)
+        .animation(.easeInOut(duration: 0.08), value: isPressed)
         .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})

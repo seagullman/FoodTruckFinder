@@ -15,9 +15,9 @@ struct MapView: View {
     @Environment(\.navigate) var navigate
     @State private var showingFilterSheet = false
     @State private var selectedFoodTruck: FoodTruckListItem?
-    @State private var isNavigatingToDetail = false
     @State private var isUpdatingMapRegion = false
     @State private var hasInitiallyLoaded = false
+    @State private var showingList = false
     @State private var mapRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
@@ -32,135 +32,188 @@ struct MapView: View {
                         foodTruck: foodTruck,
                         isSelected: selectedFoodTruck?.id == foodTruck.id
                     ) {
-                        print("🗺️ MapView: Marker tapped for food truck: \(foodTruck.name) (ID: \(foodTruck.id))")
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                             selectedFoodTruck = foodTruck
+                            // Center map on selected truck
+                            mapRegion.center = CLLocationCoordinate2D(
+                                latitude: foodTruck.latitude,
+                                longitude: foodTruck.longitude
+                            )
                         }
-                        print("🗺️ MapView: Selected food truck updated to: \(selectedFoodTruck?.name ?? "nil") (ID: \(selectedFoodTruck?.id ?? "nil"))")
                     }
                 }
             }
-            .tint(.blue)
+            .ignoresSafeArea()
             
-            // Loading overlay with modern design
+            // Loading overlay
             if isUpdatingMapRegion || viewModel.isLoading {
-                Color.black.opacity(0.2)
+                Color.black.opacity(0.3)
                     .ignoresSafeArea()
+                    .transition(.opacity)
                 
-                VStack(spacing: 20) {
-                    LoadingSpinner()
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .scaleEffect(1.2)
+                        .tint(.white)
                     
                     Text("Finding food trucks...")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.primary)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.white)
                 }
-                .padding(32)
+                .padding(24)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(.ultraThinMaterial)
-                        .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 4)
+                        .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
                 )
             }
             
-            // Top controls with modern design
-            VStack {
-                HStack {
+            // Top controls
+            VStack(spacing: 0) {
+                HStack(alignment: .top) {
+                    // Results count badge
+                    if !viewModel.foodTruckListItems.isEmpty && !viewModel.isLoading {
+                        HStack(spacing: 6) {
+                            Image(systemName: "mappin.and.ellipse")
+                                .font(.system(size: 13, weight: .semibold))
+                            Text("\(viewModel.foodTruckListItems.count)")
+                                .font(.system(size: 15, weight: .bold))
+                            Text(viewModel.foodTruckListItems.count == 1 ? "truck" : "trucks")
+                                .font(.system(size: 13, weight: .medium))
+                        }
+                        .foregroundColor(.primary)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(
+                            Capsule()
+                                .fill(.ultraThinMaterial)
+                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                        )
+                        .transition(.scale.combined(with: .opacity))
+                    }
+                    
                     Spacer()
                     
                     VStack(spacing: 12) {
-                        // Recenter button
+                        // List toggle button
                         Button(action: {
-                            print("🎯 MapView: Recenter button tapped - resetting map to optimal view")
-                            handleMapRecenter()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                showingList.toggle()
+                            }
                         }) {
-                            Image(systemName: "location.fill")
-                                .font(.system(size: 16, weight: .medium))
+                            Image(systemName: showingList ? "map.fill" : "list.bullet")
+                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
                                 .frame(width: 48, height: 48)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    Circle()
                                         .fill(Color.red)
-                                        .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
+                                        .shadow(color: .red.opacity(0.3), radius: 8, x: 0, y: 4)
                                 )
                         }
-                        .disabled(viewModel.isLoading || isUpdatingMapRegion)
-                        .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
+                        
+                        // Recenter button
+                        Button(action: handleMapRecenter) {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.primary)
+                                .frame(width: 48, height: 48)
+                                .background(
+                                    Circle()
+                                        .fill(.ultraThinMaterial)
+                                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                )
+                        }
                         
                         // Filter button
-                        Button(action: {
-                            showingFilterSheet = true
-                        }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "slider.horizontal.3")
-                                    .font(.system(size: 14, weight: .medium))
-                                Text("\(sharedDataModel.distanceFilterOption.text)")
-                                    .font(.system(size: 13, weight: .medium))
-                            }
-                            .foregroundColor(.primary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(.ultraThinMaterial)
-                                    .shadow(color: .black.opacity(0.1), radius: 6, x: 0, y: 3)
-                            )
+                        Button(action: { showingFilterSheet = true }) {
+                            Image(systemName: "slider.horizontal.3")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.primary)
+                                .frame(width: 48, height: 48)
+                                .background(
+                                    Circle()
+                                        .fill(.ultraThinMaterial)
+                                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                )
                         }
-                        .disabled(viewModel.isLoading || isUpdatingMapRegion)
-                        .opacity((viewModel.isLoading || isUpdatingMapRegion) ? 0.6 : 1.0)
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
                 
                 Spacer()
             }
-            .padding(.top, 16)
-            .padding(.trailing, 16)
             
-            // Bottom overlay for selected food truck
+            // Bottom sheet for selected food truck
             if let selectedFoodTruck = selectedFoodTruck {
                 VStack {
                     Spacer()
                     
-                    FoodTruckCompactOverlay(
+                    FoodTruckDetailCard(
                         foodTruck: selectedFoodTruck,
                         onViewDetails: {
-                            let foodTruckId = selectedFoodTruck.id
-                            let distance = selectedFoodTruck.distanceInMiles
-                            let name = selectedFoodTruck.name
-                            
-                            print("🗺️ MapView: Navigating to detail for food truck: \(name) (ID: \(foodTruckId))")
-                            print("🗺️ MapView: Preserving selection for when user returns")
-                            
-                            isNavigatingToDetail = true
-                            navigate(.foodTruck(.detail(id: foodTruckId, distanceInMiles: distance)))
+                            navigate(.foodTruck(.detail(id: selectedFoodTruck.id, distanceInMiles: selectedFoodTruck.distanceInMiles)))
                         },
                         onClose: {
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 self.selectedFoodTruck = nil
                             }
                         }
                     )
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .bottom).combined(with: .opacity).combined(with: .scale(scale: 0.95)),
-                        removal: .move(edge: .bottom).combined(with: .opacity).combined(with: .scale(scale: 0.9))
-                    ))
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 10)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
-                .padding(.bottom, 100)
+            }
+            
+            // Sliding list view
+            if showingList {
+                VStack(spacing: 0) {
+                    Spacer()
+                    
+                    MapListOverlay(
+                        foodTrucks: viewModel.foodTruckListItems,
+                        selectedTruck: $selectedFoodTruck,
+                        onSelectTruck: { truck in
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                selectedFoodTruck = truck
+                                showingList = false
+                                mapRegion.center = CLLocationCoordinate2D(
+                                    latitude: truck.latitude,
+                                    longitude: truck.longitude
+                                )
+                            }
+                        },
+                        onClose: {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                showingList = false
+                            }
+                        }
+                    )
+                    .transition(.move(edge: .bottom))
+                }
+                .background(
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                showingList = false
+                            }
+                        }
+                )
             }
         }
-        .onAppear { 
+        .onAppear {
             if !hasInitiallyLoaded {
-                print("🗺️ MapView: Initial load - setting up location and fetching food trucks")
                 setupInitialLocation()
                 fetchFoodTrucks(shouldUpdateMapRegion: true)
                 hasInitiallyLoaded = true
-            } else {
-                print("🗺️ MapView: Returning from navigation - using existing data, no loading needed")
             }
         }
-        .onChange(of: sharedDataModel.distanceFilterOption.value) { 
-            print("🗺️ MapView: Distance filter changed - updating map region")
+        .onChange(of: sharedDataModel.distanceFilterOption.value) {
             selectedFoodTruck = nil
-            fetchFoodTrucks(shouldUpdateMapRegion: true) 
+            fetchFoodTrucks(shouldUpdateMapRegion: true)
         }
         .sheet(isPresented: $showingFilterSheet) {
             DistanceFilterView(isPresented: $showingFilterSheet)
@@ -168,7 +221,6 @@ struct MapView: View {
                 .presentationDragIndicator(.visible)
         }
         .onReceive(NotificationCenter.default.publisher(for: .mapTabRefreshRequested)) { _ in
-            print("🔄 MapView: Tab refresh requested - refreshing map data")
             handleTabRefresh()
         }
     }
@@ -266,6 +318,288 @@ struct MapView: View {
                 isUpdatingMapRegion = false
             }
         }
+    }
+}
+
+// MARK: - Supporting Views
+
+struct FoodTruckDetailCard: View {
+    let foodTruck: FoodTruckListItem
+    let onViewDetails: () -> Void
+    let onClose: () -> Void
+    
+    private var accentColor: Color {
+        guard let cuisine = foodTruck.cuisineType else { return .orange }
+        switch cuisine {
+        case .mexican: return .orange
+        case .pizza: return .red
+        case .asian, .japanese: return .purple
+        case .italian: return .green
+        case .bbq: return .brown
+        case .coffee: return .brown
+        case .sandwiches: return .yellow
+        case .american: return .blue
+        }
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Handle bar
+            RoundedRectangle(cornerRadius: 3)
+                .fill(Color.secondary.opacity(0.3))
+                .frame(width: 36, height: 5)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
+            
+            HStack(alignment: .top, spacing: 16) {
+                // Image
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color(.systemGray6))
+                        .frame(width: 80, height: 80)
+                    
+                    if let imageUrlString = foodTruck.imageUrl, let url = URL(string: imageUrlString) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        } placeholder: {
+                            Image(systemName: "fork.knife")
+                                .font(.system(size: 28, weight: .light))
+                                .foregroundColor(accentColor)
+                        }
+                    } else {
+                        Image(systemName: "fork.knife")
+                            .font(.system(size: 28, weight: .light))
+                            .foregroundColor(accentColor)
+                    }
+                }
+                
+                // Content
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(foodTruck.name)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.primary)
+                            .lineLimit(2)
+                        
+                        Spacer()
+                        
+                        Button(action: onClose) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    HStack(spacing: 12) {
+                        // Distance
+                        HStack(spacing: 4) {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 12, weight: .medium))
+                            Text(String(format: "%.1f mi", foodTruck.distanceInMiles))
+                                .font(.system(size: 14, weight: .semibold))
+                        }
+                        .foregroundColor(.secondary)
+                        
+                        // Cuisine
+                        if let cuisine = foodTruck.cuisineType {
+                            HStack(spacing: 4) {
+                                Image(systemName: "tag.fill")
+                                    .font(.system(size: 11, weight: .medium))
+                                Text(cuisine.displayName)
+                                    .font(.system(size: 13, weight: .semibold))
+                            }
+                            .foregroundColor(accentColor)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(accentColor.opacity(0.15))
+                            )
+                        }
+                    }
+                    
+                    Text(foodTruck.description)
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                }
+            }
+            .padding(.horizontal, 20)
+            
+            // View Details button
+            Button(action: onViewDetails) {
+                HStack(spacing: 8) {
+                    Text("View Details")
+                        .font(.system(size: 16, weight: .semibold))
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 14, weight: .bold))
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(accentColor)
+                )
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            .padding(.bottom, 16)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.15), radius: 20, x: 0, y: -5)
+        )
+    }
+}
+
+struct MapListOverlay: View {
+    let foodTrucks: [FoodTruckListItem]
+    @Binding var selectedTruck: FoodTruckListItem?
+    let onSelectTruck: (FoodTruckListItem) -> Void
+    let onClose: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Handle bar
+            RoundedRectangle(cornerRadius: 3)
+                .fill(Color.secondary.opacity(0.3))
+                .frame(width: 36, height: 5)
+                .padding(.top, 12)
+                .padding(.bottom, 8)
+            
+            // Header
+            HStack {
+                Text("\(foodTrucks.count) Food Trucks")
+                    .font(.system(size: 22, weight: .bold))
+                
+                Spacer()
+                
+                Button(action: onClose) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            
+            Divider()
+            
+            // List
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(foodTrucks, id: \.id) { truck in
+                        MapListItem(
+                            foodTruck: truck,
+                            isSelected: selectedTruck?.id == truck.id
+                        ) {
+                            onSelectTruck(truck)
+                        }
+                    }
+                }
+                .padding(20)
+            }
+        }
+        .frame(maxHeight: UIScreen.main.bounds.height * 0.6)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
+    }
+}
+
+struct MapListItem: View {
+    let foodTruck: FoodTruckListItem
+    let isSelected: Bool
+    let onTap: () -> Void
+    
+    private var accentColor: Color {
+        guard let cuisine = foodTruck.cuisineType else { return .orange }
+        switch cuisine {
+        case .mexican: return .orange
+        case .pizza: return .red
+        case .asian, .japanese: return .purple
+        case .italian: return .green
+        case .bbq: return .brown
+        case .coffee: return .brown
+        case .sandwiches: return .yellow
+        case .american: return .blue
+        }
+    }
+    
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 14) {
+                // Image
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color(.systemGray6))
+                        .frame(width: 60, height: 60)
+                    
+                    if let imageUrlString = foodTruck.imageUrl, let url = URL(string: imageUrlString) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 60, height: 60)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        } placeholder: {
+                            Image(systemName: "fork.knife")
+                                .font(.system(size: 22, weight: .light))
+                                .foregroundColor(accentColor)
+                        }
+                    } else {
+                        Image(systemName: "fork.knife")
+                            .font(.system(size: 22, weight: .light))
+                            .foregroundColor(accentColor)
+                    }
+                }
+                
+                // Content
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(foodTruck.name)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
+                    
+                    HStack(spacing: 8) {
+                        Text(String(format: "%.1f mi", foodTruck.distanceInMiles))
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.secondary)
+                        
+                        if let cuisine = foodTruck.cuisineType {
+                            Text("•")
+                                .foregroundColor(.secondary)
+                            Text(cuisine.displayName)
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(accentColor)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.secondary)
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(isSelected ? accentColor.opacity(0.1) : Color(.systemBackground))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(isSelected ? accentColor : Color.clear, lineWidth: 2)
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

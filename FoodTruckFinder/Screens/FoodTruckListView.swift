@@ -469,27 +469,27 @@ struct ModernFoodTruckCard: View {
     
     var body: some View {
         Button(action: onTap) {
-            HStack(alignment: .center, spacing: 14) {
+            HStack(alignment: .center, spacing: 16) {
                 // Image
                 ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(Color(.systemGray6))
-                        .frame(width: 50, height: 50)
+                        .frame(width: 90, height: 90)
                     if let imageUrlString = listItem.imageUrl, let url = URL(string: imageUrlString) {
                         AsyncImage(url: url) { image in
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 50, height: 50)
-                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .frame(width: 90, height: 90)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         } placeholder: {
                             Image(systemName: "fork.knife")
-                                .font(.system(size: 20, weight: .light))
+                                .font(.system(size: 32, weight: .light))
                                 .foregroundColor(accentColor)
                         }
                     } else {
                         Image(systemName: "fork.knife")
-                            .font(.system(size: 20, weight: .light))
+                            .font(.system(size: 32, weight: .light))
                             .foregroundColor(accentColor)
                     }
                 }
@@ -535,23 +535,21 @@ struct ModernFoodTruckCard: View {
                 .padding(.vertical, 2)
                 .frame(minHeight: 60)
             }
-            .padding(.vertical, 14)
+            .padding(.vertical, 16)
             .padding(.horizontal, 16)
             .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(Color.white)
                     .shadow(color: .black.opacity(isPressed ? 0.10 : 0.04), radius: isPressed ? 8 : 4, x: 0, y: isPressed ? 4 : 2)
             )
-            .frame(minHeight: 90)
+            .frame(minHeight: 110)
             .scaleEffect(isPressed ? 0.98 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded { _ in isPressed = false }
-        )
+        .onLongPressGesture(minimumDuration: 0.0, pressing: { pressing in
+            isPressed = pressing
+        }, perform: {})
     }
     
     private func cuisineIcon(for cuisine: CuisineType) -> String {

@@ -33,7 +33,7 @@ def seed_food_trucks(environment='dev'):
                 'longitude': Decimal('-83.9207')
             },
             'websiteUrl': 'https://smokymountaintacos.com',
-            'imageUrl': 'https://example.com/taco-truck.jpg',
+            'imageUrl': 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=400&fit=crop',
             'openUntil': '10:00 PM',
             'menu': [
                 {
@@ -72,7 +72,7 @@ def seed_food_trucks(environment='dev'):
                 'longitude': Decimal('-83.9295')
             },
             'websiteUrl': 'https://volburger.com',
-            'imageUrl': 'https://example.com/burger-truck.jpg',
+            'imageUrl': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=400&fit=crop',
             'openUntil': '9:00 PM',
             'menu': [
                 {
@@ -111,7 +111,7 @@ def seed_food_trucks(environment='dev'):
                 'longitude': Decimal('-83.9186')
             },
             'websiteUrl': 'https://tennesseesushi.com',
-            'imageUrl': 'https://example.com/sushi-truck.jpg',
+            'imageUrl': 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=400&fit=crop',
             'openUntil': '8:00 PM',
             'menu': [
                 {
@@ -150,7 +150,7 @@ def seed_food_trucks(environment='dev'):
                 'longitude': Decimal('-83.9143')
             },
             'websiteUrl': 'https://knoxvillepizza.com',
-            'imageUrl': 'https://example.com/pizza-truck.jpg',
+            'imageUrl': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=400&fit=crop',
             'openUntil': '11:00 PM',
             'menu': [
                 {
@@ -189,7 +189,7 @@ def seed_food_trucks(environment='dev'):
                 'longitude': Decimal('-84.0500')
             },
             'websiteUrl': 'https://thaivolunteer.com',
-            'imageUrl': 'https://example.com/thai-truck.jpg',
+            'imageUrl': 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=400&fit=crop',
             'openUntil': '9:30 PM',
             'menu': [
                 {
