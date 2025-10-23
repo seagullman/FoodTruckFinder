@@ -36,6 +36,8 @@ Resources:
           AttributeType: S
         - AttributeName: geoHash
           AttributeType: S
+        - AttributeName: ownerId
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -43,6 +45,12 @@ Resources:
         - IndexName: GeoHashIndex
           KeySchema:
             - AttributeName: geoHash
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: OwnerIdIndex
+          KeySchema:
+            - AttributeName: ownerId
               KeyType: HASH
           Projection:
             ProjectionType: ALL
@@ -271,6 +279,23 @@ Resources:
             RestApiId: !Ref FoodTruckApi
             Path: /upload-url
             Method: POST
+
+  GetMyTruckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetMyTruck-${Environment}'
+      CodeUri: lambda/get_my_truck/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref FoodTrucksTable
+      Events:
+        GetMyTruck:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FoodTruckApi
+            Path: /foodtrucks/mine
+            Method: GET
 
 Outputs:
   ApiEndpoint:

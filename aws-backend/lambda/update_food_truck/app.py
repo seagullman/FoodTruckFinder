@@ -6,6 +6,18 @@ from decimal import Decimal
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['FOOD_TRUCKS_TABLE'])
 
+def convert_floats_to_decimal(obj):
+    """Recursively convert float values to Decimal for DynamoDB"""
+    if isinstance(obj, list):
+        return [convert_floats_to_decimal(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {key: convert_floats_to_decimal(value) for key, value in obj.items()}
+    elif isinstance(obj, float):
+        return Decimal(str(obj))
+    else:
+        return obj
+
+
 def lambda_handler(event, context):
     """
     Update an existing food truck
@@ -51,6 +63,10 @@ def lambda_handler(event, context):
                         float(body['location']['latitude']),
                         float(body['location']['longitude'])
                     )
+                elif field == 'menu':
+                    # Convert floats to Decimal in menu data
+                    update_expr += f", {field} = :{field}"
+                    expr_values[f':{field}'] = convert_floats_to_decimal(body[field])
                 else:
                     update_expr += f", {field} = :{field}"
                     expr_values[f':{field}'] = body[field]
